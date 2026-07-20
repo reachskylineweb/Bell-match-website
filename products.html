@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Products | Bell Match Company</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="index.css?v=50">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Cinematic Preloader -->
+    <div id="preloader">
+        <div class="preloader-content animate">
+            <div class="preloader-sparks" id="preloaderSparks"></div>
+            <div class="preloader-slider">
+                <div class="slider-track"></div>
+                <div class="slider-matchstick" id="sliderMatchstick">
+                    <div class="slider-head"></div>
+                    <div class="slider-flame" id="sliderFlame"></div>
+                </div>
+            </div>
+            <div class="preloader-brand">
+                <span class="text-white">BELL</span> <span class="text-red">MATCH CO.</span>
+            </div>
+            <div class="preloader-text">LOADING IGNIS...</div>
+            <div class="preloader-progress-wrapper">
+                <div class="preloader-progress-glow" id="progressGlow"></div>
+            </div>
+            <div class="preloader-percent" id="preloaderPercent">0%</div>
+        </div>
+    </div>
+    <!-- Floating Quick Actions -->
+    <div class="floating-actions">
+        <a href="https://wa.me/" class="floating-btn" style="background-color: #25d366; color: white; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); text-decoration: none; align-self: flex-end; margin-bottom: 5px; transition: transform 0.3s ease;" onmouseover="this.style.transform=scale(1.1)" onmouseout="this.style.transform=scale(1)"><i class="fab fa-whatsapp"></i></a>
+        <a href="#quote" class="floating-btn quote-pill">Request Quote</a>
+        <button class="floating-btn back-to-top" id="backToTop"><i class="fas fa-chevron-up"></i></button>
+    </div>
+
+    <div id="topbar-component"></div>
+    <div id="header-component"></div>
+    <section id="hero-animated" style="position: relative; width: 100%; min-height: 70vh; background-color: #050505; overflow: hidden; display: flex; align-items: center; justify-content: center; margin-top: 0;">
+        
+        <style>
+            #hero-animated {
+                perspective: 1200px;
+                color: #fff;
+                font-family: 'Inter', sans-serif;
+            }
+            .right-content {
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                height: 70vh;
+                transform-style: preserve-3d;
+            }
+            #match-artwork {
+                position: relative;
+                width: 100%;
+                max-width: 1200px;
+                height: 600px;
+                transform-style: preserve-3d;
+            }
+            #products-container {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 800px;
+                height: 400px;
+            }
+            
+            /* The Matchstick CSS */
+            .matchstick {
+                position: absolute;
+                height: 8px;
+                /* Ultra-realistic wood grain using repeating gradients */
+                background: 
+                    repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(0,0,0,0.06) 1px, rgba(0,0,0,0.06) 2px),
+                    linear-gradient(to right, #b07e52 0%, #e6ccb2 20%, #d4a373 80%, #b07e52 100%);
+                border-radius: 2px;
+                border-bottom: 1px solid rgba(0,0,0,0.5);
+                border-top: 1px solid rgba(255,255,255,0.4);
+                box-shadow: 3px 6px 12px rgba(0,0,0,0.8), inset 0 2px 5px rgba(255,255,255,0.4);
+                transform-origin: left center;
+                opacity: 0;
+                cursor: pointer;
+                transition: filter 0.3s ease;
+            }
+            .matchstick:hover {
+                filter: brightness(1.2);
+            }
+            .matchstick::after {
+                content: '';
+                position: absolute;
+                right: -3px;
+                top: -2px;
+                width: 15px;
+                height: 12px;
+                /* Realistic matte red head with 3D shading */
+                background: radial-gradient(circle at 40% 30%, #ff5252 0%, #d32f2f 40%, #7f0000 100%);
+                border-radius: 45% 55% 50% 45%;
+                box-shadow: 2px 4px 6px rgba(0,0,0,0.7), inset -2px -2px 5px rgba(0,0,0,0.5);
+                transition: background 0.3s ease;
+            }
+            .matchstick:hover::after {
+                background: radial-gradient(circle at 30% 30%, #ff5252, #d32f2f);
+                box-shadow: 0 0 15px rgba(229, 57, 53, 0.8);
+            }
+            .matchstick.bg {
+                filter: blur(1.5px) brightness(0.6);
+                z-index: -1;
+            }
+            .matchstick.bg:hover { filter: blur(1.5px) brightness(0.8); }
+
+            /* Bottom CTA that fades in */
+            .bottom-cta {
+                position: absolute;
+                bottom: 2%;
+                left: 50%;
+                transform: translateX(-50%);
+                opacity: 0;
+                display: flex;
+                gap: 1.5rem;
+                z-index: 10;
+            }
+            .hero-btn {
+                display: inline-flex;
+                align-items: center;
+                background: transparent;
+                color: #fff;
+                padding: 14px 45px;
+                border-radius: 50px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 3px;
+                text-decoration: none;
+                transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+                align-self: flex-start;
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                position: relative;
+                overflow: hidden;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            }
+            .hero-btn::before {
+                content: '';
+                position: absolute;
+                top: 0; left: 0; width: 100%; height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+                transform: translateX(-100%);
+                transition: transform 0.6s ease;
+            }
+            .hero-btn.outline {
+                background-color: transparent;
+                border: 1px solid rgba(255,255,255,0.3);
+            }
+            .hero-btn:hover {
+                background: #fff;
+                color: #000;
+                border-color: #fff;
+                box-shadow: 0 10px 30px rgba(255,255,255,0.2);
+                transform: translateY(-2px);
+            }
+            .hero-btn:hover::before {
+                transform: translateX(100%);
+            }
+            .hero-btn.outline:hover {
+                background-color: rgba(255,255,255,0.1);
+                box-shadow: none;
+            }
+        
+            /* Mobile View Specific Fixes */
+            @media (max-width: 768px) {
+                .hero-btn {
+                    padding: 12px 20px;
+                    font-size: 0.8rem;
+                    white-space: nowrap;
+                    width: auto;
+                    max-width: 100%;
+                    text-align: center;
+                }
+            }
+
+        </style>
+
+        <div class="right-content">
+            <div id="match-artwork">
+                <div id="products-container"></div>
+            </div>
+            
+            <div class="bottom-cta" id="cta-container">
+                <a href="#catalog" class="hero-btn">View Catalogue</a>
+                
+            </div>
+        </div>
+        
+        <!-- Load GSAP -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+        
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const container = document.getElementById('products-container');
+                const artWrap = document.getElementById('match-artwork');
+                const matchsticks = [];
+                
+                // Define letters based on strokes (x, y, length, angle)
+                const letters = {
+                    'A': [{x:0, y:0, w:100, a:90}, {x:50, y:0, w:100, a:90}, {x:0, y:0, w:50, a:0}, {x:0, y:50, w:50, a:0}],
+                    'C': [{x:0, y:0, w:100, a:90}, {x:0, y:0, w:50, a:0}, {x:0, y:100, w:50, a:0}],
+                    'E': [{x:0, y:0, w:100, a:90}, {x:0, y:0, w:50, a:0}, {x:0, y:50, w:40, a:0}, {x:0, y:100, w:50, a:0}],
+                    'F': [{x:0, y:0, w:100, a:90}, {x:0, y:0, w:50, a:0}, {x:0, y:50, w:40, a:0}],
+                    'H': [{x:0, y:0, w:100, a:90}, {x:50, y:0, w:100, a:90}, {x:0, y:50, w:50, a:0}],
+                    'I': [{x:25, y:0, w:100, a:90}, {x:0, y:0, w:50, a:0}, {x:0, y:100, w:50, a:0}],
+                    'M': [{x:0, y:0, w:100, a:90}, {x:50, y:0, w:100, a:90}, {x:0, y:0, w:40, a:45}, {x:50, y:0, w:40, a:135}],
+                    'P': [{x:0, y:0, w:100, a:90}, {x:0, y:0, w:45, a:0}, {x:45, y:0, w:50, a:90}, {x:0, y:50, w:45, a:0}],
+                    'R': [{x:0, y:0, w:100, a:90}, {x:0, y:0, w:45, a:0}, {x:45, y:0, w:50, a:90}, {x:0, y:50, w:45, a:0}, {x:0, y:50, w:60, a:55}],
+                    'S': [{x:0, y:0, w:50, a:0}, {x:0, y:0, w:50, a:90}, {x:0, y:50, w:50, a:0}, {x:50, y:50, w:50, a:90}, {x:0, y:100, w:50, a:0}],
+                    'T': [{x:0, y:0, w:50, a:0}, {x:25, y:0, w:100, a:90}],
+                    'U': [{x:0, y:0, w:100, a:90}, {x:50, y:0, w:100, a:90}, {x:0, y:100, w:50, a:0}],
+                    'Y': [{x:0, y:0, w:45, a:55}, {x:50, y:0, w:45, a:125}, {x:25, y:40, w:60, a:90}]
+                };
+
+                const lines = ["PREMIUM", "SAFETY", "MATCHES"];
+                const scale = 0.7; // slightly smaller to fit 3 lines safely
+                const letterSpacing = 70 * scale;
+                const lineSpacing = 130 * scale;
+                const containerWidth = 800; // Match the CSS width
+
+                let offsetY = 50; // start a bit lower
+
+                // Function to create a matchstick element
+                function createMatch(w, x, y, a, isBg=false) {
+                    const m = document.createElement('div');
+                    m.className = 'matchstick' + (isBg ? ' bg' : '');
+                    m.style.width = w + 'px';
+                    // Store final positions for animation
+                    m.dataset.fx = x;
+                    m.dataset.fy = y;
+                    m.dataset.fa = a;
+                    // Initial random positions off-screen or scattered
+                    const startX = (Math.random() - 0.5) * 1500;
+                    const startY = (Math.random() - 0.5) * 1500;
+                    const startA = Math.random() * 720 - 360;
+                    
+                    m.style.left = startX + 'px';
+                    m.style.top = startY + 'px';
+                    m.style.transform = `rotate(${startA}deg)`;
+                    
+                    container.appendChild(m);
+                    matchsticks.push(m);
+                    return m;
+                }
+
+                // Build the text lines
+                lines.forEach(word => {
+                    let totalWidth = word.length * letterSpacing;
+                    let startX = (containerWidth - totalWidth) / 2;
+                    let offsetX = startX;
+                    
+                    word.split('').forEach(char => {
+                        const strokes = letters[char];
+                        if (strokes) {
+                            strokes.forEach(s => {
+                                createMatch(s.w * scale, offsetX + s.x * scale, offsetY + s.y * scale, s.a);
+                            });
+                        }
+                        offsetX += letterSpacing;
+                    });
+                    offsetY += lineSpacing;
+                });
+
+                // Background matchsticks removed as requested
+
+                // GSAP Animations
+                const tl = gsap.timeline();
+
+                // 1. Animate matchsticks assembling
+                tl.to(matchsticks, {
+                    x: function(i, el) { return el.dataset.fx - parseFloat(el.style.left); },
+                    y: function(i, el) { return el.dataset.fy - parseFloat(el.style.top); },
+                    rotation: function(i, el) { return el.dataset.fa; },
+                    opacity: 1,
+                    duration: 5,
+                    stagger: { amount: 3.5, from: "random" },
+                    ease: "expo.out"
+                });
+
+                // 2. Fade in CTA buttons
+                tl.to("#cta-container", { opacity: 1, y: -20, duration: 1, ease: "power2.out" }, "-=1.5");
+
+                // Idle floating animation
+                gsap.to(artWrap, {
+                    y: 15,
+                    rotationX: 2,
+                    rotationY: -2,
+                    duration: 5,
+                    repeat: -1,
+                    yoyo: true,
+                    ease: "sine.inOut"
+                });
+
+                // Mouse movement parallax (3D tilt)
+                document.addEventListener("mousemove", (e) => {
+                    const xAxis = (window.innerWidth / 2 - e.pageX) / 60;
+                    const yAxis = (window.innerHeight / 2 - e.pageY) / 60;
+                    gsap.to(artWrap, {
+                        rotationY: -xAxis,
+                        rotationX: yAxis,
+                        duration: 1.5,
+                        ease: "power2.out"
+                    });
+                });
+            });
+        </script>
+    </section>
+
+
+
+
+
+
+
+
+
+
+
+    
+    <section class="section" style="padding: 5rem 0; background: var(--light-bg);">
+        <div class="container">
+            <div class="section-title text-center" style="text-align: center; margin-bottom: 4rem;">
+                <h2 style="color: var(--primary-red); font-size: 2.5rem;">Explore Our Catalogue</h2>
+            </div>
+            
+            <div class="grid grid-cols-3" style="gap: 2rem;">
+                <div class="product-card" style="background: white; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md); transition: var(--transition);">
+                    <div style="height: 250px; background: url('https://images.unsplash.com/photo-1629845946123-5e933e4b09ff?auto=format&fit=crop&q=80') center/cover;"></div>
+                    <div style="padding: 2rem;">
+                        <h3 style="color: var(--dark-text); font-size: 1.5rem; margin-bottom: 1rem;">Wooden Safety Matches</h3>
+                        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Manufactured from premium Aspen wood, our wooden safety matches ensure a smooth, splinter-free strike every time. Ideal for domestic and commercial use.</p>
+                        <a href="contact.html" class="btn btn-outline" style="width: 100%;">Inquire Now</a>
+                    </div>
+                </div>
+                
+                <div class="product-card" style="background: white; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md); transition: var(--transition);">
+                    <div style="height: 250px; background: url('https://images.unsplash.com/photo-1502598687258-293eef250ecb?auto=format&fit=crop&q=80') center/cover;"></div>
+                    <div style="padding: 2rem;">
+                        <h3 style="color: var(--dark-text); font-size: 1.5rem; margin-bottom: 1rem;">Wax Safety Matches</h3>
+                        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Coated with high-grade paraffin wax, these matches offer a strong, wind-resistant flame. Perfect for humid climates and outdoor applications.</p>
+                        <a href="contact.html" class="btn btn-outline" style="width: 100%;">Inquire Now</a>
+                    </div>
+                </div>
+                
+                <div class="product-card" style="background: white; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md); transition: var(--transition);">
+                    <div style="height: 250px; background: url('https://images.unsplash.com/photo-1563212876-0f81d1137021?auto=format&fit=crop&q=80') center/cover;"></div>
+                    <div style="padding: 2rem;">
+                        <h3 style="color: var(--dark-text); font-size: 1.5rem; margin-bottom: 1rem;">Book Matches</h3>
+                        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Fully customizable book matches designed for the hospitality industry, hotels, and promotional events. Premium printing and finishes available.</p>
+                        <a href="contact.html" class="btn btn-outline" style="width: 100%;">Inquire Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>    <div id="footer-component"></div>
+    
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>

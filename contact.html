@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | Bell Match Company</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="index.css?v=50">
+</head>
+<body>
+    <!-- Cinematic Preloader -->
+    <div id="preloader">
+        <div class="preloader-content animate">
+            <div class="preloader-sparks" id="preloaderSparks"></div>
+            <div class="preloader-slider">
+                <div class="slider-track"></div>
+                <div class="slider-matchstick" id="sliderMatchstick">
+                    <div class="slider-head"></div>
+                    <div class="slider-flame" id="sliderFlame"></div>
+                </div>
+            </div>
+            <div class="preloader-brand">
+                <span class="text-white">BELL</span> <span class="text-red">MATCH CO.</span>
+            </div>
+            <div class="preloader-text">LOADING IGNIS...</div>
+            <div class="preloader-progress-wrapper">
+                <div class="preloader-progress-glow" id="progressGlow"></div>
+            </div>
+            <div class="preloader-percent" id="preloaderPercent">0%</div>
+        </div>
+    </div>
+    <!-- Floating Quick Actions -->
+    <div class="floating-actions">
+        <a href="https://wa.me/" class="floating-btn" style="background-color: #25d366; color: white; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); text-decoration: none; align-self: flex-end; margin-bottom: 5px; transition: transform 0.3s ease;" onmouseover="this.style.transform=scale(1.1)" onmouseout="this.style.transform=scale(1)"><i class="fab fa-whatsapp"></i></a>
+        <a href="#quote" class="floating-btn quote-pill">Request Quote</a>
+        <button class="floating-btn back-to-top" id="backToTop"><i class="fas fa-chevron-up"></i></button>
+    </div>
+
+    <div id="topbar-component"></div>
+    <div id="header-component"></div>
+    <section class="section" style="padding: 5rem 0;">
+        <div class="container">
+            <div class="grid grid-cols-2" style="gap: 4rem;">
+                <div>
+                    <h2 style="color: var(--primary-red); font-size: 2.5rem; margin-bottom: 1.5rem;">Contact Information</h2>
+                    <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 2rem;">Whether you are looking for a bulk export quote or want to discuss custom matchbox designs, our dedicated team is ready to assist you.</p>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+                            <div style="background: var(--light-bg); width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--primary-red); font-size: 1.5rem; flex-shrink: 0;">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div>
+                                <h4 style="margin: 0 0 0.5rem; font-size: 1.2rem;">Headquarters</h4>
+                                <p style="margin: 0; color: var(--text-muted); line-height: 1.6;">123 Industrial Estate, Matchbox Lane<br>Sivakasi, Tamil Nadu 626123, India</p>
+                            </div>
+                        </div>
+                        
+                        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+                            <div style="background: var(--light-bg); width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--primary-red); font-size: 1.5rem; flex-shrink: 0;">
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                            <div>
+                                <h4 style="margin: 0 0 0.5rem; font-size: 1.2rem;">Phone</h4>
+                                <p style="margin: 0; color: var(--text-muted); line-height: 1.6;">+91 123 456 7890<br>+91 987 654 3210 (Export Division)</p>
+                            </div>
+                        </div>
+                        
+                        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+                            <div style="background: var(--light-bg); width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--primary-red); font-size: 1.5rem; flex-shrink: 0;">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h4 style="margin: 0 0 0.5rem; font-size: 1.2rem;">Email</h4>
+                                <p style="margin: 0; color: var(--text-muted); line-height: 1.6;">info@bellmatch.com<br>exports@bellmatch.com</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="background: white; padding: 3rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg);">
+                    <h3 style="font-size: 1.8rem; margin-bottom: 2rem;">Send us a Message</h3>
+                    <form>
+                        <div style="margin-bottom: 1.5rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Your Name</label>
+                            <input type="text" style="width: 100%; padding: 1rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); outline: none;" placeholder="John Doe">
+                        </div>
+                        <div style="margin-bottom: 1.5rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Email Address</label>
+                            <input type="email" style="width: 100%; padding: 1rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); outline: none;" placeholder="john@example.com">
+                        </div>
+                        <div style="margin-bottom: 1.5rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Message</label>
+                            <textarea rows="4" style="width: 100%; padding: 1rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); outline: none;" placeholder="How can we help you?"></textarea>
+                        </div>
+                        <button type="button" class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.1rem;">Submit Inquiry</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>    <div id="footer-component"></div>
+    
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>

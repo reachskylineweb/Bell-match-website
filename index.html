@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bell Match | Premium Safety Matches Exporter in India</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="index.css?v=50">
+
+    <!-- Vintage Label Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Karla:ital,wght@0,200..800;1,200..800&family=Rozha+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Cinematic Preloader -->
+    <div id="preloader">
+        <div class="preloader-content animate">
+            <div class="preloader-sparks" id="preloaderSparks"></div>
+            <div class="preloader-slider">
+                <div class="slider-track"></div>
+                <div class="slider-matchstick" id="sliderMatchstick">
+                    <div class="slider-head"></div>
+                    <div class="slider-flame" id="sliderFlame"></div>
+                </div>
+            </div>
+            <div class="preloader-brand">
+                <span class="text-white">BELL</span> <span class="text-red">MATCH CO.</span>
+            </div>
+            <div class="preloader-text">LOADING IGNIS...</div>
+            <div class="preloader-progress-wrapper">
+                <div class="preloader-progress-glow" id="progressGlow"></div>
+            </div>
+            <div class="preloader-percent" id="preloaderPercent">0%</div>
+        </div>
+    </div>
+    <!-- Floating Quick Actions -->
+    <div class="floating-actions">
+        <a href="https://wa.me/" class="floating-btn" style="background-color: #25d366; color: white; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); text-decoration: none; align-self: flex-end; margin-bottom: 5px; transition: transform 0.3s ease;" onmouseover="this.style.transform=scale(1.1)" onmouseout="this.style.transform=scale(1)"><i class="fab fa-whatsapp"></i></a>
+        <a href="#quote" class="floating-btn quote-pill">Request Quote</a>
+        <button class="floating-btn back-to-top" id="backToTop"><i class="fas fa-chevron-up"></i></button>
+    </div>
+
+    <div id="topbar-component"></div>
+    <div id="header-component"></div>
+    <section class="premium-hero">
+        <div class="hero-bg" style="background-image: url('https://images.unsplash.com/photo-1587293852726-70cdb56c2866?q=80&w=2072&auto=format&fit=crop');"></div>
+        <div class="hero-overlay"></div>
+        <div class="particles" id="particles"></div>
+
+        <div class="container hero-container relative">
+            <div class="hero-content">
+                <div class="hero-label-wrapper">
+                    <span class="hero-label">Trusted Manufacturer & Global Exporter</span>
+                </div>
+                <h1 class="hero-title">
+                    Premium Safety Matches Crafted for <span class="text-highlight">Quality, Safety & Global Markets</span>
+                </h1>
+                <p class="hero-description">
+                    The Bell Match Company has been delivering excellence since 1998. We manufacture and export high-quality safety matches to Europe, the Middle East, and the US.
+                </p>
+                                <div class="hero-buttons">
+                    <a href="products.html" class="open-matchbox-btn" onclick="this.classList.toggle('is-closed'); return false;">
+                        <div class="omb-drawer">
+                            <div class="matchstick-group">
+                                <div class="real-matchstick" style="top: 15px; transform: rotate(-1deg); right: 15px;"></div>
+                                <div class="real-matchstick" style="top: 25px; transform: rotate(0.5deg); right: 15px;"></div>
+                                <div class="real-matchstick" style="top: 35px; transform: rotate(-0.5deg); right: 15px;"></div>
+                            </div>
+                        </div>
+                        <div class="omb-cover">
+                            <span>Explore Products</span>
+                        </div>
+                    </a>
+                    <a href="#" class="open-matchbox-btn" onclick="this.classList.toggle('is-closed'); return false;">
+                        <div class="omb-drawer">
+                            <div class="matchstick-group">
+                                <div class="real-matchstick" style="top: 15px; transform: rotate(-1deg); right: 15px;"></div>
+                                <div class="real-matchstick" style="top: 25px; transform: rotate(0.5deg); right: 15px;"></div>
+                                <div class="real-matchstick" style="top: 35px; transform: rotate(-0.5deg); right: 15px;"></div>
+                            </div>
+                        </div>
+                        <div class="omb-cover">
+                            <span style="color: white; font-weight: bold;">Download Catalogue</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+                                            <!-- 3D Interactive WebGL About Section -->
+    <section class="section" id="about" style="background: #1c1c1e; padding: 0;  position: relative; overflow: hidden; min-height: 100vh; display: flex; align-items: center;">
+        <!-- Animated Background Glows -->
+        <div class="ambient-glow glow-1"></div>
+        <div class="ambient-glow glow-2"></div>
+        <div class="ambient-glow glow-3"></div>
+
+        
+        
+<div class="container" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; position: relative; z-index: 10;">
+
+            <!-- 3D Canvas Container (Right) -->
+            <div id="threejs-canvas-container" style="flex: 1.5; min-width: 300px; height: 80vh; min-height: 500px; position: relative; cursor: grab;">
+                <!-- Canvas injected by JS -->
+            </div>
+
+            <!-- Text Content (Left) -->
+            <div class="about-text-content" style="flex: 1; min-width: 300px; max-width: 500px; padding: 40px 0;">
+                <style>
+                    @media (max-width: 768px) {
+                        .mobile-center-title {
+                            text-align: center !important;
+                        }
+                    }
+                </style>
+                <h2 class="mobile-center-title" style="font-family: 'Outfit', sans-serif; font-size: clamp(3rem, 8vw, 5rem); font-weight: 900; line-height: 1; color: #fff; margin-bottom: 20px;">
+                    WHO<br>WE ARE
+                </h2>
+                <div style="width: 60px; height: 4px; background: #1c1c1e; margin-bottom: 30px;"></div>
+                <p style="font-family: 'Inter', sans-serif; font-size: 1.2rem; line-height: 1.7; color: #a1a1aa; font-weight: 300; margin-bottom: 20px;">
+                    <strong style="color: #fff; font-weight: 600;">The Bell Match Company</strong> is one of the leading safety matches exporters and manufacturers of quality matchboxes in Sivakasi, India. Established in 1998, we have grown to be a trusted name in the global safety matches industry.
+                </p>
+                <p style="font-family: 'Inter', sans-serif; font-size: 1.2rem; line-height: 1.7; color: #a1a1aa; font-weight: 300;">
+                    We specialize in the manufacturing and export of high-quality safety matches to Europe, the Middle East, Africa, and the Americas. Our products are crafted with the finest raw materials.
+                </p>
+                
+            </div>
+
+        </div>
+
+        <!-- Three.js Scene Logic -->
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const container = document.getElementById('threejs-canvas-container');
+                if (!container || typeof THREE === 'undefined') return;
+
+                // 1. Scene Setup
+                const scene = new THREE.Scene();
+                // Optional: add a very subtle fog
+                scene.fog = new THREE.FogExp2(0x080808, 0.02);
+
+                const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
+                camera.position.set(20, 15, 25);
+
+                const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+                renderer.setSize(container.clientWidth, container.clientHeight);
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                renderer.shadowMap.enabled = true;
+                renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+                container.appendChild(renderer.domElement);
+
+                // 2. Controls
+                const controls = new THREE.OrbitControls(camera, renderer.domElement);
+                controls.enableDamping = true;
+                controls.dampingFactor = 0.05;
+                controls.enableZoom = false; // Prevent zooming out of bounds
+                controls.enablePan = false;
+
+                // 3. Lighting
+                const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+                scene.add(ambientLight);
+
+                const dirLight = new THREE.DirectionalLight(0xffeedd, 1.2);
+                dirLight.position.set(10, 20, 10);
+                dirLight.castShadow = true;
+                dirLight.shadow.mapSize.width = 1024;
+                dirLight.shadow.mapSize.height = 1024;
+                dirLight.shadow.bias = -0.001;
+                scene.add(dirLight);
+                
+                const fillLight = new THREE.DirectionalLight(0x90b0d0, 0.5);
+                fillLight.position.set(-10, 5, -10);
+                scene.add(fillLight);
+
+                // 4. Procedural Matchbox Construction
+                const matchboxGroup = new THREE.Group();
+
+                // Materials
+                const sleeveMaterial = new THREE.MeshStandardMaterial({ 
+                    color: 0xC8393B, // Bell Match Red
+                    roughness: 0.6,
+                    metalness: 0.1
+                });
+                
+                const frictionMaterial = new THREE.MeshStandardMaterial({
+                    color: 0x222222,
+                    roughness: 0.9,
+                    bumpScale: 0.02
+                });
+
+                const trayMaterial = new THREE.MeshStandardMaterial({
+                    color: 0xeaeaea, // Cardboard white/grey
+                    roughness: 0.8
+                });
+
+                // Dimensions
+                const w = 12; // width
+                const h = 3.5; // height
+                const d = 16; // depth
+                const t = 0.2; // thickness
+
+                // --- SLEEVE ---
+                const sleeve = new THREE.Group();
+                
+                // Top & Bottom
+                const tbGeo = new THREE.BoxGeometry(w, t, d);
+                const topPnl = new THREE.Mesh(tbGeo, sleeveMaterial);
+                topPnl.position.y = h/2;
+                topPnl.castShadow = true; topPnl.receiveShadow = true;
+                const botPnl = new THREE.Mesh(tbGeo, sleeveMaterial);
+                botPnl.position.y = -h/2;
+                botPnl.castShadow = true; botPnl.receiveShadow = true;
+                sleeve.add(topPnl, botPnl);
+
+                // Left & Right (Friction strips)
+                const lrGeo = new THREE.BoxGeometry(t, h - t, d);
+                const leftPnl = new THREE.Mesh(lrGeo, frictionMaterial);
+                leftPnl.position.x = -w/2 + t/2;
+                leftPnl.castShadow = true; leftPnl.receiveShadow = true;
+                const rightPnl = new THREE.Mesh(lrGeo, frictionMaterial);
+                rightPnl.position.x = w/2 - t/2;
+                rightPnl.castShadow = true; rightPnl.receiveShadow = true;
+                sleeve.add(leftPnl, rightPnl);
+
+                matchboxGroup.add(sleeve);
+
+                // --- TRAY ---
+                const tray = new THREE.Group();
+                // Slide it out slightly to look open
+                tray.position.z = 4;
+                
+                // Tray Bottom
+                const trayBotGeo = new THREE.BoxGeometry(w - t*2 - 0.2, t, d - 0.2);
+                const trayBot = new THREE.Mesh(trayBotGeo, trayMaterial);
+                trayBot.position.y = -h/2 + t;
+                trayBot.castShadow = true; trayBot.receiveShadow = true;
+                tray.add(trayBot);
+
+                // Tray Sides (Front, Back, Left, Right)
+                const trayFrontBackGeo = new THREE.BoxGeometry(w - t*2 - 0.2, h - t*1.5, t);
+                const trayFront = new THREE.Mesh(trayFrontBackGeo, trayMaterial);
+                trayFront.position.z = d/2 - t/2 - 0.1;
+                trayFront.position.y = -t/4;
+                trayFront.castShadow = true; trayFront.receiveShadow = true;
+                
+                const trayBack = new THREE.Mesh(trayFrontBackGeo, trayMaterial);
+                trayBack.position.z = -d/2 + t/2 + 0.1;
+                trayBack.position.y = -t/4;
+                trayBack.castShadow = true; trayBack.receiveShadow = true;
+                
+                const trayLeftRightGeo = new THREE.BoxGeometry(t, h - t*1.5, d - t*2 - 0.2);
+                const trayLeft = new THREE.Mesh(trayLeftRightGeo, trayMaterial);
+                trayLeft.position.x = -w/2 + t*1.5;
+                trayLeft.position.y = -t/4;
+                trayLeft.castShadow = true; trayLeft.receiveShadow = true;
+                
+                const trayRight = new THREE.Mesh(trayLeftRightGeo, trayMaterial);
+                trayRight.position.x = w/2 - t*1.5;
+                trayRight.position.y = -t/4;
+                trayRight.castShadow = true; trayRight.receiveShadow = true;
+
+                tray.add(trayFront, trayBack, trayLeft, trayRight);
+                
+                // --- MATCHSTICKS ---
+                const woodMat = new THREE.MeshStandardMaterial({ color: 0xdec092, roughness: 0.9 });
+                const headMat = new THREE.MeshStandardMaterial({ color: 0xcc2222, roughness: 0.7 });
+                
+                const stickGeo = new THREE.BoxGeometry(0.5, 0.5, 9);
+                const headGeo = new THREE.SphereGeometry(0.45, 8, 8);
+
+                // Create a bunch of matches inside the tray
+                for(let i=0; i<15; i++) {
+                    const match = new THREE.Group();
+                    
+                    const stick = new THREE.Mesh(stickGeo, woodMat);
+                    stick.castShadow = true; stick.receiveShadow = true;
+                    
+                    const head = new THREE.Mesh(headGeo, headMat);
+                    head.position.z = 4.5;
+                    head.scale.z = 1.3;
+                    head.castShadow = true; head.receiveShadow = true;
+                    
+                    match.add(stick, head);
+                    
+                    // Randomize position in tray
+                    match.position.x = (Math.random() - 0.5) * (w - 3);
+                    match.position.y = -h/2 + t + 0.3 + (Math.random() * 0.5);
+                    // Shift matches forward so heads stick out
+                    match.position.z = (Math.random() - 0.5) * 2 + 1;
+                    
+                    // Randomize rotation slightly
+                    match.rotation.y = (Math.random() - 0.5) * 0.2;
+                    match.rotation.z = (Math.random() - 0.5) * 0.1;
+                    
+                    tray.add(match);
+                }
+
+                matchboxGroup.add(tray);
+                
+                // Center and tilt the whole assembly
+                matchboxGroup.rotation.x = 0.2;
+                matchboxGroup.rotation.y = -0.5;
+                
+                scene.add(matchboxGroup);
+
+                // 5. Animation Loop
+                let isDragging = false;
+                
+                controls.addEventListener('start', () => isDragging = true);
+                controls.addEventListener('end', () => isDragging = false);
+
+                function animate() {
+                    requestAnimationFrame(animate);
+                    
+                    // Auto-rotate if not interacting
+                    if(!isDragging) {
+                        matchboxGroup.rotation.y += 0.003;
+                        matchboxGroup.position.y = Math.sin(Date.now() * 0.001) * 0.5; // Subtle float
+                    }
+                    
+                    controls.update();
+                    renderer.render(scene, camera);
+                }
+                
+                animate();
+
+                // 6. Resize Handler
+                window.addEventListener('resize', () => {
+                    if(!container) return;
+                    camera.aspect = container.clientWidth / container.clientHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(container.clientWidth, container.clientHeight);
+                });
+                
+                // Handle container cursor style
+                container.addEventListener('mousedown', () => container.style.cursor = 'grabbing');
+                container.addEventListener('mouseup', () => container.style.cursor = 'grab');
+            });
+        </script>
+    </section>
+
+        <!-- Ultra-Premium Bento Grid Why Choose Us Section -->
+    <section class="section section-dark" id="why-us" style="padding: 120px 0; background: #050505;">
+        <div class="container">
+                        <div class="bento-header" data-aos="fade-up">
+                <h2 class="bento-title">Why Choose Us</h2>
+                <p class="bento-subtitle">Trusted by Importers Worldwide</p>
+                <div class="mobile-swipe-instruction" style="display: none; color: #a1a1aa; font-family: 'Inter', sans-serif; font-size: 0.9rem; margin-top: 15px;">
+                    <i class="fas fa-arrows-alt-h" style="margin-right: 5px;"></i> Swipe to explore
+                </div>
+            </div>
+
+            <div class="bento-grid" id="bento-grid">
+                
+                <!-- Card 1: Wide -->
+                <div class="bento-card bento-wide" data-aos="fade-up" data-aos-delay="100">
+                    <div class="bento-watermark">01</div>
+                    <div class="bento-content">
+                        <h3>Global Export Reach</h3>
+                        <p>We export to 40+ countries including the UK, USA, Germany, UAE, Saudi Arabia, Kenya, and more. Our logistics ensure timely delivery worldwide.</p>
+                    </div>
+                </div>
+
+                <!-- Card 2: Square -->
+                <div class="bento-card" data-aos="fade-up" data-aos-delay="150">
+                    <div class="bento-watermark">02</div>
+                    <div class="bento-content">
+                        <h3>ISO Certified Quality</h3>
+                        <p>Our manufacturing processes are ISO certified, ensuring every matchbox meets the highest quality and safety standards globally.</p>
+                    </div>
+                </div>
+
+                <!-- Card 3: Square -->
+                <div class="bento-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="bento-watermark">03</div>
+                    <div class="bento-content">
+                        <h3>Safety First</h3>
+                        <p>Every match is manufactured to be safe for household and industrial use, complying with international safety and environmental regulations.</p>
+                    </div>
+                </div>
+
+                <!-- Card 4: Square -->
+                <div class="bento-card" data-aos="fade-up" data-aos-delay="250">
+                    <div class="bento-watermark">04</div>
+                    <div class="bento-content">
+                        <h3>Custom Packaging</h3>
+                        <p>We offer fully customizable matchbox designs and private label options. Your brand, your size, your design — we make it happen.</p>
+                    </div>
+                </div>
+                
+                <!-- Card 5: Square -->
+                <div class="bento-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="bento-watermark">05</div>
+                    <div class="bento-content">
+                        <h3>On-Time Delivery</h3>
+                        <p>We understand that time is money. Our production planning and logistics team ensures that every order is delivered on schedule.</p>
+                    </div>
+                </div>
+
+                <!-- Card 6: Wide -->
+                <div class="bento-card bento-wide" data-aos="fade-up" data-aos-delay="350">
+                    <div class="bento-watermark">06</div>
+                    <div class="bento-content">
+                        <h3>Long-Term Partnerships</h3>
+                        <p>We have been building long-term relationships with our global clients for over 25 years, built on trust, transparency, and quality.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const bentoGrid = document.getElementById('bento-grid');
+                if (bentoGrid) {
+                    bentoGrid.addEventListener('mousemove', (e) => {
+                        for (const card of document.querySelectorAll('.bento-card')) {
+                            const rect = card.getBoundingClientRect();
+                            const x = e.clientX - rect.left;
+                            const y = e.clientY - rect.top;
+                            card.style.setProperty('--mouse-x', `${x}px`);
+                            card.style.setProperty('--mouse-y', `${y}px`);
+                        }
+                    });
+                }
+            });
+        </script>
+    </section>
+
+    <!-- Products Overview -->
+    <section class="section" id="products-preview" data-aos="fade-up">
+        <div class="container">
+            <div class="section-header text-center">
+                <div class="section-label">Our Products</div>
+                <h2 class="section-title">Premium Safety Matches for Every Need</h2>
+                <p class="section-subtitle">From household matches to restaurant-grade and promotional matchboxes, we offer a wide range of products.</p>
+            </div>
+            <div class="grid grid-cols-3 gap-medium" style="margin-top:3rem;">
+                <div class="product-card" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="product-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=800&auto=format&fit=crop" alt="Household Safety Matches">
+                    </div>
+                    <div class="product-card-body">
+                        <h3>Household Safety Matches</h3>
+                        <p>Standard household matchboxes in various sizes (30s, 40s, 50s matches per box). Reliable ignition, safe for everyday use.</p>
+                        <a href="products.html" class="btn-link">View Details <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="product-card" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="product-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?q=80&w=800&auto=format&fit=crop" alt="Long Matches">
+                    </div>
+                    <div class="product-card-body">
+                        <h3>Long Safety Matches</h3>
+                        <p>Extra-long safety matches (200mm–300mm) ideal for lighting candles, fireplaces, BBQ grills, and industrial burners.</p>
+                        <a href="products.html" class="btn-link">View Details <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="product-card" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="product-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1612535316383-3bca3e6d0cc7?q=80&w=800&auto=format&fit=crop" alt="Custom Brand Matchboxes">
+                    </div>
+                    <div class="product-card-body">
+                        <h3>Custom / Private Label</h3>
+                        <p>Fully customized matchboxes with your branding, logo, and design. Perfect for hotels, restaurants, and promotional campaigns.</p>
+                        <a href="products.html" class="btn-link">View Details <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center" style="margin-top:3rem;">
+                <a href="products.html" class="btn btn-primary">View All Products</a>
+            </div>
+        </div>
+    </section>
+
+    
+
+    <!-- Quote / CTA Section -->
+    <section class="section section-cta" id="quote" data-aos="fade-up">
+        <div class="container">
+            <div class="cta-card">
+                <div class="cta-content">
+                    <h2>Ready to Import Premium Safety Matches?</h2>
+                    <p>Get in touch with our export team today. We offer competitive FOB/CIF pricing, flexible MOQs, and full documentation support for customs clearance worldwide.</p>
+                    <div class="cta-actions">
+                        <a href="contact.html" class="btn btn-white">Request a Quote</a>
+                        <a href="products.html" class="btn btn-outline-white">Browse Products</a>
+                    </div>
+                </div>
+                <div class="cta-details">
+                    <div class="cta-detail-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <div>
+                            <span>Call Us</span>
+                            <strong>+91 123 456 7890</strong>
+                        </div>
+                    </div>
+                    <div class="cta-detail-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <span>Email Us</span>
+                            <strong>info@bellmatch.com</strong>
+                        </div>
+                    </div>
+                    <div class="cta-detail-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <span>Factory Location</span>
+                            <strong>Sivakasi, Tamil Nadu, India</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="footer-component"></div>
+    
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="main.js"></script>
+
+    
+    
+
+    
+    <!-- Vintage Matchbox Animation Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const strikeScene = document.getElementById('the-strike-scene');
+            if (strikeScene) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            // Add slight delay before striking
+                            setTimeout(() => {
+                                entry.target.classList.add('is-striking');
+                            }, 500);
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.5 });
+                
+                observer.observe(strikeScene);
+            }
+        });
+    </script>
+
+    <!-- Three.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+
+
+</body>
+
+
+
+
+
+</html>
