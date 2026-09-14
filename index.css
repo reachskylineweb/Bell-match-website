@@ -190,26 +190,32 @@ p { margin-bottom: 1rem; color: var(--text-muted); }
 /* =============================================
    NEW PREMIUM LUXURY HEADER
    ============================================= */
+#header-component {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
 .premium-header {
   position: sticky;
-  top: 15px; /* floating */
-  width: 95%;
-  max-width: 1600px;
-  margin: 0 auto;
+  top: 0;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
   z-index: 1000;
   background-color: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-radius: 20px;
+  border-radius: 0;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   font-family: 'Inter', sans-serif;
   animation: fadeInDown 0.8s ease-out forwards;
 }
 .premium-header.scrolled {
-  top: 5px;
-  width: 98%;
+  top: 0;
+  width: 100%;
   background-color: rgba(255, 255, 255, 0.98);
   box-shadow: 0 15px 50px rgba(0, 0, 0, 0.12);
 }
@@ -274,6 +280,7 @@ p { margin-bottom: 1rem; color: var(--text-muted); }
   transition: all 0.3s ease;
   text-decoration: none;
   cursor: pointer;
+  white-space: nowrap;
 }
 .premium-nav .nav-link:hover, .nav-dropdown .nav-link:hover {
   background-color: #F8F9FA;
@@ -290,6 +297,7 @@ p { margin-bottom: 1rem; color: var(--text-muted); }
   flex: 0 0 25%;
   display: flex;
   justify-content: flex-end;
+  margin-right: 40px; /* Shift button significantly left */
   align-items: center;
 }
 .btn-quote-premium {
@@ -1121,8 +1129,8 @@ p { margin-bottom: 1rem; color: var(--text-muted); }
 }
 .preloader-content.animate .slider-matchstick {
   animation: 
-    preloaderStrike 0.5s ease-in forwards,
-    preloaderBurnStick 0.5s ease-out 0.4s forwards;
+    preloaderStrike 0.25s ease-in forwards,
+    preloaderBurnStick 0.25s ease-out 0.2s forwards;
 }
 
 @keyframes preloaderStrike {
@@ -1146,7 +1154,7 @@ p { margin-bottom: 1rem; color: var(--text-muted); }
   box-shadow: -2px 2px 4px rgba(0,0,0,0.6);
 }
 .preloader-content.animate .slider-head {
-  animation: preloaderBurnHead 0.5s forwards 0.4s;
+  animation: preloaderBurnHead 0.25s forwards 0.2s;
 }
 @keyframes preloaderBurnHead {
   0%, 80% { background: radial-gradient(circle at 30% 30%, #ff4b4b, #8e1515, #3a0000); box-shadow: -2px 2px 4px rgba(0,0,0,0.6); }
@@ -1169,7 +1177,7 @@ p { margin-bottom: 1rem; color: var(--text-muted); }
 }
 .preloader-content.animate .slider-flame {
   /* Ignite at end of 0.7s strike, keep flickering */
-  animation: preloaderIgnite 0.5s ease-out 0.4s forwards, flicker 0.1s infinite alternate 1.0s;
+  animation: preloaderIgnite 0.25s ease-out 0.2s forwards, flicker 0.1s infinite alternate 0.5s;
 }
 @keyframes preloaderIgnite {
   0%, 80% { opacity: 0; transform: scale(0) translateY(10px); }
@@ -1205,7 +1213,7 @@ p { margin-bottom: 1rem; color: var(--text-muted); }
 .preloader-content.animate .preloader-text, 
 .preloader-content.animate .preloader-progress-wrapper, 
 .preloader-content.animate .preloader-percent {
-  animation: preloaderFadeIn 0.3s ease-out 0.5s forwards;
+  animation: preloaderFadeIn 0.15s ease-out 0.25s forwards;
 }
 
 @keyframes preloaderFadeIn {
@@ -1874,13 +1882,6 @@ p { margin-bottom: 1rem; color: var(--text-muted); }
   border-radius: 4px;
 }
 
-.open-matchbox-btn.is-open .omb-drawer {
-  transform: translateY(-50%) translateX(30px);
-}
-.open-matchbox-btn.is-closed .omb-drawer {
-  transform: translateY(-50%) translateX(-50px);
-}
-
 
 /* =========================================
    MATCHBOX BUTTONS
@@ -1894,7 +1895,8 @@ p { margin-bottom: 1rem; color: var(--text-muted); }
   text-decoration: none;
   cursor: pointer;
   transition: transform 0.2s ease;
-  margin-right: 35px;
+  margin-right: 80px; /* Added extra margin to prevent the open drawer from overlapping the next button */
+  margin-bottom: 20px;
 }
 .open-matchbox-btn:hover {
   transform: translateY(-2px);
@@ -1943,7 +1945,7 @@ p { margin-bottom: 1rem; color: var(--text-muted); }
   transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.4s ease;
 }
 
-/* Default state: OPENED */
+/* Default state: PERMANENTLY OPEN */
 .omb-drawer {
   position: absolute;
   left: 0;
@@ -1956,11 +1958,6 @@ p { margin-bottom: 1rem; color: var(--text-muted); }
     linear-gradient(90deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 10%, rgba(0,0,0,0) 90%, rgba(0,0,0,0.4) 100%),
     url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.15'/%3E%3C/svg%3E"),
     #c49a6c;
-  box-shadow: 
-    inset 5px 0 10px rgba(0,0,0,0.7), 
-    inset 0 5px 10px rgba(0,0,0,0.5),
-    inset 0 -5px 10px rgba(0,0,0,0.5),
-    3px 0 15px rgba(0,0,0,0.3);
   border-radius: 2px;
   z-index: 1;
   transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -1971,6 +1968,28 @@ p { margin-bottom: 1rem; color: var(--text-muted); }
     3px 0 10px rgba(0,0,0,0.2);
   border: 1px solid #c2955f;
   border-left: none;
+}
+
+/* =========================================
+   CLICK ACTION (GLOBAL)
+   The closing animation and color change applies to all devices
+   ========================================= */
+/* When closed via JS click */
+.open-matchbox-btn.is-closed .omb-drawer {
+  transform: translateY(-50%) translateX(5px) !important;
+  transition: transform 0.1s ease-out; /* snaps closed quickly */
+}
+/* When closed via JS click, cover color changes */
+.open-matchbox-btn.is-closed .omb-cover {
+  background: 
+    linear-gradient(180deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.1) 20%, rgba(0,0,0,0) 80%, rgba(0,0,0,0.1) 100%),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.15'/%3E%3C/svg%3E"),
+    #8e1515 !important; /* Darker red when pressed */
+  box-shadow: 
+    0 4px 8px rgba(0,0,0,0.3), 
+    inset 0 1px 0 rgba(255,255,255,0.1),
+    inset 0 -2px 0 rgba(0,0,0,0.3) !important;
+  transition: background 0.1s ease, box-shadow 0.1s ease !important;
 }
 
 .matchstick-group {
@@ -2002,23 +2021,6 @@ p { margin-bottom: 1rem; color: var(--text-muted); }
   background: radial-gradient(circle at 60% 30%, #ff5252 0%, #b71c1c 50%, #4a0000 100%);
   border-radius: 40% 60% 60% 40%;
   box-shadow: 1px 1px 2px rgba(0,0,0,0.5), inset 1px 1px 2px rgba(255,255,255,0.3);
-}
-
-/* When clicked (CLOSED), drawer slides completely IN */
-.open-matchbox-btn.is-closed .omb-drawer {
-  transform: translateY(-50%) translateX(5px);
-}
-/* When clicked, cover color changes to Dark Blue to indicate closed/inactive state */
-.open-matchbox-btn.is-closed .omb-cover {
-  background-color: #e57373 !important; /* Light Red */
-  background: 
-    linear-gradient(180deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.1) 20%, rgba(0,0,0,0) 80%, rgba(0,0,0,0.1) 100%),
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.15'/%3E%3C/svg%3E"),
-    #e57373 !important; 
-  box-shadow: 
-    0 4px 8px rgba(0,0,0,0.3), 
-    inset 0 1px 0 rgba(255,255,255,0.1),
-    inset 0 -2px 0 rgba(0,0,0,0.3);
 }
 
 
@@ -3231,7 +3233,7 @@ p { margin-bottom: 1rem; color: var(--text-muted); }
     color: rgba(230, 194, 122, 0.8);
     font-family: 'Inter', 'Roboto', sans-serif;
     font-style: normal;
-    text-transform: uppercase;
+    text-transform: none;
     letter-spacing: 6px;
     opacity: 0; /* HIDDEN UNTIL IGNITION */
     animation: subtitleAppear 2s ease-out forwards 3.0s;
@@ -3339,7 +3341,7 @@ p { margin-bottom: 1rem; color: var(--text-muted); }
     color: rgba(230, 194, 122, 0.8);
     font-family: 'Inter', 'Roboto', sans-serif;
     font-style: normal;
-    text-transform: uppercase;
+    text-transform: none;
     letter-spacing: 6px;
     opacity: 0; /* HIDDEN UNTIL IGNITION */
     animation: subtitleAppear 2s ease-out forwards 3.0s;

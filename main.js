@@ -9,7 +9,8 @@ async function loadComponents() {
         const el = document.getElementById(comp.id);
         if (el) {
             try {
-                const response = await fetch(comp.url);
+                const cacheBuster = '?v=' + new Date().getTime();
+                const response = await fetch(comp.url + cacheBuster);
                 if (response.ok) {
                     el.innerHTML = await response.text();
                 }
@@ -63,36 +64,30 @@ document.addEventListener('ComponentsLoaded', () => {
     const sparksContainer = document.getElementById('preloaderSparks');
     
     let progress = 0;
-    const duration = 500; 
-    const interval = 20; 
-    const step = (100 / (duration / interval));
-
+    const duration = 250; 
+    
+    // Enable hardware-accelerated CSS transition for the progress bar
+    glowEl.style.transition = `width ${duration}ms linear`;
     percentEl.textContent = '0%';
     glowEl.style.width = '0%';
-    sparksContainer.innerHTML = '';
-
-    const createSpark = () => {
-      const spark = document.createElement('div');
-      spark.classList.add('spark');
-      spark.style.left = Math.random() * 100 + '%';
-      spark.style.top = Math.random() * 100 + '%';
-      spark.style.animation = `ignite ${0.5 + Math.random()}s ease-out forwards`;
-      sparksContainer.appendChild(spark);
-      setTimeout(() => spark.remove(), 1000);
-    };
+    if (sparksContainer) sparksContainer.innerHTML = '';
 
     currentLoaderTimeout = setTimeout(() => {
-      currentLoaderInterval = setInterval(() => {
-        progress += step;
-        if (progress >= 100) progress = 100;
+      let startTime = null;
+      
+      // Trigger the CSS transition
+      glowEl.style.width = '100%';
+
+      function animateProgress(timestamp) {
+        if (!startTime) startTime = timestamp;
+        const elapsed = timestamp - startTime;
+        let progress = Math.min((elapsed / duration) * 100, 100);
         
         percentEl.textContent = Math.floor(progress) + '%';
-        glowEl.style.width = progress + '%';
 
-        if (Math.random() > 0.7) createSpark();
-
-        if (progress === 100) {
-          clearInterval(currentLoaderInterval);
+        if (progress < 100) {
+          currentLoaderInterval = requestAnimationFrame(animateProgress);
+        } else {
           setTimeout(() => {
             if (onComplete) {
               onComplete();
@@ -100,10 +95,12 @@ document.addEventListener('ComponentsLoaded', () => {
               preloader.classList.add('fade-out');
               document.body.style.overflow = 'auto';
             }
-          }, 200);
+          }, 100);
         }
-      }, interval);
-    }, 500);
+      }
+      
+      currentLoaderInterval = requestAnimationFrame(animateProgress);
+    }, 150);
   }
 
   // Play immediately on load
@@ -147,22 +144,6 @@ document.addEventListener('ComponentsLoaded', () => {
     }
   });
 
-  // Open Matchbox Button Animation Logic
-  const matchBtns = document.querySelectorAll('.open-matchbox-btn');
-  matchBtns.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const href = btn.getAttribute('href');
-      if (href && href !== '#') {
-        e.preventDefault();
-        btn.classList.add('is-closed');
-        setTimeout(() => {
-          window.location.href = href;
-        }, 600); // Wait 0.6 seconds for drawer to slide in before navigating
-      } else {
-        btn.classList.add('is-closed');
-      }
-    });
-  });
 
   // Premium Sticky Header
   const premiumHeader = document.getElementById('premiumHeader');

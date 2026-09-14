@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery | Bell Match Company</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="index.css?v=56">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400;1,500&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Karla:ital,wght@0,200..800;1,200..800&family=Rozha+One&family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* Gallery Styles */
+        .gallery-filters {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+        .filter-btn {
+            padding: 0.5rem 1.5rem;
+            border: 1px solid var(--border-color);
+            background: transparent;
+            color: var(--text-muted);
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            font-weight: 500;
+            transition: all var(--transition-fast);
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--primary-red);
+            color: white;
+            border-color: var(--primary-red);
+        }
+        .masonry-grid {
+            column-count: 3;
+            column-gap: 1.5rem;
+        }
+        @media (max-width: 992px) {
+            .masonry-grid { column-count: 2; }
+        }
+        @media (max-width: 576px) {
+            .masonry-grid { column-count: 1; }
+        }
+        .gallery-item {
+            break-inside: avoid;
+            margin-bottom: 1.5rem;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            box-shadow: var(--shadow-md);
+        }
+        .gallery-item img {
+            width: 100%;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+        .gallery-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+        .gallery-overlay i {
+            color: white;
+            font-size: 2rem;
+        }
+        
+        /* Video Item Specific Styles */
+        .gallery-item[data-video] .gallery-overlay {
+            opacity: 1; /* Always visible */
+            background: rgba(0,0,0,0.2);
+        }
+        .gallery-item[data-video] .gallery-overlay i {
+            font-size: 3.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.7));
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+        .gallery-item[data-video]:hover .gallery-overlay {
+            background: rgba(0,0,0,0.4);
+        }
+        .gallery-item[data-video]:hover .gallery-overlay i {
+            transform: scale(1.15);
+            color: #ffffff;
+        }
+
+        /* Lightbox Styles */
+        .lightbox {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        .lightbox.active {
+            display: flex;
+        }
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90vh;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 20px; right: 30px;
+            color: white;
+            font-size: 2.5rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .lightbox-close:hover {
+            color: var(--primary-red);
+        }
+    </style>
+</head>
+<body>
+    <!-- Cinematic Preloader -->
+    <div id="preloader">
+        <div class="preloader-content">
+            <div class="preloader-slider">
+                <div class="slider-track"></div>
+                <div class="slider-matchstick" id="sliderMatchstick">
+                    <div class="slider-head"></div>
+                    <div class="slider-flame" id="sliderFlame"></div>
+                </div>
+            </div>
+            <div class="preloader-brand">
+                <span class="text-white">BELL</span> <span class="text-red">MATCH CO.</span>
+            </div>
+            <div class="preloader-text">LOADING IGNIS...</div>
+            <div class="preloader-progress-wrapper">
+                <div class="preloader-progress-glow" id="progressGlow"></div>
+            </div>
+            <div class="preloader-percent" id="preloaderPercent">0%</div>
+        </div>
+    </div>
+    
+    <!-- Floating Quick Actions -->
+    <div class="floating-actions">
+        <a href="https://wa.me/917845965010" class="floating-btn" style="background-color: #25d366; color: white; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); text-decoration: none; align-self: flex-end; margin-bottom: 5px; transition: transform 0.3s ease;" onmouseover="this.style.transform=scale(1.1)" onmouseout="this.style.transform=scale(1)"><i class="fab fa-whatsapp"></i></a>
+        <a href="#quote" class="floating-btn quote-pill">Request Quote</a>
+        <button class="floating-btn back-to-top" id="backToTop"><i class="fas fa-chevron-up"></i></button>
+    </div>
+
+    <div id="topbar-component"></div>
+    <div id="header-component"></div>
+    
+    <section style="position: relative; height: 60vh; min-height: 450px; background-color: #050505; overflow: hidden; display: flex; align-items: center; justify-content: center; margin-top: 0;">
+
+        <!-- The Animated Background (z-index: 0) -->
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; display: flex; align-items: center; justify-content: center; opacity: 0.5;">
+            
+            <!-- Background Matchbox -->
+            <div style="position: relative; width: 250px; height: 350px; background: #901010; border-radius: 8px; transform: rotate(15deg) translateX(50px); box-shadow: -30px 30px 60px rgba(0,0,0,0.9); border-right: 15px solid #d4a373;">
+                <!-- Strike Pad on the left -->
+                <div style="position: absolute; left: -10px; top: 10%; width: 10px; height: 80%; background: #222; border-radius: 5px; background-image: radial-gradient(#444 1px, transparent 1px); background-size: 3px 3px;"></div> 
+                <!-- Brand Text on Box -->
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-90deg); color: #ffcccc; font-family: 'Outfit', sans-serif; font-size: 2.5rem; font-weight: 900; letter-spacing: 8px; opacity: 0.4;">BELL</div>
+            </div>
+
+            <!-- Animated Background Matchstick (Removed as requested) -->
+
+        </div>
+
+        <!-- Gradient Overlay to ensure text pops (z-index: 1) -->
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, rgba(5,5,5,0.4) 0%, rgba(5,5,5,0.95) 100%); z-index: 1;"></div>
+        <!-- Bottom fade into next section -->
+        <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 100px; background: linear-gradient(to top, #050505 0%, transparent 100%); z-index: 1;"></div>
+
+        <!-- Text in the Front (z-index: 2) -->
+        <div class="container" style="position: relative; z-index: 2; text-align: center;">
+            <p class="front-subtitle">
+                The Spark of Excellence
+            </p>
+            <h1 class="front-title">
+                Gallery
+            </h1>
+            <div class="front-divider"></div>
+            <p class="front-description">
+                Explore our curated collection of manufacturing processes, premium products, and global exports.
+            </p>
+        </div>
+
+        <style>
+            .animated-bg-matchstick {
+                animation: strike-animation 6s infinite cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            
+            @keyframes strike-animation {
+                0% { transform: translate(300px, -250px) rotate(-30deg); }
+                20% { transform: translate(-60px, -60px) rotate(-30deg); } /* Hits the strike pad */
+                30% { transform: translate(-100px, 50px) rotate(-30deg); } /* Drags along pad */
+                40% { transform: translate(-160px, 120px) rotate(-15deg); } /* Ignites and rests */
+                100% { transform: translate(-160px, 120px) rotate(-15deg); } /* Holds position while burning */
+            }
+
+            .animated-bg-flame {
+                animation: ignite-flame 6s infinite;
+            }
+
+            @keyframes ignite-flame {
+                0%, 25% { opacity: 0; transform: scale(0.1); box-shadow: none; }
+                30% { opacity: 1; transform: scale(1.5) translateY(-15px); box-shadow: 0 0 60px #ff9800; }
+                35%, 100% { opacity: 0.9; transform: scale(1.3) translateY(-10px); box-shadow: 0 0 40px #ffeb3b; }
+            }
+
+            .front-subtitle {
+                font-size: 1rem;
+                color: #fbbf24;
+                text-transform: uppercase;
+                letter-spacing: 8px;
+                font-family: 'Inter', sans-serif;
+                font-weight: 500;
+                margin-bottom: 1rem;
+                opacity: 0;
+                animation: text-fade-in 1s ease-out 0.3s forwards;
+            }
+            .front-title {
+                font-size: clamp(4rem, 12vw, 8.5rem);
+                font-family: 'Playfair Display', serif;
+                color: white;
+                margin: 0;
+                text-transform: uppercase;
+                letter-spacing: 12px;
+                font-weight: 900;
+                line-height: 1.1;
+                text-shadow: 0 10px 30px rgba(0,0,0,0.8);
+                opacity: 0;
+                animation: text-fade-in 1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.6s forwards;
+            }
+            .front-divider {
+                width: 0px;
+                height: 3px;
+                background: linear-gradient(to right, transparent, #fbbf24, transparent);
+                margin: 2rem auto;
+                border-radius: 2px;
+                animation: draw-divider 1.5s ease-in-out 1s forwards;
+            }
+            .front-description {
+                font-size: 1.15rem;
+                color: #d4d4d4;
+                max-width: 600px;
+                margin: 0 auto;
+                line-height: 1.6;
+                font-family: 'Inter', sans-serif;
+                font-weight: 300;
+                opacity: 0;
+                animation: text-fade-in 1s ease-out 1.2s forwards;
+            }
+            
+            @keyframes text-fade-in {
+                0% { opacity: 0; transform: translateY(20px); }
+                100% { opacity: 1; transform: translateY(0); }
+            }
+            @keyframes draw-divider {
+                0% { width: 0px; }
+                100% { width: 200px; }
+            }
+            
+            /* Mobile Responsiveness for Hero */
+            @media (max-width: 768px) {
+                .front-title {
+                    font-size: clamp(2.5rem, 10vw, 4rem) !important;
+                    letter-spacing: 4px !important;
+                }
+                .front-subtitle {
+                    font-size: 0.85rem !important;
+                    letter-spacing: 3px !important;
+                }
+                .front-description {
+                    font-size: 1rem !important;
+                    padding: 0 1rem;
+                }
+            }
+        </style>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="gallery-filters" data-aos="fade-up">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="factory">Factory</button>
+                <button class="filter-btn" data-filter="products">Products</button>
+                <button class="filter-btn" data-filter="global">Global Presence</button>
+            </div>
+
+            <div class="masonry-grid" id="galleryGrid" data-aos="fade-up" data-aos-delay="100">
+                <!-- Factory -->
+                <div class="gallery-item" data-category="factory" data-video="https://res.cloudinary.com/dlttxqrod/video/upload/q_auto,f_auto,c_limit,w_1280/v1785310154/035A0010_1_y9lfmp.mp4">
+                    <img src="https://res.cloudinary.com/dlttxqrod/video/upload/c_scale,w_800,q_auto,f_auto/v1785310154/035A0010_1_y9lfmp.jpg" alt="Factory Video 1" loading="lazy">
+                    <div class="gallery-overlay"><i class="fas fa-play"></i></div>
+                </div>
+                <div class="gallery-item" data-category="factory" data-video="https://res.cloudinary.com/dlttxqrod/video/upload/q_auto,f_auto,c_limit,w_1280/v1785309980/035A0086_1_lpnotj.mp4">
+                    <img src="https://res.cloudinary.com/dlttxqrod/video/upload/c_scale,w_800,q_auto,f_auto/v1785309980/035A0086_1_lpnotj.jpg" alt="Factory Video 2" loading="lazy">
+                    <div class="gallery-overlay"><i class="fas fa-play"></i></div>
+                </div>
+                <div class="gallery-item" data-category="factory" data-video="https://res.cloudinary.com/dlttxqrod/video/upload/q_auto,f_auto,c_limit,w_1280/v1785137370/DJI_0241_dqz2bj.mp4">
+                    <img src="https://res.cloudinary.com/dlttxqrod/video/upload/c_scale,w_800,q_auto,f_auto/v1785137370/DJI_0241_dqz2bj.jpg" alt="Factory Video 3" loading="lazy">
+                    <div class="gallery-overlay"><i class="fas fa-play"></i></div>
+                </div>
+
+                <div class="gallery-item" data-category="factory">
+                    <img src="https://res.cloudinary.com/dlttxqrod/image/upload/c_scale,w_800,q_auto,f_auto/v1785307414/0N9A0923_hsj6m4.jpg" alt="Machinery" loading="lazy">
+                    <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="gallery-item" data-category="factory">
+                    <img src="https://res.cloudinary.com/dlttxqrod/image/upload/c_scale,w_800,q_auto,f_auto/v1785307414/0N9A0938_wr4j2h.jpg" alt="Machinery" loading="lazy">
+                    <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="gallery-item" data-category="factory">
+                    <img src="https://res.cloudinary.com/dlttxqrod/image/upload/c_scale,w_800,q_auto,f_auto/v1785307416/0N9A0953_fymhl7.jpg" alt="Machinery" loading="lazy">
+                    <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="gallery-item" data-category="factory">
+                    <img src="https://res.cloudinary.com/dlttxqrod/image/upload/c_scale,w_800,q_auto,f_auto/v1785307416/0N9A0946_z6kmnb.jpg" alt="Machinery" loading="lazy">
+                    <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="gallery-item" data-category="factory">
+                    <img src="https://res.cloudinary.com/dlttxqrod/image/upload/c_scale,w_800,q_auto,f_auto/v1785307416/0N9A0954_flfshf.jpg" alt="Machinery" loading="lazy">
+                    <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="gallery-item" data-category="factory">
+                    <img src="https://res.cloudinary.com/dlttxqrod/image/upload/c_scale,w_800,q_auto,f_auto/v1785307417/0N9A0956_jqze5q.jpg" alt="Machinery" loading="lazy">
+                    <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="gallery-item" data-category="factory">
+                    <img src="https://res.cloudinary.com/dlttxqrod/image/upload/c_scale,w_800,q_auto,f_auto/v1785307419/0N9A0947_dbmjmq.jpg" alt="Machinery" loading="lazy">
+                    <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="gallery-item" data-category="factory">
+                    <img src="https://res.cloudinary.com/dlttxqrod/image/upload/c_scale,w_800,q_auto,f_auto/v1785323608/0N9A1119_w9dlva.jpg" alt="Machinery" loading="lazy">
+                    <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="gallery-item" data-category="factory">
+                    <img src="https://res.cloudinary.com/dlttxqrod/image/upload/c_scale,w_800,q_auto,f_auto/v1785323608/0N9A1050_a6uqfm.jpg" alt="Machinery" loading="lazy">
+                    <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="gallery-item" data-category="factory">
+                    <img src="https://res.cloudinary.com/dlttxqrod/image/upload/c_scale,w_800,q_auto,f_auto/v1785323608/0N9A1021_jffldv.jpg" alt="Machinery" loading="lazy">
+                    <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="gallery-item" data-category="factory">
+                    <img src="https://res.cloudinary.com/dlttxqrod/image/upload/c_scale,w_800,q_auto,f_auto/v1785323608/0N9A1085_xeratn.jpg" alt="Machinery" loading="lazy">
+                    <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="gallery-item" data-category="factory">
+                    <img src="https://res.cloudinary.com/dlttxqrod/image/upload/c_scale,w_800,q_auto,f_auto/v1785323608/0N9A1123_f7awvc.jpg" alt="Machinery" loading="lazy">
+                    <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="gallery-item" data-category="factory">
+                    <img src="https://res.cloudinary.com/dlttxqrod/image/upload/c_scale,w_800,q_auto,f_auto/v1785323610/0N9A1182_d5p28k.jpg" alt="Machinery" loading="lazy">
+                    <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="gallery-item" data-category="factory">
+                    <img src="https://res.cloudinary.com/dlttxqrod/image/upload/c_scale,w_800,q_auto,f_auto/v1785323612/0N9A1158_uyzcso.jpg" alt="Machinery" loading="lazy">
+                    <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="gallery-item" data-category="factory">
+                    <img src="https://res.cloudinary.com/dlttxqrod/image/upload/c_scale,w_800,q_auto,f_auto/v1785323612/0N9A1172_xvhfem.jpg" alt="Machinery" loading="lazy">
+                    <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="gallery-item" data-category="factory">
+                    <img src="https://res.cloudinary.com/dlttxqrod/image/upload/c_scale,w_800,q_auto,f_auto/v1785323620/0N9A1236_cxfn35.jpg" alt="Machinery" loading="lazy">
+                    <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <!-- Products -->
+                <!-- Global -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <i class="fas fa-times lightbox-close" id="lightboxClose"></i>
+        <img src="" alt="Gallery Image" id="lightboxImg">
+        <video id="lightboxVideo" controls style="display:none; max-width: 90%; max-height: 90vh; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);"></video>
+    </div>
+
+    <div id="footer-component"></div>
+    
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="main.js?v=2"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Gallery Filtering Logic
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const galleryItems = document.querySelectorAll('.gallery-item');
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Update active state
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    // Filter items
+                    const filterValue = btn.getAttribute('data-filter');
+                    galleryItems.forEach(item => {
+                        if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+            // Lightbox Logic
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightboxImg');
+            const lightboxVideo = document.getElementById('lightboxVideo');
+            const lightboxClose = document.getElementById('lightboxClose');
+
+            galleryItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const videoSrc = item.getAttribute('data-video');
+                    if (videoSrc) {
+                        lightboxImg.style.display = 'none';
+                        lightboxVideo.style.display = 'block';
+                        lightboxVideo.src = videoSrc;
+                        lightboxVideo.play();
+                    } else {
+                        lightboxVideo.style.display = 'none';
+                        lightboxVideo.pause();
+                        lightboxImg.style.display = 'block';
+                        const imgSrc = item.querySelector('img').getAttribute('src');
+                        lightboxImg.setAttribute('src', imgSrc);
+                    }
+                    lightbox.classList.add('active');
+                    document.body.style.overflow = 'hidden'; // Prevent scrolling
+                });
+            });
+
+            const closeLightbox = () => {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = 'auto';
+                if(lightboxVideo) lightboxVideo.pause();
+            };
+
+            lightboxClose.addEventListener('click', closeLightbox);
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox) {
+                    closeLightbox();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
