@@ -225,6 +225,13 @@ p { margin-bottom: 1rem; color: var(--text-muted); }
   background-color: rgba(255, 255, 255, 0.98);
   box-shadow: 0 15px 50px rgba(0, 0, 0, 0.12);
 }
+.premium-header.scrolled .header-inner {
+  padding-top: 0.1rem;
+  padding-bottom: 0.1rem;
+}
+.premium-header.scrolled .brand-logo img {
+  height: 32px;
+}
 
 @keyframes fadeInDown {
   from { opacity: 0; transform: translateY(-20px); }
@@ -238,6 +245,7 @@ p { margin-bottom: 1rem; color: var(--text-muted); }
   padding-top: 0.4rem;
   padding-bottom: 0.4rem;
   gap: 1.5rem;
+  transition: all 0.3s ease;
 }
 
 /* Left Section */
@@ -250,7 +258,7 @@ p { margin-bottom: 1rem; color: var(--text-muted); }
 .brand-logo img {
   height: 40px;
   width: auto;
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
 }
 .brand-logo:hover img {
   transform: scale(1.02);
