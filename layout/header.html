@@ -24,7 +24,7 @@
   }
 }
 
-/* Mobile Layout (Restores Original) */
+/* Mobile Layout */
 @media (max-width: 992px) {
   .header-inner {
     display: flex !important;
@@ -42,7 +42,7 @@
     display: none !important;
   }
   .mobile-menu-toggle {
-    display: block !important;
+    display: flex !important; /* FIXED: Must be flex so the bars stack correctly */
   }
 }
 
@@ -131,6 +131,7 @@
         </div>
     </div>
             
+
 
 
 
