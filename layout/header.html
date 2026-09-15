@@ -1,17 +1,30 @@
 <style>
+.header-inner {
+  display: grid !important;
+  grid-template-columns: 1fr auto 1fr !important;
+  align-items: center !important;
+}
 .header-left {
-  flex: 1 !important;
   display: flex !important;
   align-items: center !important;
   justify-content: flex-start !important;
   height: 100% !important;
 }
-.brand-logo {
+.header-center {
   display: flex !important;
+  justify-content: center !important;
+}
+.header-right {
+  display: flex !important;
+  justify-content: flex-end !important;
   align-items: center !important;
+}
+.brand-logo {
+  display: grid !important;
+  place-items: center start !important;
+  height: 100% !important;
   margin: 0 !important;
   padding: 0 !important;
-  line-height: 0 !important;
 }
 .brand-logo img {
   height: 40px !important;
@@ -85,4 +98,6 @@
         </div>
     </div>
             
+
+
 
