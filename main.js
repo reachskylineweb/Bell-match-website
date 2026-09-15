@@ -125,6 +125,14 @@ document.addEventListener('ComponentsLoaded', () => {
     });
   }
 
+  const mobileMenuClose = document.getElementById('mobileMenuClose');
+  if (mobileMenuClose && mobileNav) {
+    mobileMenuClose.addEventListener('click', () => {
+      mobileMenuToggle.classList.remove('active');
+      mobileNav.classList.remove('active');
+    });
+  }
+
   // Dropdown Logic
   const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
   dropdownToggles.forEach(toggle => {
@@ -392,3 +400,4 @@ document.addEventListener('ComponentsLoaded', () => {
         matchContainer.appendChild(match);
       }
   }
+
