@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Bell Match Factory</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root { --primary-red: #d32f2f; --dark-text: #111827; --light-bg: #f3f4f6; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--light-bg); color: var(--dark-text); }
+        .admin-container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
+        .card { border: none; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); margin-bottom: 2rem; }
+        .card-header { background-color: white; border-bottom: 1px solid #e5e7eb; padding: 1.5rem; border-top-left-radius: 12px !important; border-top-right-radius: 12px !important; }
+        .card-body { padding: 1.5rem; background-color: white; border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; }
+        .btn-primary { background-color: var(--primary-red); border: none; padding: 0.5rem 1.5rem; font-weight: 600; }
+        .btn-primary:hover { background-color: #b71c1c; }
+        .product-img-preview { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; }
+        #loginSection { max-width: 400px; margin: 100px auto; }
+        #dashboardSection { display: none; }
+        .top-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+        .brand { font-size: 1.5rem; font-weight: 800; color: var(--primary-red); }
+        .cat-item { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #eee; }
+    </style>
+</head>
+<body>
+    <!-- Login Section -->
+    <div id="loginSection" class="container">
+        <div class="card">
+            <div class="card-body text-center p-5">
+                <h2 class="brand mb-4">BELL MATCH ADMIN</h2>
+                <div id="loginError" class="alert alert-danger d-none">Invalid credentials</div>
+                <form id="loginForm">
+                    <div class="mb-3 text-start"><label class="form-label fw-bold">Username</label><input type="text" class="form-control" id="username" required></div>
+                    <div class="mb-4 text-start"><label class="form-label fw-bold">Password</label><input type="password" class="form-control" id="password" required></div>
+                    <button type="submit" class="btn btn-primary w-100">Login to Dashboard</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Section -->
+    <div id="dashboardSection" class="admin-container">
+        <div class="top-nav">
+            <h2 class="brand">Admin Dashboard</h2>
+            <button class="btn btn-outline-danger" id="logoutBtn">Logout</button>
+        </div>
+
+        <div class="row">
+            <!-- Main Category Manager -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header"><h5 class="mb-0 fw-bold">Main Categories</h5></div>
+                    <div class="card-body">
+                        <form id="addMainCatForm" class="d-flex mb-3">
+                            <input type="text" id="newMainCat" class="form-control me-2" placeholder="New Main Category" required>
+                            <button type="submit" class="btn btn-primary">Add</button>
+                        </form>
+                        <div id="mainCategoryList"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sub Category Manager -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header"><h5 class="mb-0 fw-bold">Sub Categories</h5></div>
+                    <div class="card-body">
+                        <form id="addSubCatForm" class="mb-3">
+                            <select id="parentMainCat" class="form-select mb-2" required></select>
+                            <div class="d-flex">
+                                <input type="text" id="newSubCat" class="form-control me-2" placeholder="New Sub Category" required>
+                                <button type="submit" class="btn btn-primary">Add</button>
+                            </div>
+                        </form>
+                        <div id="subCategoryList"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Product Form -->
+        <div class="card">
+            <div class="card-header"><h5 class="mb-0 fw-bold">Add New Product</h5></div>
+            <div class="card-body">
+                <form id="addProductForm">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label fw-bold">Product Name</label>
+                            <input type="text" class="form-control" id="prodName" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label fw-bold">Main Category</label>
+                            <select class="form-select" id="prodMainCategory"></select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label fw-bold">Sub Category</label>
+                            <select class="form-select" id="prodSubCategory"></select>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Description</label>
+                        <textarea class="form-control" id="prodDescription" rows="2" required></textarea>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Product Image</label>
+                        <input class="form-control" type="file" id="prodImage" accept="image/*" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="submitProductBtn"><i class="fas fa-plus me-2"></i> Add Product</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Products List -->
+        <div class="card">
+            <div class="card-header"><h5 class="mb-0 fw-bold">Manage Products</h5></div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="px-4">Image</th>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Description</th>
+                                <th class="text-end px-4">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="admin.js"></script>
+</body>
+</html>

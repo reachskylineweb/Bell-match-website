@@ -334,34 +334,110 @@
                 <h2 style="color: var(--primary-red); font-size: 2.5rem;">Explore Our Catalogue</h2>
             </div>
             
-            <div class="grid grid-cols-3" style="gap: 2rem;">
-                <div class="product-card" style="background: white; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md); transition: var(--transition);">
-                    <div style="height: 250px; background: url('https://images.unsplash.com/photo-1629845946123-5e933e4b09ff?auto=format&fit=crop&q=80') center/cover;"></div>
-                    <div style="padding: 2rem;">
-                        <h3 style="color: var(--dark-text); font-size: 1.5rem; margin-bottom: 1rem;">Wooden Safety Matches</h3>
-                        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Manufactured from premium Aspen wood, our wooden safety matches ensure a smooth, splinter-free strike every time. Ideal for domestic and commercial use.</p>
-                        <a href="contact.html" class="btn btn-outline" style="width: 100%;">Inquire Now</a>
-                    </div>
-                </div>
-                
-                <div class="product-card" style="background: white; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md); transition: var(--transition);">
-                    <div style="height: 250px; background: url('https://images.unsplash.com/photo-1502598687258-293eef250ecb?auto=format&fit=crop&q=80') center/cover;"></div>
-                    <div style="padding: 2rem;">
-                        <h3 style="color: var(--dark-text); font-size: 1.5rem; margin-bottom: 1rem;">Wax Safety Matches</h3>
-                        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Coated with high-grade paraffin wax, these matches offer a strong, wind-resistant flame. Perfect for humid climates and outdoor applications.</p>
-                        <a href="contact.html" class="btn btn-outline" style="width: 100%;">Inquire Now</a>
-                    </div>
-                </div>
-                
-                <div class="product-card" style="background: white; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md); transition: var(--transition);">
-                    <div style="height: 250px; background: url('https://images.unsplash.com/photo-1563212876-0f81d1137021?auto=format&fit=crop&q=80') center/cover;"></div>
-                    <div style="padding: 2rem;">
-                        <h3 style="color: var(--dark-text); font-size: 1.5rem; margin-bottom: 1rem;">Book Matches</h3>
-                        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Fully customizable book matches designed for the hospitality industry, hotels, and promotional events. Premium printing and finishes available.</p>
-                        <a href="contact.html" class="btn btn-outline" style="width: 100%;">Inquire Now</a>
-                    </div>
+            <div id="productsContainer">
+                <div class="text-center" style="padding: 4rem;">
+                    <i class="fas fa-spinner fa-spin fa-3x" style="color: var(--primary-red);"></i>
+                    <p class="mt-3">Loading products...</p>
                 </div>
             </div>
+            
+            <script>
+                document.addEventListener('DOMContentLoaded', async () => {
+                    const container = document.getElementById('productsContainer');
+                    try {
+                        const [prodRes, mainCatRes, subCatRes] = await Promise.all([
+                            fetch('http://localhost:5000/api/products'),
+                            fetch('http://localhost:5000/api/categories/main'),
+                            fetch('http://localhost:5000/api/categories/sub')
+                        ]);
+                        
+                        const products = await prodRes.json();
+                        const mainCategories = await mainCatRes.json();
+                        const subCategories = await subCatRes.json();
+                        
+                        container.innerHTML = '';
+                        
+                        if (products.length === 0) {
+                            container.innerHTML = '<div style="text-align: center;"><h3>No products available yet.</h3></div>';
+                            return;
+                        }
+                        
+                        // Group products by main category
+                        const grouped = { uncategorized: [] };
+                        mainCategories.forEach(mc => grouped[mc.id] = { name: mc.name, subs: {}, ungrouped: [] });
+                        subCategories.forEach(sc => {
+                            if (grouped[sc.main_category_id]) grouped[sc.main_category_id].subs[sc.id] = { name: sc.name, products: [] };
+                        });
+                        
+                        products.forEach(p => {
+                            if (!p.main_category_id || !grouped[p.main_category_id]) {
+                                grouped.uncategorized.push(p);
+                            } else if (p.sub_category_id && grouped[p.main_category_id].subs[p.sub_category_id]) {
+                                grouped[p.main_category_id].subs[p.sub_category_id].products.push(p);
+                            } else {
+                                grouped[p.main_category_id].ungrouped.push(p);
+                            }
+                        });
+                        
+                        const renderCard = (p) => {
+                            const bgImage = p.image_url.startsWith('http') ? p.image_url : 'http://localhost:5000' + p.image_url;
+                            return `
+                                <div class="product-card" style="background: white; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md); transition: var(--transition);">
+                                    <div style="height: 250px; background: url('${bgImage}') center/cover;"></div>
+                                    <div style="padding: 2rem;">
+                                        <h3 style="color: var(--dark-text); font-size: 1.5rem; margin-bottom: 1rem;">${p.name}</h3>
+                                        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">${p.description}</p>
+                                        <a href="contact.html" class="btn btn-outline" style="width: 100%;">Inquire Now</a>
+                                    </div>
+                                </div>
+                            `;
+                        };
+                        
+                        let html = '';
+                        mainCategories.forEach(mc => {
+                            const catData = grouped[mc.id];
+                            let hasProducts = catData.ungrouped.length > 0;
+                            Object.values(catData.subs).forEach(s => { if (s.products.length > 0) hasProducts = true; });
+                            
+                            if (hasProducts) {
+                                html += `<div style="margin-bottom: 4rem;">
+                                            <h2 style="color: var(--primary-red); font-size: 2rem; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 2rem;">${catData.name}</h2>`;
+                                
+                                // Ungrouped products in this main category
+                                if (catData.ungrouped.length > 0) {
+                                    html += `<div class="grid grid-cols-3" style="gap: 2rem; margin-bottom: 2rem;">`;
+                                    catData.ungrouped.forEach(p => html += renderCard(p));
+                                    html += `</div>`;
+                                }
+                                
+                                // Sub-categories
+                                Object.values(catData.subs).forEach(sub => {
+                                    if (sub.products.length > 0) {
+                                        html += `<h4 style="color: var(--dark-text); margin-bottom: 1rem;">${sub.name}</h4>
+                                                 <div class="grid grid-cols-3" style="gap: 2rem; margin-bottom: 2rem;">`;
+                                        sub.products.forEach(p => html += renderCard(p));
+                                        html += `</div>`;
+                                    }
+                                });
+                                html += `</div>`;
+                            }
+                        });
+                        
+                        if (grouped.uncategorized.length > 0) {
+                            html += `<div style="margin-bottom: 4rem;">
+                                        <h2 style="color: var(--primary-red); font-size: 2rem; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 2rem;">Other Products</h2>
+                                        <div class="grid grid-cols-3" style="gap: 2rem;">`;
+                            grouped.uncategorized.forEach(p => html += renderCard(p));
+                            html += `</div></div>`;
+                        }
+                        
+                        container.innerHTML = html;
+                        
+                    } catch (err) {
+                        container.innerHTML = '<div style="text-align: center; color: red;">Failed to load products. Ensure the backend server is running.</div>';
+                    }
+                });
+            </script>
         </div>
     </section>    <div id="footer-component"></div>
     
