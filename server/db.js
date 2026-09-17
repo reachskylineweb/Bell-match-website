@@ -34,9 +34,14 @@ const db = new sqlite3.Database(dbPath, (err) => {
             // Products
             db.run(`CREATE TABLE IF NOT EXISTS products (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT NOT NULL,
-                description TEXT NOT NULL,
+                product_code TEXT,
+                box_size TEXT,
+                no_of_sticks TEXT,
+                stick_length TEXT,
+                no_of_boxes_carton TEXT,
+                specifications TEXT DEFAULT '[]',
                 image_url TEXT NOT NULL,
+                image_style TEXT DEFAULT 'contain',
                 main_category_id INTEGER,
                 sub_category_id INTEGER,
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP,

@@ -164,23 +164,68 @@ app.get('/api/products', (req, res) => {
 
 // Add a product
 app.post('/api/products', authenticateToken, upload.single('image'), (req, res) => {
-    const { name, description, main_category_id, sub_category_id } = req.body;
+    const { main_category_id, sub_category_id, product_code, box_size, no_of_sticks, stick_length, no_of_boxes_carton, image_style, specifications } = req.body;
     
     if (!req.file) return res.status(400).json({ error: 'Image is required' });
-    if (!name || !description) return res.status(400).json({ error: 'Name and description are required' });
     
     const imageUrl = '/uploads/' + req.file.filename;
     const m_id = main_category_id ? main_category_id : null;
     const s_id = sub_category_id ? sub_category_id : null;
+    const style = image_style || 'contain';
+    const specs = specifications || '[]';
     
     db.run(
-        `INSERT INTO products (name, description, image_url, main_category_id, sub_category_id) VALUES (?, ?, ?, ?, ?)`,
-        [name, description, imageUrl, m_id, s_id],
+        `INSERT INTO products (product_code, box_size, no_of_sticks, stick_length, no_of_boxes_carton, specifications, image_url, image_style, main_category_id, sub_category_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [product_code, box_size, no_of_sticks, stick_length, no_of_boxes_carton, specs, imageUrl, style, m_id, s_id],
         function(err) {
             if (err) return res.status(500).json({ error: err.message });
             res.json({ id: this.lastID, message: 'Product added successfully' });
         }
     );
+});
+
+// Edit a product
+app.put('/api/products/:id', authenticateToken, upload.single('image'), (req, res) => {
+    const id = req.params.id;
+    const { main_category_id, sub_category_id, product_code, box_size, no_of_sticks, stick_length, no_of_boxes_carton, image_style, specifications } = req.body;
+    
+    const m_id = main_category_id ? main_category_id : null;
+    const s_id = sub_category_id ? sub_category_id : null;
+    const style = image_style || 'contain';
+    const specs = specifications || '[]';
+    
+    if (req.file) {
+        const imageUrl = '/uploads/' + req.file.filename;
+        
+        // Fetch old image to delete it
+        db.get(`SELECT image_url FROM products WHERE id = ?`, [id], (err, row) => {
+            if (row && row.image_url) {
+                const filename = path.basename(row.image_url);
+                const filepath = path.join(uploadDir, filename);
+                fs.unlink(filepath, (err) => {
+                    if (err) console.error('Error deleting old image file:', err);
+                });
+            }
+            
+            db.run(
+                `UPDATE products SET product_code=?, box_size=?, no_of_sticks=?, stick_length=?, no_of_boxes_carton=?, specifications=?, image_url=?, image_style=?, main_category_id=?, sub_category_id=? WHERE id=?`,
+                [product_code, box_size, no_of_sticks, stick_length, no_of_boxes_carton, specs, imageUrl, style, m_id, s_id, id],
+                function(err) {
+                    if (err) return res.status(500).json({ error: err.message });
+                    res.json({ message: 'Product updated successfully' });
+                }
+            );
+        });
+    } else {
+        db.run(
+            `UPDATE products SET product_code=?, box_size=?, no_of_sticks=?, stick_length=?, no_of_boxes_carton=?, specifications=?, image_style=?, main_category_id=?, sub_category_id=? WHERE id=?`,
+            [product_code, box_size, no_of_sticks, stick_length, no_of_boxes_carton, specs, style, m_id, s_id, id],
+            function(err) {
+                if (err) return res.status(500).json({ error: err.message });
+                res.json({ message: 'Product updated successfully' });
+            }
+        );
+    }
 });
 
 // Delete a product

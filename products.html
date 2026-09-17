@@ -42,7 +42,7 @@
     <div id="header-component"></div>
     <section id="hero-animated" style="position: relative; width: 100%; min-height: 70vh; background-color: #050505; overflow: hidden; display: flex; align-items: center; justify-content: center; margin-top: 0;">
         
-        <style>
+        <style>`r`n        @media (min-width: 992px) {`r`n            #global-grid { grid-template-columns: repeat(4, 1fr) !important; }`r`n        }`r`n        @media (max-width: 991px) and (min-width: 768px) {`r`n            #global-grid { grid-template-columns: repeat(2, 1fr) !important; }`r`n        }`r`n        @media (max-width: 767px) {`r`n            #global-grid { grid-template-columns: 1fr !important; }`r`n        }
             #hero-animated {
                 perspective: 1200px;
                 color: #fff;
@@ -182,6 +182,35 @@
                     max-width: 100%;
                     text-align: center;
                 }
+            }
+
+            /* Missing Bootstrap Utility Classes for Filters */
+            .btn-outline-primary {
+                background-color: transparent;
+                color: var(--primary-red);
+                border: 2px solid var(--primary-red);
+            }
+            .btn-outline-primary:hover {
+                background-color: var(--primary-red);
+                color: white;
+            }
+            .btn-secondary {
+                background-color: #6c757d;
+                color: white;
+                border: 2px solid #6c757d;
+            }
+            .btn-secondary:hover {
+                background-color: #5c636a;
+                color: white;
+            }
+            .btn-outline-secondary {
+                background-color: transparent;
+                color: #6c757d;
+                border: 2px solid #6c757d;
+            }
+            .btn-outline-secondary:hover {
+                background-color: #6c757d;
+                color: white;
             }
 
         </style>
@@ -355,88 +384,186 @@
                         const mainCategories = await mainCatRes.json();
                         const subCategories = await subCatRes.json();
                         
-                        container.innerHTML = '';
-                        
                         if (products.length === 0) {
                             container.innerHTML = '<div style="text-align: center;"><h3>No products available yet.</h3></div>';
                             return;
                         }
+
+                        // Map category IDs to names
+                        const mainCatMap = {};
+                        mainCategories.forEach(mc => mainCatMap[mc.id] = mc.name);
                         
-                        // Group products by main category
-                        const grouped = { uncategorized: [] };
-                        mainCategories.forEach(mc => grouped[mc.id] = { name: mc.name, subs: {}, ungrouped: [] });
-                        subCategories.forEach(sc => {
-                            if (grouped[sc.main_category_id]) grouped[sc.main_category_id].subs[sc.id] = { name: sc.name, products: [] };
+                        const subCatMap = {};
+                        subCategories.forEach(sc => subCatMap[sc.id] = sc.name);
+                        
+                        // Map main categories to their available sub-categories
+                        const mainToSubs = {};
+                        products.forEach(p => {
+                            const mainName = mainCatMap[p.main_category_id] || 'Uncategorized';
+                            const subName = subCatMap[p.sub_category_id] || 'Others';
+                            if (!mainToSubs[mainName]) mainToSubs[mainName] = new Set();
+                            mainToSubs[mainName].add(subName);
                         });
+
+                        // Build top-level filter UI
+                        let html = `
+                            <div class="text-center" style="margin-bottom: 3rem;">
+                                <div id="main-filters" class="d-flex justify-content-center flex-wrap" style="margin-bottom: 1.5rem;">
+                                    <button class="btn btn-primary main-filter-btn" data-filter="all" onclick="filterMain('all', this)" style="margin: 5px 10px;">All Products</button>
+                        `;
+                        
+                        Object.keys(mainToSubs).forEach(mainCat => {
+                            html += `<button class="btn btn-outline-primary main-filter-btn" data-filter="${mainCat.replace(/"/g, '&quot;')}" onclick="filterMain('${mainCat.replace(/'/g, "\\'")}', this)" style="margin: 5px 10px;">${mainCat}</button>`;
+                        });
+                        
+                        html += `
+                                </div>
+                                <div id="sub-filters-container" class="d-flex justify-content-center flex-wrap" style="display: none !important;">
+                                    <!-- Dynamic sub filters go here -->
+                                </div>
+                            </div>
+                        `;
+
+                        // Generate Global Product Grid
+                        html += `<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-bottom: 5rem; margin-top: 3rem;" id="global-grid">`;
                         
                         products.forEach(p => {
-                            if (!p.main_category_id || !grouped[p.main_category_id]) {
-                                grouped.uncategorized.push(p);
-                            } else if (p.sub_category_id && grouped[p.main_category_id].subs[p.sub_category_id]) {
-                                grouped[p.main_category_id].subs[p.sub_category_id].products.push(p);
-                            } else {
-                                grouped[p.main_category_id].ungrouped.push(p);
-                            }
-                        });
-                        
-                        const renderCard = (p) => {
+                            const mainCat = mainCatMap[p.main_category_id] || 'Uncategorized';
+                            const subCat = subCatMap[p.sub_category_id] || 'Others';
                             const bgImage = p.image_url.startsWith('http') ? p.image_url : 'http://localhost:5000' + p.image_url;
-                            return `
-                                <div class="product-card" style="background: white; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md); transition: var(--transition);">
-                                    <div style="height: 250px; background: url('${bgImage}') center/cover;"></div>
-                                    <div style="padding: 2rem;">
-                                        <h3 style="color: var(--dark-text); font-size: 1.5rem; margin-bottom: 1rem;">${p.name}</h3>
-                                        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">${p.description}</p>
-                                        <a href="contact.html" class="btn btn-outline" style="width: 100%;">Inquire Now</a>
+                            
+                            let parsedSpecs = [];
+                            try {
+                                parsedSpecs = JSON.parse(p.specifications || '[]');
+                            } catch(e) {}
+                            
+                            // Backward compatibility
+                            if (parsedSpecs.length === 0 && (p.box_size || p.no_of_sticks || p.stick_length || p.no_of_boxes_carton)) {
+                                if (p.box_size) parsedSpecs.push({key: 'Box Size', val: p.box_size});
+                                if (p.no_of_sticks) parsedSpecs.push({key: 'No. of sticks', val: p.no_of_sticks});
+                                if (p.stick_length) parsedSpecs.push({key: 'Stick Length', val: p.stick_length});
+                                if (p.no_of_boxes_carton) parsedSpecs.push({key: 'No. of Boxes/Carton', val: p.no_of_boxes_carton});
+                            }
+                            
+                            let specsHtml = `
+                                <ul style="list-style: none; padding: 0; margin-bottom: 0.5rem; color: #4b5563; font-size: 0.95rem;">
+                                    <li style="display: flex; margin-bottom: 10px;"><span style="width: 160px; font-weight: bold; color: #1f2937; flex-shrink: 0;">Product Code</span><span style="margin-right: 15px;">-</span><span>${p.product_code || '-'}</span></li>
+                                </ul>
+                                <ul style="list-style: none; padding: 0; margin-bottom: 1.5rem; color: #4b5563; font-size: 0.95rem; max-height: 180px; overflow-y: auto; padding-right: 5px;">
+                                    ${parsedSpecs.map(s => `
+                                        <li style="display: flex; margin-bottom: 10px;">
+                                            <span style="width: 160px; font-weight: bold; color: #1f2937; flex-shrink: 0;">${s.key || '-'}</span>
+                                            <span style="margin-right: 15px;">-</span>
+                                            <span>${s.val || '-'}</span>
+                                        </li>
+                                    `).join('')}
+                                </ul>
+                            `;
+
+                            html += `
+                                <div class="product-card global-product" data-main="${mainCat.replace(/"/g, '&quot;')}" data-sub="${subCat.replace(/"/g, '&quot;')}" style="background: white; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md); transition: var(--transition); display: flex; flex-direction: column; height: 510px;">
+                                    <div style="height: 250px; width: 100%; position: relative; overflow: hidden; display: flex; justify-content: center; align-items: center; background-color: transparent; flex-shrink: 0;">
+                                        <img src="${bgImage}" loading="lazy" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; filter: blur(15px); transform: scale(1.2) translate3d(0,0,0); opacity: 0.8; z-index: 1;" alt="">
+                                        <img src="${bgImage}" loading="lazy" alt="Product" onload="this.style.objectFit = (this.naturalHeight > this.naturalWidth) ? 'contain' : 'cover';" style="width: 100%; height: 100%; object-fit: cover; position: relative; z-index: 2; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+                                    </div>
+                                    <div style="padding: 2rem; flex-grow: 1; display: flex; flex-direction: column; overflow: hidden;">
+                                        <div style="flex-grow: 1;">
+                                            ${specsHtml}
+                                        </div>
                                     </div>
                                 </div>
                             `;
-                        };
-                        
-                        let html = '';
-                        mainCategories.forEach(mc => {
-                            const catData = grouped[mc.id];
-                            let hasProducts = catData.ungrouped.length > 0;
-                            Object.values(catData.subs).forEach(s => { if (s.products.length > 0) hasProducts = true; });
-                            
-                            if (hasProducts) {
-                                html += `<div style="margin-bottom: 4rem;">
-                                            <h2 style="color: var(--primary-red); font-size: 2rem; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 2rem;">${catData.name}</h2>`;
-                                
-                                // Ungrouped products in this main category
-                                if (catData.ungrouped.length > 0) {
-                                    html += `<div class="grid grid-cols-3" style="gap: 2rem; margin-bottom: 2rem;">`;
-                                    catData.ungrouped.forEach(p => html += renderCard(p));
-                                    html += `</div>`;
-                                }
-                                
-                                // Sub-categories
-                                Object.values(catData.subs).forEach(sub => {
-                                    if (sub.products.length > 0) {
-                                        html += `<h4 style="color: var(--dark-text); margin-bottom: 1rem;">${sub.name}</h4>
-                                                 <div class="grid grid-cols-3" style="gap: 2rem; margin-bottom: 2rem;">`;
-                                        sub.products.forEach(p => html += renderCard(p));
-                                        html += `</div>`;
-                                    }
-                                });
-                                html += `</div>`;
-                            }
                         });
                         
-                        if (grouped.uncategorized.length > 0) {
-                            html += `<div style="margin-bottom: 4rem;">
-                                        <h2 style="color: var(--primary-red); font-size: 2rem; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 2rem;">Other Products</h2>
-                                        <div class="grid grid-cols-3" style="gap: 2rem;">`;
-                            grouped.uncategorized.forEach(p => html += renderCard(p));
-                            html += `</div></div>`;
-                        }
-                        
+                        html += `</div>`;
                         container.innerHTML = html;
                         
+                        // Store the mainToSubs mapping globally for the filter function
+                        window.globalMainToSubs = {};
+                        for (const key in mainToSubs) {
+                            window.globalMainToSubs[key] = Array.from(mainToSubs[key]);
+                        }
+                        
                     } catch (err) {
+                        console.error(err);
                         container.innerHTML = '<div style="text-align: center; color: red;">Failed to load products. Ensure the backend server is running.</div>';
                     }
                 });
+
+                // Global filter variables
+                let currentMainFilter = 'all';
+
+                window.filterMain = function(mainCat, btnElem) {
+                    currentMainFilter = mainCat;
+                    
+                    // Update main buttons immediately for fast UI feedback
+                    document.querySelectorAll('.main-filter-btn').forEach(btn => {
+                        btn.classList.remove('btn-primary');
+                        btn.classList.add('btn-outline-primary');
+                    });
+                    btnElem.classList.remove('btn-outline-primary');
+                    btnElem.classList.add('btn-primary');
+
+                    // Defer heavy DOM manipulation to let button state paint first
+                    setTimeout(() => {
+                        const subContainer = document.getElementById('sub-filters-container');
+                        
+                        if (mainCat === 'all') {
+                            subContainer.style.setProperty('display', 'none', 'important');
+                            // Show all products
+                            document.querySelectorAll('.global-product').forEach(card => card.style.display = 'block');
+                        } else {
+                            // Generate sub buttons
+                            const subs = window.globalMainToSubs[mainCat] || [];
+                            if (subs.length > 0 && !(subs.length === 1 && subs[0] === 'Others')) {
+                                subContainer.style.setProperty('display', 'flex', 'important');
+                                let subHtml = `<button class="btn btn-sm btn-secondary sub-filter-btn" onclick="filterSub('all', this)" style="margin: 5px 10px;">All ${mainCat}</button>`;
+                                subs.forEach(sub => {
+                                    if (sub !== 'Others') {
+                                        subHtml += `<button class="btn btn-sm btn-outline-secondary sub-filter-btn" onclick="filterSub('${sub.replace(/'/g, "\\'")}', this)" style="margin: 5px 10px;">${sub}</button>`;
+                                    }
+                                });
+                                if (subs.includes('Others')) {
+                                    subHtml += `<button class="btn btn-sm btn-outline-secondary sub-filter-btn" onclick="filterSub('Others', this)" style="margin: 5px 10px;">Others</button>`;
+                                }
+                                subContainer.innerHTML = subHtml;
+                            } else {
+                                subContainer.style.setProperty('display', 'none', 'important');
+                            }
+                            
+                            // Show products for this main category
+                            document.querySelectorAll('.global-product').forEach(card => {
+                                card.style.display = (card.getAttribute('data-main') === mainCat) ? 'block' : 'none';
+                            });
+                        }
+                    }, 10);
+                };
+                
+                window.filterSub = function(subCat, btnElem) {
+                    // Update sub buttons immediately for fast UI feedback
+                    document.querySelectorAll('.sub-filter-btn').forEach(btn => {
+                        btn.classList.remove('btn-secondary');
+                        btn.classList.add('btn-outline-secondary');
+                    });
+                    btnElem.classList.remove('btn-outline-secondary');
+                    btnElem.classList.add('btn-secondary');
+                    
+                    // Defer heavy DOM manipulation
+                    setTimeout(() => {
+                        // Filter within current main category
+                        document.querySelectorAll('.global-product').forEach(card => {
+                            if (card.getAttribute('data-main') === currentMainFilter) {
+                                if (subCat === 'all' || card.getAttribute('data-sub') === subCat) {
+                                    card.style.display = 'block';
+                                } else {
+                                    card.style.display = 'none';
+                                }
+                            } else {
+                                card.style.display = 'none';
+                            }
+                        });
+                    }, 10);
+                };
             </script>
         </div>
     </section>    <div id="footer-component"></div>
@@ -446,3 +573,4 @@
     <script src="main.js?v=4"></script>
 </body>
 </html>
+

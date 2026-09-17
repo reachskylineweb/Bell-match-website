@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
     <style>
         :root { --primary-red: #d32f2f; --dark-text: #111827; --light-bg: #f3f4f6; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--light-bg); color: var(--dark-text); }
@@ -49,66 +50,189 @@
 
         <div class="row">
             <!-- Main Category Manager -->
-            <div class="col-md-6">
-                <div class="card">
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
                     <div class="card-header"><h5 class="mb-0 fw-bold">Main Categories</h5></div>
-                    <div class="card-body">
+                    <div class="card-body d-flex flex-column">
                         <form id="addMainCatForm" class="d-flex mb-3">
                             <input type="text" id="newMainCat" class="form-control me-2" placeholder="New Main Category" required>
                             <button type="submit" class="btn btn-primary">Add</button>
                         </form>
-                        <div id="mainCategoryList"></div>
+                        <div id="mainCategoryList" style="flex-grow: 1; overflow-y: auto; padding-right: 5px; height: 0; min-height: 250px;"></div>
                     </div>
                 </div>
             </div>
             
             <!-- Sub Category Manager -->
-            <div class="col-md-6">
-                <div class="card">
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
                     <div class="card-header"><h5 class="mb-0 fw-bold">Sub Categories</h5></div>
-                    <div class="card-body">
+                    <div class="card-body d-flex flex-column">
                         <form id="addSubCatForm" class="mb-3">
                             <select id="parentMainCat" class="form-select mb-2" required></select>
-                            <div class="d-flex">
+                            <div class="d-flex mb-3">
                                 <input type="text" id="newSubCat" class="form-control me-2" placeholder="New Sub Category" required>
                                 <button type="submit" class="btn btn-primary">Add</button>
                             </div>
                         </form>
-                        <div id="subCategoryList"></div>
+                        <input type="text" id="filterSubCatInput" class="form-control form-control-sm mb-2" placeholder="Search sub categories...">
+                        <div id="subCategoryList" style="flex-grow: 1; overflow-y: auto; padding-right: 5px; height: 0; min-height: 250px;"></div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Add Product Form -->
-        <div class="card">
-            <div class="card-header"><h5 class="mb-0 fw-bold">Add New Product</h5></div>
-            <div class="card-body">
-                <form id="addProductForm">
-                    <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <label class="form-label fw-bold">Product Name</label>
-                            <input type="text" class="form-control" id="prodName" required>
+        <!-- Live Preview & Add Product Form Row -->
+        <div class="row">
+            
+            <!-- Live Preview (Left) -->
+            <div class="col-lg-5 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0 fw-bold text-center text-primary"><i class="fas fa-eye me-2"></i>Live Preview</h5>
+                    </div>
+                    <div class="card-body bg-light d-flex justify-content-center align-items-start p-4">
+                        
+                        <!-- EXACT Product Card Replica -->
+                        <div class="product-card w-100" style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column;">
+                            <div style="height: 250px; width: 100%; position: relative; overflow: hidden; display: flex; justify-content: center; align-items: center; background-color: transparent;">
+                                <div id="previewBlurBg" style="position: absolute; top: -50px; left: -50px; right: -50px; bottom: -50px; background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22400%22%20height%3D%22250%22%20viewBox%3D%220%200%20400%20250%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23eeeeee%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20font-family%3D%22sans-serif%22%20font-size%3D%2216%22%20fill%3D%22%23999999%22%3EUpload%20Image%3C%2Ftext%3E%3C%2Fsvg%3E'); background-size: cover; background-position: center; filter: blur(40px); transform: scale(1.2); opacity: 0.9; z-index: 1;"></div>
+                                <img id="previewImg" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22400%22%20height%3D%22250%22%20viewBox%3D%220%200%20400%20250%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23eeeeee%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20font-family%3D%22sans-serif%22%20font-size%3D%2216%22%20fill%3D%22%23999999%22%3EUpload%20Image%3C%2Ftext%3E%3C%2Fsvg%3E" onload="this.style.objectFit = (this.naturalHeight > this.naturalWidth) ? 'contain' : 'cover';" style="width: 100%; height: 100%; object-fit: cover; position: relative; z-index: 2; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+                            </div>
+                            <div style="padding: 2rem; flex-grow: 1; display: flex; flex-direction: column;">
+                                <div style="flex-grow: 1;">
+                                
+                                <ul style="list-style: none; padding: 0; margin-bottom: 0.5rem; color: #4b5563; font-size: 0.95rem;">
+                                    <li id="prevLiCode" style="display: flex; margin-bottom: 10px;"><span style="width: 160px; font-weight: bold; color: #1f2937; flex-shrink: 0;">Product Code</span><span style="margin-right: 15px;">-</span><span id="prevCode">-</span></li>
+                                </ul>
+                                <ul id="prevDynamicSpecsList" style="list-style: none; padding: 0; margin-bottom: 1.5rem; color: #4b5563; font-size: 0.95rem;">
+                                </ul>
+                                </div>
+                                <a href="#" onclick="return false;" style="display: block; width: 100%; padding: 0.75rem 0; text-align: center; border: 1px solid #dc3545; color: #dc3545; border-radius: 6px; text-decoration: none; font-weight: 500; transition: all 0.2s;">Inquire Now</a>
+                            </div>
                         </div>
-                        <div class="col-md-4 mb-3">
-                            <label class="form-label fw-bold">Main Category</label>
-                            <select class="form-select" id="prodMainCategory"></select>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add Product Form -->
+            <div class="col-md-7">
+                <div class="card h-100">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0 fw-bold" id="formTitle">Add New Product</h5>
+                        <button type="button" class="btn btn-sm btn-outline-secondary d-none" id="cancelEditBtn">Cancel Edit</button>
+                    </div>
+                    <div class="card-body">
+                        <form id="addProductForm">
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Main Category</label>
+                                    <select class="form-select" id="prodMainCategory" required>
+                                        <option value="">Select Main Category</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Sub Category</label>
+                                    <select class="form-select" id="prodSubCategory">
+                                        <option value="">Select Sub Category</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between align-items-center mt-3 mb-2">
+                                <h6 class="mb-0 fw-bold text-muted">Specifications</h6>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="useCustomSpecsBtn" onchange="toggleSpecTemplate()">
+                                    <label class="form-check-label text-primary fw-bold" style="font-size: 0.9rem;" for="useCustomSpecsBtn">Use Custom Template</label>
+                                </div>
+                            </div>
+                            
+                            <!-- Static Matches Template -->
+                            <div id="staticSpecsTemplate">
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">Product Code</label>
+                                        <input type="text" class="form-control" id="prodCode" placeholder="e.g. BX-1">
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">Box Size</label>
+                                        <input type="text" class="form-control" id="prodBoxSize" placeholder="e.g. 55 x 25 x 7 mm">
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">No. of sticks</label>
+                                        <input type="text" class="form-control" id="prodNoSticks" placeholder="e.g. 11 nos">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Stick Length</label>
+                                        <input type="text" class="form-control" id="prodStickLength" placeholder="e.g. 47mm">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">No. of Boxes/Carton</label>
+                                        <input type="text" class="form-control" id="prodNoCarton" placeholder="">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Dynamic Template -->
+                            <div id="dynamicSpecsTemplate" style="display: none; background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px dashed #ccc; margin-bottom: 20px;">
+                                <div class="mb-3">
+                                    <label class="form-label">Product Code <small class="text-muted">(Required)</small></label>
+                                    <input type="text" class="form-control" id="prodCodeDyn" placeholder="e.g. BX-1">
+                                </div>
+                                <h6 class="fw-bold text-muted mb-2">Custom Specifications</h6>
+                                <div id="dynamicSpecsContainer"></div>
+                                <div class="d-flex justify-content-between align-items-center mt-2">
+                                    <button type="button" class="btn btn-sm btn-outline-primary" onclick="addDynamicSpec()">+ Add Specification</button>
+                                    <div class="form-check form-switch mb-0">
+                                        <input class="form-check-input" type="checkbox" id="lockSpecsBtn">
+                                        <label class="form-check-label text-muted" for="lockSpecsBtn"><small>Lock specs for bulk upload</small></label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-4">
+                                <div class="col-md-12">
+                                    <label class="form-label fw-bold">Product Image</label>
+                                    <div class="d-flex" style="gap: 10px;">
+                                        <input class="form-control" type="file" id="prodImage" accept="image/*">
+                                        <button type="button" class="btn btn-outline-secondary d-none" id="editExistingImgBtn" style="white-space: nowrap;"><i class="fas fa-crop-alt"></i> Edit Current Image</button>
+                                    </div>
+                                    <small class="text-muted" id="imageHelp">Required for new products. Leave blank when editing to keep existing image.</small>
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary" id="submitProductBtn"><i class="fas fa-save me-2"></i> Save Product</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cropper Modal -->
+        <div class="modal fade" id="cropperModal" tabindex="-1" data-bs-backdrop="static">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Manually Adjust Image</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <div style="max-height: 500px; overflow: hidden; background: #eee; padding: 20px;">
+                            <img id="cropperImage" style="max-width: 100%; display: block; margin: 0 auto;">
                         </div>
-                        <div class="col-md-4 mb-3">
-                            <label class="form-label fw-bold">Sub Category</label>
-                            <select class="form-select" id="prodSubCategory"></select>
+                        <p class="text-muted mt-3 small"><i class="fas fa-info-circle"></i> Drag to move, scroll to zoom, or drag the corners to crop.</p>
+                        <div class="mt-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary" id="cropRotateLeft"><i class="fas fa-undo"></i> Rotate Left</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" id="cropRotateRight"><i class="fas fa-redo"></i> Rotate Right</button>
                         </div>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Description</label>
-                        <textarea class="form-control" id="prodDescription" rows="2" required></textarea>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="cropApplyBtn">Apply Adjustment</button>
                     </div>
-                    <div class="mb-4">
-                        <label class="form-label fw-bold">Product Image</label>
-                        <input class="form-control" type="file" id="prodImage" accept="image/*" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary" id="submitProductBtn"><i class="fas fa-plus me-2"></i> Add Product</button>
-                </form>
+                </div>
             </div>
         </div>
 
@@ -116,15 +240,14 @@
         <div class="card">
             <div class="card-header"><h5 class="mb-0 fw-bold">Manage Products</h5></div>
             <div class="card-body p-0">
-                <div class="table-responsive">
+                <div class="table-responsive" style="max-height: 450px; overflow-y: auto;">
                     <table class="table table-hover align-middle mb-0">
                         <thead class="table-light">
                             <tr>
-                                <th class="px-4">Image</th>
-                                <th>Name</th>
-                                <th>Category</th>
-                                <th>Description</th>
-                                <th class="text-end px-4">Actions</th>
+                                <th class="px-4" style="position: sticky; top: 0; z-index: 1; background-color: #f8f9fa;">Image</th>
+                                <th style="position: sticky; top: 0; z-index: 1; background-color: #f8f9fa;">Product Code</th>
+                                <th style="position: sticky; top: 0; z-index: 1; background-color: #f8f9fa;">Category</th>
+                                <th class="text-end px-4" style="position: sticky; top: 0; z-index: 1; background-color: #f8f9fa;">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="productsTableBody"></tbody>
@@ -133,6 +256,7 @@
             </div>
         </div>
     </div>
-    <script src="admin.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>`r`n    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>`r`n    <script src="admin.js"></script>
 </body>
 </html>
+
