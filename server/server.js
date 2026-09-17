@@ -24,6 +24,9 @@ if (!fs.existsSync(uploadDir)) {
 // Serve uploaded images statically
 app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 
+// Serve the frontend statically with clean URLs (auto-resolves .html)
+app.use(express.static(path.join(__dirname, '..'), { extensions: ['html'] }));
+
 // Multer setup
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {

@@ -42,7 +42,32 @@
     <div id="header-component"></div>
     <section id="hero-animated" style="position: relative; width: 100%; min-height: 70vh; background-color: #050505; overflow: hidden; display: flex; align-items: center; justify-content: center; margin-top: 0;">
         
-        <style>`r`n        @media (min-width: 992px) {`r`n            #global-grid { grid-template-columns: repeat(4, 1fr) !important; }`r`n        }`r`n        @media (max-width: 991px) and (min-width: 768px) {`r`n            #global-grid { grid-template-columns: repeat(2, 1fr) !important; }`r`n        }`r`n        @media (max-width: 767px) {`r`n            #global-grid { grid-template-columns: 1fr !important; }`r`n        }
+        <style>
+        @media (min-width: 992px) {
+            #global-grid { grid-template-columns: repeat(3, 1fr) !important; }
+        }
+        @media (max-width: 991px) and (min-width: 768px) {
+            #global-grid { grid-template-columns: repeat(2, 1fr) !important; }
+        }
+        @media (max-width: 767px) {
+            #global-grid { grid-template-columns: 1fr !important; }
+        }
+        
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+        }
+        .product-card .main-img {
+            transition: transform 0.1s ease-out !important;
+        }
+        .product-card:hover .main-img {
+            transform: scale(1.05) !important;
+        }
+        .spec-list li:last-child {
+            border-bottom: none !important;
+            margin-bottom: 0 !important;
+            padding-bottom: 0 !important;
+        }
             #hero-animated {
                 perspective: 1200px;
                 color: #fff;
@@ -425,7 +450,7 @@
                         `;
 
                         // Generate Global Product Grid
-                        html += `<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-bottom: 5rem; margin-top: 3rem;" id="global-grid">`;
+                        html += `<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-bottom: 5rem; margin-top: 3rem;" id="global-grid">`;
                         
                         products.forEach(p => {
                             const mainCat = mainCatMap[p.main_category_id] || 'Uncategorized';
@@ -446,27 +471,31 @@
                             }
                             
                             let specsHtml = `
-                                <ul style="list-style: none; padding: 0; margin-bottom: 0.5rem; color: #4b5563; font-size: 0.95rem;">
-                                    <li style="display: flex; margin-bottom: 10px;"><span style="width: 160px; font-weight: bold; color: #1f2937; flex-shrink: 0;">Product Code</span><span style="margin-right: 15px;">-</span><span>${p.product_code || '-'}</span></li>
+                                <ul style="list-style: none; padding: 0; margin-bottom: 0.5rem; color: #4b5563; font-size: 0.95rem; overflow-x: hidden;">
+                                    <li style="display: flex; align-items: flex-start; padding-bottom: 8px; margin-bottom: 8px; border-bottom: 1px solid #f3f4f6;">
+                                        <span style="flex: 0 0 45%; max-width: 130px; font-weight: bold; color: #1f2937; padding-right: 5px; line-height: 1.3;">Product Code</span>
+                                        <span style="margin-right: 12px; flex-shrink: 0; line-height: 1.3; color: #9ca3af;">-</span>
+                                        <span style="flex: 1; word-break: break-word; line-height: 1.3; color: #111827;">${p.product_code || '-'}</span>
+                                    </li>
                                 </ul>
-                                <ul style="list-style: none; padding: 0; margin-bottom: 1.5rem; color: #4b5563; font-size: 0.95rem; max-height: 180px; overflow-y: auto; padding-right: 5px;">
+                                <ul class="spec-list" style="list-style: none; padding: 0; margin-bottom: 0; color: #4b5563; font-size: 0.95rem; max-height: 250px; overflow-y: auto; overflow-x: hidden; padding-right: 5px;">
                                     ${parsedSpecs.map(s => `
-                                        <li style="display: flex; margin-bottom: 10px;">
-                                            <span style="width: 160px; font-weight: bold; color: #1f2937; flex-shrink: 0;">${s.key || '-'}</span>
-                                            <span style="margin-right: 15px;">-</span>
-                                            <span>${s.val || '-'}</span>
+                                        <li style="display: flex; align-items: flex-start; padding-bottom: 8px; margin-bottom: 8px; border-bottom: 1px solid #f3f4f6;">
+                                            <span style="flex: 0 0 45%; max-width: 130px; font-weight: bold; color: #1f2937; padding-right: 5px; line-height: 1.3;">${s.key || '-'}</span>
+                                            <span style="margin-right: 12px; flex-shrink: 0; line-height: 1.3; color: #9ca3af;">-</span>
+                                            <span style="flex: 1; word-break: break-word; line-height: 1.3; color: #111827;">${s.val || '-'}</span>
                                         </li>
                                     `).join('')}
                                 </ul>
                             `;
 
                             html += `
-                                <div class="product-card global-product" data-main="${mainCat.replace(/"/g, '&quot;')}" data-sub="${subCat.replace(/"/g, '&quot;')}" style="background: white; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md); transition: var(--transition); display: flex; flex-direction: column; height: 510px;">
+                                <div class="product-card global-product" data-main="${mainCat.replace(/"/g, '&quot;')}" data-sub="${subCat.replace(/"/g, '&quot;')}" style="background: white; border: 1px solid #f3f4f6; border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); transition: all 0.1s ease-out; display: flex; flex-direction: column; height: 100%;">
                                     <div style="height: 250px; width: 100%; position: relative; overflow: hidden; display: flex; justify-content: center; align-items: center; background-color: transparent; flex-shrink: 0;">
                                         <img src="${bgImage}" loading="lazy" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; filter: blur(15px); transform: scale(1.2) translate3d(0,0,0); opacity: 0.8; z-index: 1;" alt="">
-                                        <img src="${bgImage}" loading="lazy" alt="Product" onload="this.style.objectFit = (this.naturalHeight > this.naturalWidth) ? 'contain' : 'cover';" style="width: 100%; height: 100%; object-fit: cover; position: relative; z-index: 2; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+                                        <img class="main-img" src="${bgImage}" loading="lazy" alt="Product" onload="this.style.objectFit = (this.naturalHeight > this.naturalWidth) ? 'contain' : 'cover';" style="width: 100%; height: 100%; object-fit: cover; position: relative; z-index: 2; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
                                     </div>
-                                    <div style="padding: 2rem; flex-grow: 1; display: flex; flex-direction: column; overflow: hidden;">
+                                    <div style="padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; background-color: #ffffff;">
                                         <div style="flex-grow: 1;">
                                             ${specsHtml}
                                         </div>
