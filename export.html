@@ -895,52 +895,101 @@
                         </span>
                     </div>
 
-                    <form action="#" method="POST" style="margin-top: 1.5rem;" onsubmit="event.preventDefault(); alert('Thank you for your inquiry! Our export team will review your requirements and respond within 24 hours with competitive FOB / CIF pricing.');">
+                    <form action="https://api.web3forms.com/submit" method="POST" id="exportQuoteForm" style="margin-top: 1.5rem;">
+                        <input type="hidden" name="access_key" value="293dad6b-6819-4530-a305-37eea430a096">
+                        <input type="hidden" name="subject" value="New Export Quote Request - Bell Match">
+                        <input type="hidden" name="from_name" value="Bell Match Website (Export Desk)">
+                        <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+
                         <div class="export-form-row">
                             <div>
                                 <label class="export-form-label">Full Name <span style="color: #b71c1c;">*</span></label>
-                                <input type="text" class="export-form-input" placeholder="e.g. David Miller" required>
+                                <input type="text" name="name" class="export-form-input" placeholder="e.g. David Miller" required>
                             </div>
                             <div>
                                 <label class="export-form-label">Work Email <span style="color: #b71c1c;">*</span></label>
-                                <input type="email" class="export-form-input" placeholder="e.g. david@importcompany.com" required>
+                                <input type="email" name="email" class="export-form-input" placeholder="e.g. david@importcompany.com" required>
                             </div>
                         </div>
 
                         <div class="export-form-row">
                             <div>
                                 <label class="export-form-label">Company / Importer Name</label>
-                                <input type="text" class="export-form-input" placeholder="e.g. Global Trade Ltd.">
+                                <input type="text" name="company" class="export-form-input" placeholder="e.g. Global Trade Ltd.">
                             </div>
                             <div>
                                 <label class="export-form-label">Destination Country & Port <span style="color: #b71c1c;">*</span></label>
-                                <input type="text" class="export-form-input" placeholder="e.g. Rotterdam, Netherlands" required>
+                                <input type="text" name="destination_port" class="export-form-input" placeholder="e.g. Rotterdam, Netherlands" required>
                             </div>
                         </div>
 
                         <div style="margin-bottom: 1.15rem;">
                             <label class="export-form-label">Product of Interest <span style="color: #b71c1c;">*</span></label>
-                            <select class="export-form-input" required style="cursor: pointer;">
+                            <select name="product_interest" class="export-form-input" required style="cursor: pointer;">
                                 <option value="" disabled selected>Select Product Category...</option>
-                                <option value="household">Household Safety Matches</option>
-                                <option value="long_matches">Long Safety Matches (BBQ / Candle / Fireplace)</option>
-                                <option value="custom_private_label">Custom Branded / Private Label Matchboxes</option>
-                                <option value="bulk_matches">Bulk Safety Matches (Direct Wholesale)</option>
-                                <option value="book_matches">Promotional & Book Matches</option>
-                                <option value="other">Other Custom Specification</option>
+                                <option value="Household Safety Matches">Household Safety Matches</option>
+                                <option value="Long Safety Matches (BBQ / Candle / Fireplace)">Long Safety Matches (BBQ / Candle / Fireplace)</option>
+                                <option value="Custom Branded / Private Label Matchboxes">Custom Branded / Private Label Matchboxes</option>
+                                <option value="Bulk Safety Matches (Direct Wholesale)">Bulk Safety Matches (Direct Wholesale)</option>
+                                <option value="Promotional & Book Matches">Promotional & Book Matches</option>
+                                <option value="Other Custom Specification">Other Custom Specification</option>
                             </select>
                         </div>
 
                         <div style="margin-bottom: 1.35rem;">
                             <label class="export-form-label">Order Volume & Specifications <span style="color: #b71c1c;">*</span></label>
-                            <textarea class="export-form-input" rows="4" placeholder="Specify your container volume (e.g. 1x20ft or 40ft FCL), matchbox size, splint length, stick count, or custom packaging needs..." required style="resize: vertical;"></textarea>
+                            <textarea name="specifications_and_volume" class="export-form-input" rows="4" placeholder="Specify your container volume (e.g. 1x20ft or 40ft FCL), matchbox size, splint length, stick count, or custom packaging needs..." required style="resize: vertical;"></textarea>
                         </div>
 
-                        <button type="submit" class="export-form-submit-btn" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 15px; background: linear-gradient(135deg, #b71c1c 0%, #991b1b 100%); color: #ffffff; border: none; border-radius: 10px; font-size: 1.02rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.75px; cursor: pointer; transition: all 0.25s ease; box-shadow: 0 8px 20px -3px rgba(183, 28, 28, 0.35);" onmouseover="this.style.boxShadow='0 12px 25px -3px rgba(183, 28, 28, 0.45)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.boxShadow='0 8px 20px -3px rgba(183, 28, 28, 0.35)'; this.style.transform='translateY(0)';">
+                        <div id="exportFormStatus" style="display: none; padding: 12px 16px; border-radius: 8px; margin-bottom: 1.25rem; font-size: 0.95rem; font-weight: 500;"></div>
+
+                        <button type="submit" id="exportSubmitBtn" class="export-form-submit-btn" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 15px; background: linear-gradient(135deg, #b71c1c 0%, #991b1b 100%); color: #ffffff; border: none; border-radius: 10px; font-size: 1.02rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.75px; cursor: pointer; transition: all 0.25s ease; box-shadow: 0 8px 20px -3px rgba(183, 28, 28, 0.35);" onmouseover="this.style.boxShadow='0 12px 25px -3px rgba(183, 28, 28, 0.45)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.boxShadow='0 8px 20px -3px rgba(183, 28, 28, 0.35)'; this.style.transform='translateY(0)';">
                             <span>Submit Export Quote Request</span>
                             <i class="fas fa-paper-plane"></i>
                         </button>
                     </form>
+
+                    <script>
+                    document.getElementById('exportQuoteForm').addEventListener('submit', async function(e) {
+                        e.preventDefault();
+                        const btn = document.getElementById('exportSubmitBtn');
+                        const statusDiv = document.getElementById('exportFormStatus');
+                        const originalBtnHtml = btn.innerHTML;
+                        
+                        btn.disabled = true;
+                        btn.innerHTML = '<span>Sending Request...</span> <i class="fas fa-spinner fa-spin"></i>';
+                        statusDiv.style.display = 'none';
+
+                        try {
+                            const formData = new FormData(this);
+                            const res = await fetch('https://api.web3forms.com/submit', {
+                                method: 'POST',
+                                body: formData
+                            });
+
+                            const data = await res.json();
+                            if (data.success) {
+                                statusDiv.style.display = 'block';
+                                statusDiv.style.backgroundColor = '#ecfdf5';
+                                statusDiv.style.color = '#065f46';
+                                statusDiv.style.border = '1px solid #a7f3d0';
+                                statusDiv.innerHTML = '<i class="fas fa-check-circle" style="margin-right: 6px; color: #10b981;"></i> Thank you! Your export quote request has been sent successfully. Our export team will respond within 24 hours with competitive FOB / CIF pricing.';
+                                this.reset();
+                            } else {
+                                throw new Error(data.message || 'Submission failed');
+                            }
+                        } catch(err) {
+                            statusDiv.style.display = 'block';
+                            statusDiv.style.backgroundColor = '#fef2f2';
+                            statusDiv.style.color = '#991b1b';
+                            statusDiv.style.border = '1px solid #fecaca';
+                            statusDiv.innerHTML = '<i class="fas fa-exclamation-triangle" style="margin-right: 6px; color: #ef4444;"></i> Message could not be sent. Please email us directly at <a href="mailto:dm@bellmatch.com" style="color: #b71c1c; font-weight: 700; text-decoration: underline;">dm@bellmatch.com</a>.';
+                        } finally {
+                            btn.disabled = false;
+                            btn.innerHTML = originalBtnHtml;
+                        }
+                    });
+                    </script>
 
                     <!-- Trust Footnote -->
                     <div class="export-trust-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.35rem; padding-top: 1.15rem; border-top: 1px solid #f1f5f9; font-size: 0.78rem; color: #64748b; flex-wrap: wrap; gap: 8px;">
