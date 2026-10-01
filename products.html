@@ -236,13 +236,114 @@
         
             /* Mobile View Specific Fixes */
             @media (max-width: 768px) {
+                #hero-animated {
+                    min-height: 400px !important;
+                    height: 52vh !important;
+                }
+                .right-content {
+                    height: 100% !important;
+                }
+                #match-artwork {
+                    height: 100% !important;
+                    max-height: 380px !important;
+                    width: 100% !important;
+                }
+                #products-container {
+                    transform: translate(-50%, -50%) scale(0.48) !important;
+                    transform-origin: center center !important;
+                }
+                .bottom-cta {
+                    bottom: 16px !important;
+                    width: 100% !important;
+                    justify-content: center !important;
+                }
                 .hero-btn {
-                    padding: 12px 20px;
-                    font-size: 0.8rem;
+                    padding: 10px 22px !important;
+                    font-size: 0.82rem !important;
                     white-space: nowrap;
                     width: auto;
-                    max-width: 100%;
+                    max-width: 90%;
                     text-align: center;
+                    letter-spacing: 1.5px !important;
+                }
+                .section {
+                    padding: 3rem 0 !important;
+                }
+                .section-title {
+                    margin-bottom: 2rem !important;
+                }
+                .section-title h2 {
+                    font-size: 1.85rem !important;
+                }
+                #globalProductSearch {
+                    font-size: 0.95rem !important;
+                    padding: 10px 16px 10px 45px !important;
+                }
+                .main-filter-btn, .sub-filter-btn {
+                    font-size: 0.82rem !important;
+                    padding: 6px 14px !important;
+                    margin: 4px !important;
+                    border-radius: 20px !important;
+                }
+                #global-grid {
+                    grid-template-columns: 1fr !important;
+                    gap: 1.5rem !important;
+                    margin-top: 1.5rem !important;
+                    margin-bottom: 3rem !important;
+                }
+                .product-card {
+                    max-width: 450px;
+                    margin: 0 auto;
+                    width: 100%;
+                }
+                .product-card > div:first-child {
+                    height: 220px !important;
+                }
+                .product-card > div:nth-child(2) {
+                    padding: 1.2rem !important;
+                }
+            }
+
+            @media (max-width: 480px) {
+                #hero-animated {
+                    min-height: 350px !important;
+                    height: 48vh !important;
+                }
+                #products-container {
+                    transform: translate(-50%, -50%) scale(0.38) !important;
+                    transform-origin: center center !important;
+                }
+                .bottom-cta {
+                    bottom: 12px !important;
+                }
+                .hero-btn {
+                    padding: 8px 18px !important;
+                    font-size: 0.75rem !important;
+                    letter-spacing: 1px !important;
+                }
+                .section {
+                    padding: 2.5rem 0 !important;
+                }
+                .section-title h2 {
+                    font-size: 1.6rem !important;
+                }
+                #global-grid {
+                    gap: 1.25rem !important;
+                }
+                .main-filter-btn, .sub-filter-btn {
+                    font-size: 0.78rem !important;
+                    padding: 5px 11px !important;
+                    margin: 3px !important;
+                }
+            }
+
+            @media (max-width: 360px) {
+                #products-container {
+                    transform: translate(-50%, -50%) scale(0.32) !important;
+                    transform-origin: center center !important;
+                }
+                .section-title h2 {
+                    font-size: 1.4rem !important;
                 }
             }
 
