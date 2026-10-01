@@ -1,5 +1,17 @@
 {
   "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/products.html/admin",
+      "destination": "/admin.html",
+      "permanent": false
+    },
+    {
+      "source": "/products/admin",
+      "destination": "/admin.html",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     {
       "source": "/api/:path*",
