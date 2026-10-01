@@ -70,13 +70,15 @@
     </div>
     <!-- Floating Quick Actions -->
     <div class="floating-actions">
-        <a href="https://wa.me/917845965010" class="floating-btn" style="background-color: #25d366; color: white; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); text-decoration: none; align-self: flex-end; margin-bottom: 5px; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://wa.me/917845965010" aria-label="Chat with us on WhatsApp" class="floating-btn" style="background-color: #25d366; color: white; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); text-decoration: none; align-self: flex-end; margin-bottom: 5px; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"><i class="fab fa-whatsapp"></i></a>
         <a href="contact.html" class="floating-btn quote-pill">Contact Us</a>
-        <button class="floating-btn back-to-top" id="backToTop"><i class="fas fa-chevron-up"></i></button>
+        <button class="floating-btn back-to-top" id="backToTop" aria-label="Back to top"><i class="fas fa-chevron-up"></i></button>
     </div>
 
     <div id="topbar-component"></div>
     <div id="header-component"></div>
+
+    <main id="main-content">
     <section style="position: relative; padding: 100px 0 120px; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); overflow: hidden; margin-top: 0;">
         <!-- Background Pattern/Image -->
         <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.15; background-image: url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80'); background-size: cover; background-position: center;"></div>
@@ -304,6 +306,8 @@
             img.src = imgSrc;
         }
     </script>
+
+    </main>
 
     <div id="footer-component"></div>
     
