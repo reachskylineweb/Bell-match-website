@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /admin.js
+Disallow: /server/
+
+Sitemap: https://bellmatch.com/sitemap.xml

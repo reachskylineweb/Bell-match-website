@@ -24,6 +24,9 @@
         .brand { font-size: 1.5rem; font-weight: 800; color: var(--primary-red); }
         .cat-item { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #eee; }
     </style>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="192x192" href="favicon-full.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon-full.png">
 </head>
 <body>
     <!-- Login Section -->
@@ -55,7 +58,7 @@
                     <div class="card-header"><h5 class="mb-0 fw-bold">Main Categories</h5></div>
                     <div class="card-body d-flex flex-column">
                         <form id="addMainCatForm" class="d-flex mb-3">
-                            <input type="text" id="newMainCat" class="form-control me-2" placeholder="New Main Category" required>
+                            <input type="text" id="newMainCat" class="form-control me-2" placeholder="New Main Category" required style="text-transform: uppercase;">
                             <button type="submit" class="btn btn-primary">Add</button>
                         </form>
                         <div id="mainCategoryList" style="flex-grow: 1; overflow-y: auto; padding-right: 5px; height: 0; min-height: 250px;"></div>
@@ -71,7 +74,7 @@
                         <form id="addSubCatForm" class="mb-3">
                             <select id="parentMainCat" class="form-select mb-2" required></select>
                             <div class="d-flex mb-3">
-                                <input type="text" id="newSubCat" class="form-control me-2" placeholder="New Sub Category" required>
+                                <input type="text" id="newSubCat" class="form-control me-2" placeholder="New Sub Category" required style="text-transform: uppercase;">
                                 <button type="submit" class="btn btn-primary">Add</button>
                             </div>
                         </form>
@@ -95,15 +98,14 @@
                         
                         <!-- EXACT Product Card Replica -->
                         <div class="product-card w-100" style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column;">
-                            <div style="height: 250px; width: 100%; position: relative; overflow: hidden; display: flex; justify-content: center; align-items: center; background-color: transparent;">
-                                <div id="previewBlurBg" style="position: absolute; top: -50px; left: -50px; right: -50px; bottom: -50px; background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22400%22%20height%3D%22250%22%20viewBox%3D%220%200%20400%20250%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23eeeeee%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20font-family%3D%22sans-serif%22%20font-size%3D%2216%22%20fill%3D%22%23999999%22%3EUpload%20Image%3C%2Ftext%3E%3C%2Fsvg%3E'); background-size: cover; background-position: center; filter: blur(40px); transform: scale(1.2); opacity: 0.9; z-index: 1;"></div>
-                                <img id="previewImg" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22400%22%20height%3D%22250%22%20viewBox%3D%220%200%20400%20250%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23eeeeee%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20font-family%3D%22sans-serif%22%20font-size%3D%2216%22%20fill%3D%22%23999999%22%3EUpload%20Image%3C%2Ftext%3E%3C%2Fsvg%3E" onload="this.style.objectFit = (this.naturalHeight > this.naturalWidth) ? 'contain' : 'cover';" style="width: 100%; height: 100%; object-fit: cover; position: relative; z-index: 2; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+                            <div style="height: 250px; width: 100%; position: relative; overflow: hidden; display: flex; justify-content: center; align-items: center; background-color: #f8f9fa; border-bottom: 1px solid #e2e8f0; flex-shrink: 0;">
+                                <img id="previewImg" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22400%22%20height%3D%22250%22%20viewBox%3D%220%200%20400%20250%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23eeeeee%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20font-family%3D%22sans-serif%22%20font-size%3D%2216%22%20fill%3D%22%23999999%22%3EUpload%20Image%3C%2Ftext%3E%3C%2Fsvg%3E" style="width: 100%; height: 100%; object-fit: contain; position: relative; z-index: 2;">
                             </div>
                             <div style="padding: 2rem; flex-grow: 1; display: flex; flex-direction: column;">
                                 <div style="flex-grow: 1;">
                                 
                                 <ul style="list-style: none; padding: 0; margin-bottom: 0.5rem; color: #4b5563; font-size: 0.95rem;">
-                                    <li id="prevLiCode" style="display: flex; margin-bottom: 10px;"><span style="width: 160px; font-weight: bold; color: #1f2937; flex-shrink: 0;">Product Code</span><span style="margin-right: 15px;">-</span><span id="prevCode">-</span></li>
+                                    <li id="prevLiCode" style="display: flex; margin-bottom: 10px;"><span style="width: 160px; font-weight: bold; color: #1f2937; flex-shrink: 0;">Product Code</span><span style="margin-right: 15px;">-</span><span id="prevCode" style="font-weight: 600; font-size: 1.05rem; color: #111827;">-</span></li>
                                 </ul>
                                 <ul id="prevDynamicSpecsList" style="list-style: none; padding: 0; margin-bottom: 1.5rem; color: #4b5563; font-size: 0.95rem;">
                                 </ul>
@@ -154,7 +156,7 @@
                                 <div class="row">
                                     <div class="col-md-4 mb-3">
                                         <label class="form-label">Product Code</label>
-                                        <input type="text" class="form-control" id="prodCode" placeholder="e.g. BX-1">
+                                        <input type="text" class="form-control" id="prodCode" placeholder="e.g. BX-1" style="text-transform: uppercase;">
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label class="form-label">Box Size</label>
@@ -179,7 +181,7 @@
                             <div id="dynamicSpecsTemplate" style="display: none; background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px dashed #ccc; margin-bottom: 20px;">
                                 <div class="mb-3">
                                     <label class="form-label">Product Code <small class="text-muted">(Required)</small></label>
-                                    <input type="text" class="form-control" id="prodCodeDyn" placeholder="e.g. BX-1">
+                                    <input type="text" class="form-control" id="prodCodeDyn" placeholder="e.g. BX-1" style="text-transform: uppercase;">
                                 </div>
                                 <h6 class="fw-bold text-muted mb-2">Custom Specifications</h6>
                                 <div id="dynamicSpecsContainer"></div>
@@ -224,6 +226,8 @@
                         </div>
                         <p class="text-muted mt-3 small"><i class="fas fa-info-circle"></i> Drag to move, scroll to zoom, or drag the corners to crop.</p>
                         <div class="mt-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary" id="cropZoomIn"><i class="fas fa-search-plus"></i> Zoom In</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" id="cropZoomOut"><i class="fas fa-search-minus"></i> Zoom Out</button>
                             <button type="button" class="btn btn-sm btn-outline-secondary" id="cropRotateLeft"><i class="fas fa-undo"></i> Rotate Left</button>
                             <button type="button" class="btn btn-sm btn-outline-secondary" id="cropRotateRight"><i class="fas fa-redo"></i> Rotate Right</button>
                         </div>
@@ -238,7 +242,13 @@
 
         <!-- Products List -->
         <div class="card">
-            <div class="card-header"><h5 class="mb-0 fw-bold">Manage Products</h5></div>
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 fw-bold">Manage Products</h5>
+                <div style="width: 250px; position: relative;">
+                    <i class="fas fa-search text-muted" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-size: 0.85rem;"></i>
+                    <input type="text" id="adminProductSearch" class="form-control form-control-sm" placeholder="Search product code..." style="padding-left: 30px;">
+                </div>
+            </div>
             <div class="card-body p-0">
                 <div class="table-responsive" style="max-height: 450px; overflow-y: auto;">
                     <table class="table table-hover align-middle mb-0">
@@ -256,7 +266,10 @@
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>`r`n    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>`r`n    <script src="admin.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <script src="admin.js?v=10"></script>
 </body>
 </html>
 

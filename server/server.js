@@ -8,7 +8,7 @@ const db = require('./db');
 const fs = require('fs');
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 const SECRET_KEY = 'bellmatch_super_secret_key_2026';
 
 // Middleware
@@ -27,6 +27,11 @@ app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 // Serve the frontend statically with clean URLs (auto-resolves .html)
 app.use(express.static(path.join(__dirname, '..'), { extensions: ['html'] }));
 
+// Universal Admin Redirects (Fix for malformed URL typing)
+app.get(['/admin', '/products.html/admin'], (req, res) => {
+    res.redirect('/admin.html');
+});
+
 // Multer setup
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -44,10 +49,16 @@ const authenticateToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
     
-    if (!token) return res.status(401).json({ error: 'Access denied' });
+    if (!token) {
+        console.log('Auth failed: No token provided');
+        return res.status(401).json({ error: 'Access denied' });
+    }
     
     jwt.verify(token, SECRET_KEY, (err, user) => {
-        if (err) return res.status(403).json({ error: 'Invalid token' });
+        if (err) {
+            console.log('Auth failed: Invalid or expired token');
+            return res.status(403).json({ error: 'Invalid token' });
+        }
         req.user = user;
         next();
     });
@@ -74,7 +85,7 @@ app.post('/api/login', (req, res) => {
 
 // Get all main categories
 app.get('/api/categories/main', (req, res) => {
-    db.all(`SELECT * FROM main_categories ORDER BY name ASC`, [], (err, rows) => {
+    db.all(`SELECT * FROM main_categories ORDER BY order_index ASC, name ASC`, [], (err, rows) => {
         if (err) return res.status(500).json({ error: err.message });
         res.json(rows);
     });
@@ -88,6 +99,29 @@ app.post('/api/categories/main', authenticateToken, (req, res) => {
     db.run(`INSERT INTO main_categories (name) VALUES (?)`, [name], function(err) {
         if (err) return res.status(500).json({ error: err.message });
         res.json({ id: this.lastID, name, message: 'Main category added' });
+    });
+});
+
+// Reorder main categories
+app.post('/api/categories/main/reorder', authenticateToken, (req, res) => {
+    const { order } = req.body;
+    console.log('Main category reorder request:', order);
+    if (!order || !Array.isArray(order)) return res.status(400).json({ error: 'Invalid order data' });
+    
+    db.serialize(() => {
+        db.run('BEGIN TRANSACTION');
+        order.forEach(item => {
+            db.run(`UPDATE main_categories SET order_index = ? WHERE id = ?`, [item.order_index, item.id], (err) => {
+                if (err) console.error('Error updating main_category:', err);
+            });
+        });
+        db.run('COMMIT', (err) => {
+            if (err) {
+                console.error('Commit error:', err);
+                return res.status(500).json({ error: err.message });
+            }
+            res.json({ message: 'Main categories reordered successfully' });
+        });
     });
 });
 
@@ -110,17 +144,40 @@ app.delete('/api/categories/main/:id', authenticateToken, (req, res) => {
 // Get all sub categories (optionally filter by main_id)
 app.get('/api/categories/sub', (req, res) => {
     const mainId = req.query.main_id;
-    let query = `SELECT * FROM sub_categories ORDER BY name ASC`;
+    let query = `SELECT * FROM sub_categories ORDER BY order_index ASC, name ASC`;
     let params = [];
     
     if (mainId) {
-        query = `SELECT * FROM sub_categories WHERE main_category_id = ? ORDER BY name ASC`;
+        query = `SELECT * FROM sub_categories WHERE main_category_id = ? ORDER BY order_index ASC, name ASC`;
         params = [mainId];
     }
     
     db.all(query, params, (err, rows) => {
         if (err) return res.status(500).json({ error: err.message });
         res.json(rows);
+    });
+});
+
+// Reorder sub categories
+app.post('/api/categories/sub/reorder', authenticateToken, (req, res) => {
+    const { order } = req.body; // order is array of { id, order_index }
+    console.log('Subcategory reorder request:', order);
+    if (!order || !Array.isArray(order)) return res.status(400).json({ error: 'Invalid order data' });
+    
+    db.serialize(() => {
+        db.run('BEGIN TRANSACTION');
+        order.forEach(item => {
+            db.run(`UPDATE sub_categories SET order_index = ? WHERE id = ?`, [item.order_index, item.id], (err) => {
+                if (err) console.error('Error updating sub_category:', err);
+            });
+        });
+        db.run('COMMIT', (err) => {
+            if (err) {
+                console.error('Commit error:', err);
+                return res.status(500).json({ error: err.message });
+            }
+            res.json({ message: 'Sub categories reordered successfully' });
+        });
     });
 });
 
@@ -157,7 +214,9 @@ app.get('/api/products', (req, res) => {
         FROM products p 
         LEFT JOIN main_categories m ON p.main_category_id = m.id 
         LEFT JOIN sub_categories s ON p.sub_category_id = s.id 
-        ORDER BY p.created_at DESC
+        ORDER BY 
+            CASE WHEN p.id <= 57 THEN 1 ELSE 0 END ASC, 
+            CASE WHEN p.id <= 57 THEN p.id ELSE -p.id END ASC
     `;
     db.all(query, [], (err, rows) => {
         if (err) return res.status(500).json({ error: err.message });

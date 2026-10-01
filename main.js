@@ -9,8 +9,8 @@ async function loadComponents() {
         const el = document.getElementById(comp.id);
         if (el) {
             try {
-                const cacheBuster = '?v=' + new Date().getTime();
-                const response = await fetch(comp.url + cacheBuster);
+
+                const response = await fetch(comp.url);
                 if (response.ok) {
                     el.innerHTML = await response.text();
                 }
@@ -64,7 +64,7 @@ document.addEventListener('ComponentsLoaded', () => {
     const sparksContainer = document.getElementById('preloaderSparks');
     
     let progress = 0;
-    const duration = 250; 
+    const duration = 300;
     
     // Enable hardware-accelerated CSS transition for the progress bar
     glowEl.style.transition = `width ${duration}ms linear`;
@@ -72,7 +72,7 @@ document.addEventListener('ComponentsLoaded', () => {
     glowEl.style.width = '0%';
     if (sparksContainer) sparksContainer.innerHTML = '';
 
-    currentLoaderTimeout = setTimeout(() => {
+
       let startTime = null;
       
       // Trigger the CSS transition
@@ -95,12 +95,12 @@ document.addEventListener('ComponentsLoaded', () => {
               preloader.classList.add('fade-out');
               document.body.style.overflow = 'auto';
             }
-          }, 100);
+          }, 20);
         }
       }
       
       currentLoaderInterval = requestAnimationFrame(animateProgress);
-    }, 150);
+
   }
 
   // Play immediately on load
@@ -202,12 +202,10 @@ document.addEventListener('ComponentsLoaded', () => {
     }
   }
 
-  // Initialize AOS
+  // Initialize AOS (Disabled for instant frame-0 rendering and zero layout shift)
   if (typeof AOS !== 'undefined') {
     AOS.init({
-      duration: 800,
-      once: true,
-      offset: 100,
+      disable: true
     });
   }
 
@@ -270,7 +268,7 @@ document.addEventListener('ComponentsLoaded', () => {
     });
 
     // 2. Firefly Embers
-    const particleCount = 40;
+    const particleCount = 25;
     const emberContainer = document.createElement('div');
     emberContainer.style.position = 'absolute';
     emberContainer.style.top = '0';

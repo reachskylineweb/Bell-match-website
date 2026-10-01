@@ -3,11 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Products | Bell Match Company</title>
+    <title>Safety Matches Wholesale & Custom Matchbox Products | Bell Match</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="keywords" content="safety matches wholesale, custom matchbox, matchbox manufacturer, bulk safety matches supplier, custom printed matches wholesale, private label matchbox manufacturer, household safety matches, long matches BBQ, promotional matchboxes">
+    <meta name="description" content="Explore Bell Match wholesale catalog: household safety matches, extra long BBQ/candle matches, custom printed matchboxes, and private label OEM manufacturing for global importers.">
+
+    <!-- Open Graph / Social Cards -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://bellmatch.com/products.html">
+    <meta property="og:title" content="Safety Matches Wholesale & Custom Matchbox Products | Bell Match">
+    <meta property="og:description" content="Explore Bell Match wholesale catalog: household matches, extra long BBQ/candle matches, custom printed matchboxes, and private label OEM supply.">
+    <meta property="og:image" content="https://res.cloudinary.com/ppxlfuj2/image/upload/v1784195661/logo_bell_aelhiw.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Safety Matches Wholesale & Custom Matchbox Products | Bell Match">
+    <meta name="twitter:description" content="Explore Bell Match wholesale catalog: household matches, extra long BBQ matches, custom printed matchboxes.">
+    <meta name="twitter:image" content="https://res.cloudinary.com/ppxlfuj2/image/upload/v1784195661/logo_bell_aelhiw.png">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "Safety Matches & Custom Matchbox Catalog",
+      "description": "Comprehensive range of household safety matches, long BBQ/candle matches, and custom private label matchboxes from Indian manufacturer Bell Match.",
+      "url": "https://bellmatch.com/products.html",
+      "publisher": {
+        "@type": "Manufacturer",
+        "name": "The Bell Match Company",
+        "url": "https://bellmatch.com/",
+        "logo": "https://res.cloudinary.com/ppxlfuj2/image/upload/v1784195661/logo_bell_aelhiw.png"
+      }
+    }
+    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <link rel="stylesheet" href="index.css?v=101">
+    <link rel="stylesheet" href="index.css?v=102">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="192x192" href="favicon-full.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon-full.png">
 </head>
 <body>
     <!-- Cinematic Preloader -->
@@ -33,8 +70,8 @@
     </div>
     <!-- Floating Quick Actions -->
     <div class="floating-actions">
-        <a href="https://wa.me/917845965010" class="floating-btn" style="background-color: #25d366; color: white; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); text-decoration: none; align-self: flex-end; margin-bottom: 5px; transition: transform 0.3s ease;" onmouseover="this.style.transform=scale(1.1)" onmouseout="this.style.transform=scale(1)"><i class="fab fa-whatsapp"></i></a>
-        <a href="#quote" class="floating-btn quote-pill">Request Quote</a>
+        <a href="https://wa.me/917845965010" class="floating-btn" style="background-color: #25d366; color: white; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); text-decoration: none; align-self: flex-end; margin-bottom: 5px; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"><i class="fab fa-whatsapp"></i></a>
+        <a href="export.html#quote" class="floating-btn quote-pill">Request Quote</a>
         <button class="floating-btn back-to-top" id="backToTop"><i class="fas fa-chevron-up"></i></button>
     </div>
 
@@ -246,8 +283,7 @@
             </div>
             
             <div class="bottom-cta" id="cta-container">
-                <a href="#catalog" class="hero-btn">View Catalogue</a>
-                
+                <a href="uploads/Bell_Match_Catalogue.pdf" target="_blank" class="hero-btn">View Catalogue</a>
             </div>
         </div>
         
@@ -399,10 +435,13 @@
                 document.addEventListener('DOMContentLoaded', async () => {
                     const container = document.getElementById('productsContainer');
                     try {
+                        const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+                            ? 'http://localhost:5000'
+                            : '';
                         const [prodRes, mainCatRes, subCatRes] = await Promise.all([
-                            fetch('http://localhost:5000/api/products'),
-                            fetch('http://localhost:5000/api/categories/main'),
-                            fetch('http://localhost:5000/api/categories/sub')
+                            fetch(`${API_BASE}/api/products`),
+                            fetch(`${API_BASE}/api/categories/main`),
+                            fetch(`${API_BASE}/api/categories/sub`)
                         ]);
                         
                         const products = await prodRes.json();
@@ -430,16 +469,27 @@
                             mainToSubs[mainName].add(subName);
                         });
 
-                        // Build top-level filter UI
                         let html = `
                             <div class="text-center" style="margin-bottom: 3rem;">
-                                <div id="main-filters" class="d-flex justify-content-center flex-wrap" style="margin-bottom: 1.5rem;">
-                                    <button class="btn btn-primary main-filter-btn" data-filter="all" onclick="filterMain('all', this)" style="margin: 5px 10px;">All Products</button>
+                                <div style="display: flex; justify-content: center; margin-bottom: 2rem;">
+                                    <div style="position: relative; width: 100%; max-width: 500px;">
+                                        <i class="fas fa-search" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: #888; font-size: 1.1rem;"></i>
+                                        <input type="text" id="globalProductSearch" placeholder="Search products by code, size, etc..." onkeyup="searchProducts(this.value)" style="width: 100%; padding: 12px 20px 12px 50px; border-radius: 30px; border: 2px solid #eaeaea; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); font-size: 1.1rem; outline: none; transition: border-color 0.3s; background: #fff;">
+                                    </div>
+                                </div>
+                                <div id="main-filters" style="display: flex; justify-content: center; flex-wrap: wrap; margin-bottom: 1.5rem;">
+                                    <button class="btn btn-outline-primary main-filter-btn" data-filter="all" onclick="filterMain('all', this)" style="margin: 5px 10px;">All Products</button>
                         `;
                         
-                        Object.keys(mainToSubs).forEach(mainCat => {
-                            html += `<button class="btn btn-outline-primary main-filter-btn" data-filter="${mainCat.replace(/"/g, '&quot;')}" onclick="filterMain('${mainCat.replace(/'/g, "\\'")}', this)" style="margin: 5px 10px;">${mainCat}</button>`;
+                        mainCategories.forEach(mc => {
+                            const mainCat = mc.name;
+                            if (mainToSubs[mainCat]) {
+                                html += `<button class="btn btn-outline-primary main-filter-btn" data-filter="${mainCat.replace(/"/g, '&quot;')}" onclick="filterMain('${mainCat.replace(/'/g, "\\'")}', this)" style="margin: 5px 10px;">${mainCat}</button>`;
+                            }
                         });
+                        if (mainToSubs['Uncategorized']) {
+                            html += `<button class="btn btn-outline-primary main-filter-btn" data-filter="Uncategorized" onclick="filterMain('Uncategorized', this)" style="margin: 5px 10px;">Uncategorized</button>`;
+                        }
                         
                         html += `
                                 </div>
@@ -455,19 +505,19 @@
                         products.forEach(p => {
                             const mainCat = mainCatMap[p.main_category_id] || 'Uncategorized';
                             const subCat = subCatMap[p.sub_category_id] || 'Others';
-                            const bgImage = p.image_url.startsWith('http') ? p.image_url : 'http://localhost:5000' + p.image_url;
+                            const bgImage = p.image_url.startsWith('http') ? p.image_url : (API_BASE + p.image_url);
                             
                             let parsedSpecs = [];
                             try {
                                 parsedSpecs = JSON.parse(p.specifications || '[]');
                             } catch(e) {}
                             
-                            // Backward compatibility
-                            if (parsedSpecs.length === 0 && (p.box_size || p.no_of_sticks || p.stick_length || p.no_of_boxes_carton)) {
-                                if (p.box_size) parsedSpecs.push({key: 'Box Size', val: p.box_size});
-                                if (p.no_of_sticks) parsedSpecs.push({key: 'No. of sticks', val: p.no_of_sticks});
-                                if (p.stick_length) parsedSpecs.push({key: 'Stick Length', val: p.stick_length});
-                                if (p.no_of_boxes_carton) parsedSpecs.push({key: 'No. of Boxes/Carton', val: p.no_of_boxes_carton});
+                            // Static specs template
+                            if (parsedSpecs.length === 0) {
+                                parsedSpecs.push({key: 'Box Size', val: p.box_size || '-'});
+                                parsedSpecs.push({key: 'No. of sticks', val: p.no_of_sticks || '-'});
+                                parsedSpecs.push({key: 'Stick Length', val: p.stick_length || '-'});
+                                parsedSpecs.push({key: 'No. of Boxes/Carton', val: p.no_of_boxes_carton || '-'});
                             }
                             
                             let specsHtml = `
@@ -475,7 +525,7 @@
                                     <li style="display: flex; align-items: flex-start; padding-bottom: 8px; margin-bottom: 8px; border-bottom: 1px solid #f3f4f6;">
                                         <span style="flex: 0 0 45%; max-width: 130px; font-weight: bold; color: #1f2937; padding-right: 5px; line-height: 1.3;">Product Code</span>
                                         <span style="margin-right: 12px; flex-shrink: 0; line-height: 1.3; color: #9ca3af;">-</span>
-                                        <span style="flex: 1; word-break: break-word; line-height: 1.3; color: #111827;">${p.product_code || '-'}</span>
+                                        <span style="flex: 1; word-break: break-word; line-height: 1.3; color: #111827; font-weight: 600; font-size: 1.05rem;">${p.product_code || '-'}</span>
                                     </li>
                                 </ul>
                                 <ul class="spec-list" style="list-style: none; padding: 0; margin-bottom: 0; color: #4b5563; font-size: 0.95rem; max-height: 250px; overflow-y: auto; overflow-x: hidden; padding-right: 5px;">
@@ -483,7 +533,7 @@
                                         <li style="display: flex; align-items: flex-start; padding-bottom: 8px; margin-bottom: 8px; border-bottom: 1px solid #f3f4f6;">
                                             <span style="flex: 0 0 45%; max-width: 130px; font-weight: bold; color: #1f2937; padding-right: 5px; line-height: 1.3;">${s.key || '-'}</span>
                                             <span style="margin-right: 12px; flex-shrink: 0; line-height: 1.3; color: #9ca3af;">-</span>
-                                            <span style="flex: 1; word-break: break-word; line-height: 1.3; color: #111827;">${s.val || '-'}</span>
+                                            <span style="flex: 1; word-break: break-word; line-height: 1.3; color: #111827; font-weight: 600; font-size: 1.05rem;">${s.val || '-'}</span>
                                         </li>
                                     `).join('')}
                                 </ul>
@@ -491,9 +541,8 @@
 
                             html += `
                                 <div class="product-card global-product" data-main="${mainCat.replace(/"/g, '&quot;')}" data-sub="${subCat.replace(/"/g, '&quot;')}" style="background: white; border: 1px solid #f3f4f6; border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); transition: all 0.1s ease-out; display: flex; flex-direction: column; height: 100%;">
-                                    <div style="height: 250px; width: 100%; position: relative; overflow: hidden; display: flex; justify-content: center; align-items: center; background-color: transparent; flex-shrink: 0;">
-                                        <img src="${bgImage}" loading="lazy" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; filter: blur(15px); transform: scale(1.2) translate3d(0,0,0); opacity: 0.8; z-index: 1;" alt="">
-                                        <img class="main-img" src="${bgImage}" loading="lazy" alt="Product" onload="this.style.objectFit = (this.naturalHeight > this.naturalWidth) ? 'contain' : 'cover';" style="width: 100%; height: 100%; object-fit: cover; position: relative; z-index: 2; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+                                    <div style="height: 250px; width: 100%; position: relative; overflow: hidden; display: flex; justify-content: center; align-items: center; background-color: #f8f9fa; border-bottom: 1px solid #e2e8f0; flex-shrink: 0;">
+                                        <img class="main-img" src="${bgImage}" loading="lazy" alt="Product" style="width: 100%; height: 100%; object-fit: contain; position: relative; z-index: 2;">
                                     </div>
                                     <div style="padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; background-color: #ffffff;">
                                         <div style="flex-grow: 1;">
@@ -510,8 +559,24 @@
                         // Store the mainToSubs mapping globally for the filter function
                         window.globalMainToSubs = {};
                         for (const key in mainToSubs) {
-                            window.globalMainToSubs[key] = Array.from(mainToSubs[key]);
+                            window.globalMainToSubs[key] = [];
+                            subCategories.forEach(sc => {
+                                if (mainToSubs[key].has(sc.name)) {
+                                    window.globalMainToSubs[key].push(sc.name);
+                                }
+                            });
+                            if (mainToSubs[key].has('Others')) {
+                                window.globalMainToSubs[key].push('Others');
+                            }
                         }
+                        
+                        // Default to the first category instead of "All Products"
+                        setTimeout(() => {
+                            const firstCategoryBtn = document.querySelectorAll('.main-filter-btn')[1]; // Index 0 is 'all'
+                            if (firstCategoryBtn) {
+                                firstCategoryBtn.click();
+                            }
+                        }, 50);
                         
                     } catch (err) {
                         console.error(err);
@@ -521,9 +586,40 @@
 
                 // Global filter variables
                 let currentMainFilter = 'all';
+                let currentSubFilter = 'all';
+                let currentSearchQuery = '';
+
+                window.applyFilters = function() {
+                    document.querySelectorAll('.global-product').forEach(card => {
+                        const mainMatch = currentMainFilter === 'all' || card.getAttribute('data-main') === currentMainFilter;
+                        const subMatch = currentSubFilter === 'all' || card.getAttribute('data-sub') === currentSubFilter;
+                        
+                        // Search match looks at the text inside the card (which includes product code and specs)
+                        const searchMatch = currentSearchQuery === '' || card.textContent.toLowerCase().includes(currentSearchQuery);
+                        
+                        if (mainMatch && subMatch && searchMatch) {
+                            card.style.display = 'flex';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                };
+
+                window.searchProducts = function(query) {
+                    currentSearchQuery = query.toLowerCase();
+                    if (query.trim() !== '' && currentMainFilter !== 'all') {
+                        const allBtn = document.querySelector('.main-filter-btn[data-filter="all"]');
+                        if (allBtn) {
+                            allBtn.click();
+                            return; // filterMain will automatically call applyFilters
+                        }
+                    }
+                    applyFilters();
+                };
 
                 window.filterMain = function(mainCat, btnElem) {
                     currentMainFilter = mainCat;
+                    currentSubFilter = 'all'; // reset sub filter when main changes
                     
                     // Update main buttons immediately for fast UI feedback
                     document.querySelectorAll('.main-filter-btn').forEach(btn => {
@@ -539,8 +635,7 @@
                         
                         if (mainCat === 'all') {
                             subContainer.style.setProperty('display', 'none', 'important');
-                            // Show all products
-                            document.querySelectorAll('.global-product').forEach(card => card.style.display = 'block');
+                            applyFilters();
                         } else {
                             // Generate sub buttons
                             const subs = window.globalMainToSubs[mainCat] || [];
@@ -560,15 +655,14 @@
                                 subContainer.style.setProperty('display', 'none', 'important');
                             }
                             
-                            // Show products for this main category
-                            document.querySelectorAll('.global-product').forEach(card => {
-                                card.style.display = (card.getAttribute('data-main') === mainCat) ? 'block' : 'none';
-                            });
+                            applyFilters();
                         }
                     }, 10);
                 };
                 
                 window.filterSub = function(subCat, btnElem) {
+                    currentSubFilter = subCat;
+                    
                     // Update sub buttons immediately for fast UI feedback
                     document.querySelectorAll('.sub-filter-btn').forEach(btn => {
                         btn.classList.remove('btn-secondary');
@@ -579,18 +673,7 @@
                     
                     // Defer heavy DOM manipulation
                     setTimeout(() => {
-                        // Filter within current main category
-                        document.querySelectorAll('.global-product').forEach(card => {
-                            if (card.getAttribute('data-main') === currentMainFilter) {
-                                if (subCat === 'all' || card.getAttribute('data-sub') === subCat) {
-                                    card.style.display = 'block';
-                                } else {
-                                    card.style.display = 'none';
-                                }
-                            } else {
-                                card.style.display = 'none';
-                            }
-                        });
+                        applyFilters();
                     }, 10);
                 };
             </script>

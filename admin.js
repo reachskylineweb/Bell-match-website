@@ -1,4 +1,7 @@
-const API_URL = 'http://localhost:5000/api';
+const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? 'http://localhost:5000'
+    : '';
+const API_URL = `${API_BASE}/api`;
 
 const loginSection = document.getElementById('loginSection');
 const dashboardSection = document.getElementById('dashboardSection');
@@ -64,11 +67,30 @@ function renderCategories() {
     // 1. Populate Main Categories List
     const mainList = document.getElementById('mainCategoryList');
     mainList.innerHTML = mainCategories.map(c => `
-        <div class="cat-item">
-            <span>${c.name}</span>
+        <div class="cat-item" data-id="${c.id}" style="cursor: grab;">
+            <span><i class="fas fa-grip-vertical text-muted me-2"></i>${c.name}</span>
             <button class="btn btn-sm btn-outline-danger" onclick="deleteMainCat(${c.id})"><i class="fas fa-trash"></i></button>
         </div>
     `).join('');
+
+    if (window.Sortable) {
+        Sortable.create(mainList, {
+            animation: 150,
+            onEnd: async function () {
+                const order = Array.from(mainList.children).map((child, index) => ({
+                    id: parseInt(child.getAttribute('data-id')),
+                    order_index: index
+                }));
+                try {
+                    await fetch(`${API_URL}/categories/main/reorder`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` },
+                        body: JSON.stringify({ order })
+                    });
+                } catch(err) { console.error('Error reordering main categories:', err); }
+            }
+        });
+    }
 
     // 2. Populate Dropdowns for adding sub category
     const parentSel = document.getElementById('parentMainCat');
@@ -76,15 +98,48 @@ function renderCategories() {
 
     // 3. Populate Sub Categories List
     const subList = document.getElementById('subCategoryList');
-    subList.innerHTML = subCategories.map(s => {
-        const parent = mainCategories.find(m => m.id === s.main_category_id);
-        const parentName = parent ? parent.name : 'Unknown';
-        return `
-        <div class="cat-item">
-            <span>${s.name} <small class="text-muted">(${parentName})</small></span>
-            <button class="btn btn-sm btn-outline-danger" onclick="deleteSubCat(${s.id})"><i class="fas fa-trash"></i></button>
-        </div>`
-    }).join('');
+    subList.innerHTML = '';
+    
+    mainCategories.forEach(mainCat => {
+        const subsForMain = subCategories.filter(s => s.main_category_id === mainCat.id);
+        if (subsForMain.length === 0) return;
+        
+        const groupHeader = document.createElement('div');
+        groupHeader.innerHTML = `<strong>${mainCat.name}</strong>`;
+        groupHeader.style.padding = '15px 0 5px 0';
+        groupHeader.style.borderBottom = '2px solid #eee';
+        groupHeader.style.marginBottom = '8px';
+        subList.appendChild(groupHeader);
+        
+        const groupContainer = document.createElement('div');
+        groupContainer.className = 'sub-sort-group';
+        groupContainer.innerHTML = subsForMain.map(s => `
+            <div class="cat-item" data-id="${s.id}" style="cursor: grab;">
+                <span><i class="fas fa-grip-vertical text-muted me-2"></i>${s.name}</span>
+                <button class="btn btn-sm btn-outline-danger" onclick="deleteSubCat(${s.id})"><i class="fas fa-trash"></i></button>
+            </div>
+        `).join('');
+        subList.appendChild(groupContainer);
+        
+        if (window.Sortable) {
+            Sortable.create(groupContainer, {
+                animation: 150,
+                onEnd: async function () {
+                    const order = Array.from(groupContainer.children).map((child, index) => ({
+                        id: parseInt(child.getAttribute('data-id')),
+                        order_index: index
+                    }));
+                    try {
+                        await fetch(`${API_URL}/categories/sub/reorder`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` },
+                            body: JSON.stringify({ order })
+                        });
+                    } catch(err) { console.error('Error reordering sub categories:', err); }
+                }
+            });
+        }
+    });
 
     // 4. Populate Product Add Form Dropdowns
     const prodMain = document.getElementById('prodMainCategory');
@@ -234,7 +289,7 @@ document.getElementById('prodImage').addEventListener('change', function(e) {
             document.getElementById('cropperModal').addEventListener('shown.bs.modal', function () {
                 if (cropper) cropper.destroy();
                 cropper = new Cropper(document.getElementById('cropperImage'), {
-                    viewMode: 2,
+                    viewMode: 0,
                     autoCropArea: 0.9,
                 });
             }, { once: true });
@@ -254,6 +309,14 @@ document.getElementById('cropRotateRight').addEventListener('click', function() 
     if (cropper) cropper.rotate(90);
 });
 
+document.getElementById('cropZoomIn').addEventListener('click', function() {
+    if (cropper) cropper.zoom(0.1);
+});
+
+document.getElementById('cropZoomOut').addEventListener('click', function() {
+    if (cropper) cropper.zoom(-0.1);
+});
+
 document.getElementById('cropApplyBtn').addEventListener('click', function() {
     if (!cropper) return;
     
@@ -262,7 +325,7 @@ document.getElementById('cropApplyBtn').addEventListener('click', function() {
         maxWidth: 1000,
         maxHeight: 1000
     });
-    const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+    const dataUrl = canvas.toDataURL('image/png');
     
     // Update live preview
     const pImg = document.getElementById('previewImg');
@@ -270,12 +333,12 @@ document.getElementById('cropApplyBtn').addEventListener('click', function() {
         this.style.objectFit = (this.naturalHeight > this.naturalWidth) ? 'contain' : 'cover';
     };
     pImg.src = dataUrl;
-    document.getElementById('previewBlurBg').style.backgroundImage = `url('${dataUrl}')`;
+    
     
     // Store as Blob for uploading
     canvas.toBlob(function(blob) {
         croppedImageBlob = blob;
-    }, 'image/jpeg', 0.8);
+    }, 'image/png');
     
     bootstrap.Modal.getInstance(document.getElementById('cropperModal')).hide();
 });
@@ -296,7 +359,7 @@ function renderProductsTable() {
         const catText = (p.main_category_name || 'Uncategorized') + (p.sub_category_name ? ` > ${p.sub_category_name}` : '');
         return `
         <tr>
-            <td><img src="http://localhost:5000${p.image_url}" alt="Product" style="width: 50px; height: 50px; object-fit: contain; background: #eee; border-radius: 4px;"></td>
+            <td><img src="${API_BASE}${p.image_url}" alt="Product" style="width: 50px; height: 50px; object-fit: contain; background: #eee; border-radius: 4px;"></td>
             <td>${p.product_code || '-'}</td>
             <td><span class="badge bg-secondary">${catText}</span></td>
             <td>
@@ -346,11 +409,11 @@ window.editProduct = function(id) {
     document.getElementById('prodSubCategory').value = p.sub_category_id || '';
     
     // Set preview image
-    const imgUrl = 'http://localhost:5000' + p.image_url;
+    const imgUrl = (p.image_url.startsWith('http') ? p.image_url : (API_BASE + p.image_url));
     const eImg = document.getElementById('previewImg');
     eImg.onload = function() { this.style.objectFit = (this.naturalHeight > this.naturalWidth) ? 'contain' : 'cover'; };
     eImg.src = imgUrl;
-    document.getElementById('previewBlurBg').style.backgroundImage = `url('${imgUrl}')`;
+    
     updateLivePreview();
     
     document.getElementById('addProductForm').scrollIntoView({ behavior: 'smooth' });
@@ -367,7 +430,7 @@ document.getElementById('cancelEditBtn').addEventListener('click', () => {
     document.getElementById('useCustomSpecsBtn').checked = false;
     toggleSpecTemplate();
     document.getElementById('previewImg').src = 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22400%22%20height%3D%22250%22%20viewBox%3D%220%200%20400%20250%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23eeeeee%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20font-family%3D%22sans-serif%22%20font-size%3D%2216%22%20fill%3D%22%23999999%22%3EUpload%20Image%3C%2Ftext%3E%3C%2Fsvg%3E';
-    document.getElementById('previewBlurBg').style.backgroundImage = `url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22400%22%20height%3D%22250%22%20viewBox%3D%220%200%20400%20250%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23eeeeee%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20font-family%3D%22sans-serif%22%20font-size%3D%2216%22%20fill%3D%22%23999999%22%3EUpload%20Image%3C%2Ftext%3E%3C%2Fsvg%3E')`;
+    
     croppedImageBlob = null;
     updateLivePreview();
     updateProdSubCategory();
@@ -376,12 +439,12 @@ document.getElementById('cancelEditBtn').addEventListener('click', () => {
 document.getElementById('editExistingImgBtn').addEventListener('click', function() {
     const p = allProducts.find(x => x.id === editingProductId);
     if (!p) return;
-    document.getElementById('cropperImage').src = 'http://localhost:5000' + p.image_url;
+    document.getElementById('cropperImage').src = (p.image_url.startsWith('http') ? p.image_url : (API_BASE + p.image_url));
     const cropModal = new bootstrap.Modal(document.getElementById('cropperModal'));
     cropModal.show();
     document.getElementById('cropperModal').addEventListener('shown.bs.modal', function () {
         if (cropper) cropper.destroy();
-        cropper = new Cropper(document.getElementById('cropperImage'), { viewMode: 2, autoCropArea: 0.9 });
+        cropper = new Cropper(document.getElementById('cropperImage'), { viewMode: 0, autoCropArea: 0.9 });
     }, { once: true });
 });
 
@@ -410,7 +473,7 @@ document.getElementById('addProductForm').addEventListener('submit', async (e) =
     }
     formData.append('image_style', 'contain');
     
-    if (croppedImageBlob) formData.append('image', croppedImageBlob, 'product_image.jpg');
+    if (croppedImageBlob) formData.append('image', croppedImageBlob, 'product_image.png');
     
     const url = editingProductId ? `${API_URL}/products/${editingProductId}` : `${API_URL}/products`;
     const method = editingProductId ? 'PUT' : 'POST';

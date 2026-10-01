@@ -20,7 +20,8 @@ const db = new sqlite3.Database(dbPath, (err) => {
             // Main Categories
             db.run(`CREATE TABLE IF NOT EXISTS main_categories (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT NOT NULL
+                name TEXT NOT NULL,
+                order_index INTEGER DEFAULT 0
             )`);
 
             // Sub Categories
@@ -28,6 +29,7 @@ const db = new sqlite3.Database(dbPath, (err) => {
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 main_category_id INTEGER NOT NULL,
                 name TEXT NOT NULL,
+                order_index INTEGER DEFAULT 0,
                 FOREIGN KEY (main_category_id) REFERENCES main_categories(id)
             )`);
 

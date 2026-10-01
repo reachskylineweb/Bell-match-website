@@ -860,6 +860,28 @@ p { margin-bottom: 1rem; color: var(--text-muted); }
   margin-bottom: 3rem;
 }
 
+.footer-contact li i {
+  color: var(--gold-accent);
+  margin-top: 4px;
+}
+
+.social-links {
+  display: flex;
+  gap: 1.25rem;
+  align-items: center;
+}
+
+.social-links a {
+  color: #9CA3AF;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.social-links a:hover {
+  color: var(--gold-accent);
+  transform: translateY(-2px);
+}
+
 .footer-col h4 {
   color: var(--gold-accent);
   margin-bottom: 1.5rem;
@@ -1100,7 +1122,7 @@ p { margin-bottom: 1rem; color: var(--text-muted); }
 #preloader.fade-out {
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
 }
 .preloader-content {
   position: relative;
@@ -1227,7 +1249,7 @@ p { margin-bottom: 1rem; color: var(--text-muted); }
 .preloader-content.animate .preloader-text, 
 .preloader-content.animate .preloader-progress-wrapper, 
 .preloader-content.animate .preloader-percent {
-  animation: preloaderFadeIn 0.15s ease-out 0.25s forwards;
+  animation: preloaderFadeIn 0.15s ease-out 0s forwards;
 }
 
 @keyframes preloaderFadeIn {
@@ -1457,6 +1479,8 @@ p { margin-bottom: 1rem; color: var(--text-muted); }
   overflow: hidden;
   box-shadow: var(--shadow-md);
   transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
 }
 
 .product-card:hover {
@@ -1482,6 +1506,9 @@ p { margin-bottom: 1rem; color: var(--text-muted); }
 
 .product-card-body {
   padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 
 .product-card-body h3 {
@@ -1503,6 +1530,8 @@ p { margin-bottom: 1rem; color: var(--text-muted); }
   font-weight: 800;
   font-size: 0.75rem;
   transition: gap 0.2s ease;
+  margin-top: auto;
+  align-self: flex-start;
 }
 
 .btn-link:hover {
@@ -2755,7 +2784,7 @@ p { margin-bottom: 1rem; color: var(--text-muted); }
 
 /* Premium Glass Shimmer Effect for Bento Cards */
 .bento-card::after {
-    content: '';
+    display: none;
     position: absolute;
     top: 0;
     left: -150%;
