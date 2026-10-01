@@ -5,11 +5,10 @@ async function loadComponents() {
         { id: 'footer-component', url: 'layout/footer.html' }
     ];
 
-    for (let comp of components) {
+    await Promise.all(components.map(async comp => {
         const el = document.getElementById(comp.id);
         if (el) {
             try {
-
                 const response = await fetch(comp.url);
                 if (response.ok) {
                     el.innerHTML = await response.text();
@@ -18,7 +17,7 @@ async function loadComponents() {
                 console.error('Error loading component:', comp.url, e);
             }
         }
-    }
+    }));
 
     // Set active link based on current page
     const currentPath = window.location.pathname.split('/').pop() || 'index.html';
@@ -35,76 +34,41 @@ async function loadComponents() {
 
 loadComponents();
 
-document.addEventListener('ComponentsLoaded', () => {
-  // Cinematic Preloader Logic
+// Cinematic Preloader Logic - starts immediately so it never freezes at 0%
+(function initPreloader() {
   const preloader = document.getElementById('preloader');
-  
-  let currentLoaderInterval = null;
-  let currentLoaderTimeout = null;
+  if (!preloader) return;
 
-  function playPreloader(onComplete) {
-    if (!preloader) return;
-    
-    if (currentLoaderInterval) clearInterval(currentLoaderInterval);
-    if (currentLoaderTimeout) clearTimeout(currentLoaderTimeout);
-
-    // Reset state
-    preloader.classList.remove('fade-out');
-    document.body.style.overflow = 'hidden';
-    
-    // Clone and replace the content to 100% reliably restart CSS animations
-    const oldContent = preloader.querySelector('.preloader-content');
-    oldContent.classList.remove('animate');
-    const newContent = oldContent.cloneNode(true);
-    oldContent.parentNode.replaceChild(newContent, oldContent);
-    newContent.classList.add('animate');
-    
-    const percentEl = document.getElementById('preloaderPercent');
-    const glowEl = document.getElementById('progressGlow');
-    const sparksContainer = document.getElementById('preloaderSparks');
-    
-    let progress = 0;
-    const duration = 300;
-    
-    // Enable hardware-accelerated CSS transition for the progress bar
-    glowEl.style.transition = `width ${duration}ms linear`;
-    percentEl.textContent = '0%';
-    glowEl.style.width = '0%';
-    if (sparksContainer) sparksContainer.innerHTML = '';
-
-
-      let startTime = null;
-      
-      // Trigger the CSS transition
-      glowEl.style.width = '100%';
-
-      function animateProgress(timestamp) {
-        if (!startTime) startTime = timestamp;
-        const elapsed = timestamp - startTime;
-        let progress = Math.min((elapsed / duration) * 100, 100);
-        
-        percentEl.textContent = Math.floor(progress) + '%';
-
-        if (progress < 100) {
-          currentLoaderInterval = requestAnimationFrame(animateProgress);
-        } else {
-          setTimeout(() => {
-            if (onComplete) {
-              onComplete();
-            } else {
-              preloader.classList.add('fade-out');
-              document.body.style.overflow = 'auto';
-            }
-          }, 20);
-        }
-      }
-      
-      currentLoaderInterval = requestAnimationFrame(animateProgress);
-
+  const content = preloader.querySelector('.preloader-content');
+  if (content && !content.classList.contains('animate')) {
+    content.classList.add('animate');
   }
 
-  // Play immediately on load
-  playPreloader();
+  const percentEl = document.getElementById('preloaderPercent');
+  const glowEl = document.getElementById('progressGlow');
+
+  let startTime = null;
+  const duration = 400; // Smooth 400ms progress
+
+  function animateProgress(timestamp) {
+    if (!startTime) startTime = timestamp;
+    const elapsed = timestamp - startTime;
+    const progress = Math.min((elapsed / duration) * 100, 100);
+
+    if (percentEl) percentEl.textContent = Math.floor(progress) + '%';
+    if (glowEl) glowEl.style.width = progress + '%';
+
+    if (progress < 100) {
+      requestAnimationFrame(animateProgress);
+    } else {
+      setTimeout(() => {
+        preloader.classList.add('fade-out');
+        document.body.style.overflow = 'auto';
+      }, 40);
+    }
+  }
+
+  requestAnimationFrame(animateProgress);
 
   // Fix browser Back button (bfcache) freezing the loader
   window.addEventListener('pageshow', (e) => {
@@ -113,6 +77,9 @@ document.addEventListener('ComponentsLoaded', () => {
       document.body.style.overflow = 'auto';
     }
   });
+})();
+
+document.addEventListener('ComponentsLoaded', () => {
 
   // Premium Mobile Menu Toggle
   const mobileMenuToggle = document.getElementById('mobileMenuToggle');
