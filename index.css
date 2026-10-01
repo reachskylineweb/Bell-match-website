@@ -189,7 +189,7 @@ p { margin-bottom: 1rem; color: var(--text-muted); }
   letter-spacing: 1.5px;
   text-transform: uppercase;
   font-size: 0.75rem;
-  color: var(--gold-accent);
+  color: #F8FAFC;
 }
 
 /* =============================================
@@ -889,7 +889,7 @@ p { margin-bottom: 1rem; color: var(--text-muted); }
 }
 
 .footer-col p {
-  color: #9CA3AF;
+  color: #E5E7EB;
 }
 
 .footer-links {
@@ -899,7 +899,7 @@ p { margin-bottom: 1rem; color: var(--text-muted); }
 }
 
 .footer-links a {
-  color: #9CA3AF;
+  color: #E5E7EB;
 }
 
 .footer-links a:hover {
@@ -911,7 +911,7 @@ p { margin-bottom: 1rem; color: var(--text-muted); }
   display: flex;
   gap: 1rem;
   margin-bottom: 1rem;
-  color: #9CA3AF;
+  color: #E5E7EB;
 }
 
 .footer-contact i {
@@ -923,7 +923,7 @@ p { margin-bottom: 1rem; color: var(--text-muted); }
   background-color: #111827;
   padding: 1.5rem 0;
   text-align: center;
-  color: #6B7280;
+  color: #CBD5E1;
   font-size: 0.875rem;
 }
 
@@ -3475,7 +3475,8 @@ p { margin-bottom: 1rem; color: var(--text-muted); }
         font-size: 1rem; /* Clear social icons */
     }
 }
-/ *   F o r c e   C a c h e   C l e a r   1 0 0   * /  
+/ *   F o r c e   C a c h e   C l e a r   1 0 0   * / 
+ 
  .mobile-menu-close {
   position: absolute;
   top: 30px;
