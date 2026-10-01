@@ -739,16 +739,54 @@
             @media (max-width: 992px) {
                 .export-quote-grid {
                     grid-template-columns: 1fr;
-                    gap: 3rem;
+                    gap: 2.5rem;
                 }
             }
-            @media (max-width: 640px) {
+            @media (max-width: 768px) {
+                #quote {
+                    padding: 3rem 0 !important;
+                }
+                .export-quote-grid {
+                    gap: 2rem;
+                }
                 .export-form-row {
-                    grid-template-columns: 1fr;
-                    gap: 1.15rem;
+                    grid-template-columns: 1fr !important;
+                    gap: 1rem !important;
+                    margin-bottom: 1rem !important;
                 }
                 .export-form-card {
-                    padding: 1.75rem 1.25rem;
+                    padding: 1.75rem 1.25rem !important;
+                    border-radius: 14px !important;
+                }
+                .export-contacts-grid {
+                    grid-template-columns: 1fr !important;
+                }
+            }
+            @media (max-width: 480px) {
+                #quote {
+                    padding: 2rem 0 !important;
+                }
+                .export-form-card {
+                    padding: 1.35rem 1rem !important;
+                    border-radius: 12px !important;
+                }
+                .export-form-card h3 {
+                    font-size: 1.35rem !important;
+                }
+                .export-form-input {
+                    font-size: 16px !important; /* Prevents auto zoom-in on iOS Safari */
+                    padding: 10px 12px !important;
+                }
+                .export-form-submit-btn {
+                    padding: 13px 16px !important;
+                    font-size: 0.88rem !important;
+                    letter-spacing: 0.5px !important;
+                }
+                .export-trust-footer {
+                    flex-direction: column !important;
+                    align-items: center !important;
+                    gap: 8px !important;
+                    text-align: center !important;
                 }
             }
         </style>
@@ -802,7 +840,7 @@
 
                     <!-- Direct Contact Chips -->
                     <div style="display: grid; gap: 0.75rem;">
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                        <div class="export-contacts-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
                             <a href="tel:+917845965010" class="export-touch-item">
                                 <div class="export-touch-icon">
                                     <i class="fas fa-phone-alt"></i>
@@ -893,14 +931,14 @@
                             <textarea class="export-form-input" rows="4" placeholder="Specify your container volume (e.g. 1x20ft or 40ft FCL), matchbox size, splint length, stick count, or custom packaging needs..." required style="resize: vertical;"></textarea>
                         </div>
 
-                        <button type="submit" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 15px; background: linear-gradient(135deg, #b71c1c 0%, #991b1b 100%); color: #ffffff; border: none; border-radius: 10px; font-size: 1.02rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.75px; cursor: pointer; transition: all 0.25s ease; box-shadow: 0 8px 20px -3px rgba(183, 28, 28, 0.35);" onmouseover="this.style.boxShadow='0 12px 25px -3px rgba(183, 28, 28, 0.45)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.boxShadow='0 8px 20px -3px rgba(183, 28, 28, 0.35)'; this.style.transform='translateY(0)';">
+                        <button type="submit" class="export-form-submit-btn" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 15px; background: linear-gradient(135deg, #b71c1c 0%, #991b1b 100%); color: #ffffff; border: none; border-radius: 10px; font-size: 1.02rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.75px; cursor: pointer; transition: all 0.25s ease; box-shadow: 0 8px 20px -3px rgba(183, 28, 28, 0.35);" onmouseover="this.style.boxShadow='0 12px 25px -3px rgba(183, 28, 28, 0.45)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.boxShadow='0 8px 20px -3px rgba(183, 28, 28, 0.35)'; this.style.transform='translateY(0)';">
                             <span>Submit Export Quote Request</span>
                             <i class="fas fa-paper-plane"></i>
                         </button>
                     </form>
 
                     <!-- Trust Footnote -->
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.35rem; padding-top: 1.15rem; border-top: 1px solid #f1f5f9; font-size: 0.78rem; color: #64748b; flex-wrap: wrap; gap: 8px;">
+                    <div class="export-trust-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.35rem; padding-top: 1.15rem; border-top: 1px solid #f1f5f9; font-size: 0.78rem; color: #64748b; flex-wrap: wrap; gap: 8px;">
                         <span><i class="fas fa-shield-alt" style="color: #10b981; margin-right: 4px;"></i> Direct Factory Pricing</span>
                         <span><i class="fas fa-clock" style="color: #f59e0b; margin-right: 4px;"></i> 24h Turnaround</span>
                         <span><i class="fas fa-lock" style="color: #3b82f6; margin-right: 4px;"></i> 100% Confidential</span>

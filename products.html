@@ -376,6 +376,24 @@
                 color: white;
             }
 
+            #main-filters, #sub-filters-container {
+                display: flex !important;
+                flex-wrap: wrap !important;
+                justify-content: center !important;
+                align-items: center !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                box-sizing: border-box !important;
+                overflow-x: hidden !important;
+                gap: 6px !important;
+            }
+            .sub-filter-btn {
+                white-space: normal !important;
+                text-align: center !important;
+                line-height: 1.25 !important;
+                margin: 3px !important;
+            }
+
         </style>
 
         <div class="right-content">
@@ -578,23 +596,23 @@
                                         <input type="text" id="globalProductSearch" placeholder="Search products by code, size, etc..." onkeyup="searchProducts(this.value)" style="width: 100%; padding: 12px 20px 12px 50px; border-radius: 30px; border: 2px solid #eaeaea; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); font-size: 1.1rem; outline: none; transition: border-color 0.3s; background: #fff;">
                                     </div>
                                 </div>
-                                <div id="main-filters" style="display: flex; justify-content: center; flex-wrap: wrap; margin-bottom: 1.5rem;">
-                                    <button class="btn btn-outline-primary main-filter-btn" data-filter="all" onclick="filterMain('all', this)" style="margin: 5px 10px;">All Products</button>
+                                <div id="main-filters" style="display: flex; justify-content: center; flex-wrap: wrap; margin-bottom: 1.5rem; gap: 6px;">
+                                    <button class="btn btn-outline-primary main-filter-btn" data-filter="all" onclick="filterMain('all', this)" style="margin: 4px;">All Products</button>
                         `;
                         
                         mainCategories.forEach(mc => {
                             const mainCat = mc.name;
                             if (mainToSubs[mainCat]) {
-                                html += `<button class="btn btn-outline-primary main-filter-btn" data-filter="${mainCat.replace(/"/g, '&quot;')}" onclick="filterMain('${mainCat.replace(/'/g, "\\'")}', this)" style="margin: 5px 10px;">${mainCat}</button>`;
+                                html += `<button class="btn btn-outline-primary main-filter-btn" data-filter="${mainCat.replace(/"/g, '&quot;')}" onclick="filterMain('${mainCat.replace(/'/g, "\\'")}', this)" style="margin: 4px;">${mainCat}</button>`;
                             }
                         });
                         if (mainToSubs['Uncategorized']) {
-                            html += `<button class="btn btn-outline-primary main-filter-btn" data-filter="Uncategorized" onclick="filterMain('Uncategorized', this)" style="margin: 5px 10px;">Uncategorized</button>`;
+                            html += `<button class="btn btn-outline-primary main-filter-btn" data-filter="Uncategorized" onclick="filterMain('Uncategorized', this)" style="margin: 4px;">Uncategorized</button>`;
                         }
                         
                         html += `
                                 </div>
-                                <div id="sub-filters-container" class="d-flex justify-content-center flex-wrap" style="display: none !important;">
+                                <div id="sub-filters-container" style="display: none !important; flex-wrap: wrap !important; justify-content: center !important; align-items: center !important; max-width: 100%; box-sizing: border-box; margin-bottom: 2rem; gap: 6px;">
                                     <!-- Dynamic sub filters go here -->
                                 </div>
                             </div>
@@ -742,14 +760,15 @@
                             const subs = window.globalMainToSubs[mainCat] || [];
                             if (subs.length > 0 && !(subs.length === 1 && subs[0] === 'Others')) {
                                 subContainer.style.setProperty('display', 'flex', 'important');
-                                let subHtml = `<button class="btn btn-sm btn-secondary sub-filter-btn" onclick="filterSub('all', this)" style="margin: 5px 10px;">All ${mainCat}</button>`;
+                                subContainer.style.setProperty('flex-wrap', 'wrap', 'important');
+                                let subHtml = `<button class="btn btn-sm btn-secondary sub-filter-btn" onclick="filterSub('all', this)" style="margin: 3px;">All ${mainCat}</button>`;
                                 subs.forEach(sub => {
                                     if (sub !== 'Others') {
-                                        subHtml += `<button class="btn btn-sm btn-outline-secondary sub-filter-btn" onclick="filterSub('${sub.replace(/'/g, "\\'")}', this)" style="margin: 5px 10px;">${sub}</button>`;
+                                        subHtml += `<button class="btn btn-sm btn-outline-secondary sub-filter-btn" onclick="filterSub('${sub.replace(/'/g, "\\'")}', this)" style="margin: 3px;">${sub}</button>`;
                                     }
                                 });
                                 if (subs.includes('Others')) {
-                                    subHtml += `<button class="btn btn-sm btn-outline-secondary sub-filter-btn" onclick="filterSub('Others', this)" style="margin: 5px 10px;">Others</button>`;
+                                    subHtml += `<button class="btn btn-sm btn-outline-secondary sub-filter-btn" onclick="filterSub('Others', this)" style="margin: 3px;">Others</button>`;
                                 }
                                 subContainer.innerHTML = subHtml;
                             } else {
