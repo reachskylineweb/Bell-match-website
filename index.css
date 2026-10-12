@@ -4346,95 +4346,143 @@ p { margin-bottom: 1rem; color: var(--text-muted); }
   }
 }
 
-/* Floating Bottom Action Buttons on Mobile: Side-by-side, NO background bar */
+/* Docked Bottom Action Bar on Mobile (Matching Reference Design: Non-floating, docked bar with gold accent) */
 @media (max-width: 768px) {
   .floating-actions {
     position: fixed !important;
-    bottom: 16px !important;
-    left: 16px !important;
-    right: 16px !important;
-    width: calc(100% - 32px) !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 56px !important;
     display: flex !important;
     flex-direction: row !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 12px !important;
-    background: transparent !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    border: none !important;
-    box-shadow: none !important;
+    align-items: stretch !important;
+    justify-content: space-between !important;
+    gap: 0 !important;
+    background: #0b0f19 !important;
+    border-top: 2.5px solid #c49a6c !important;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.45) !important;
     padding: 0 !important;
+    padding-bottom: env(safe-area-inset-bottom, 0px) !important;
+    margin: 0 !important;
     z-index: 9999 !important;
-    pointer-events: none !important;
-  }
-
-  .floating-actions > * {
     pointer-events: auto !important;
+    box-sizing: border-box !important;
   }
 
+  /* Left Action: WhatsApp / Call */
   .floating-actions a[href*="wa.me"] {
-    flex: 0 0 48px !important;
-    width: 48px !important;
-    height: 48px !important;
-    border-radius: 50% !important;
-    background-color: #25d366 !important;
-    color: #ffffff !important;
+    flex: 1 1 50% !important;
+    width: 50% !important;
+    height: 100% !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.12) !important;
     display: flex !important;
+    flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
-    font-size: 26px !important;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3) !important;
+    gap: 3px !important;
+    box-shadow: none !important;
     margin: 0 !important;
+    padding: 6px 0 !important;
     text-decoration: none !important;
-    transition: transform 0.2s ease !important;
+    align-self: stretch !important;
+    box-sizing: border-box !important;
+    transition: background 0.2s ease !important;
+    transform: none !important;
   }
   .floating-actions a[href*="wa.me"]:active {
-    transform: scale(0.92) !important;
+    background: rgba(37, 211, 102, 0.12) !important;
+    transform: none !important;
+  }
+  .floating-actions a[href*="wa.me"] i {
+    font-size: 1.2rem !important;
+    color: #25d366 !important;
+    margin: 0 !important;
+    line-height: 1 !important;
+  }
+  .floating-actions a[href*="wa.me"]::after {
+    content: "WHATSAPP" !important;
+    font-family: 'Outfit', 'Inter', sans-serif !important;
+    font-size: 0.72rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.8px !important;
+    text-transform: uppercase !important;
+    color: #f1f5f9 !important;
+    line-height: 1 !important;
   }
 
+  /* Right Action: Contact Us / Consultation */
   .floating-actions .quote-pill {
-    flex: 1 !important;
-    max-width: 320px !important;
-    height: 48px !important;
-    border-radius: 30px !important;
-    background: linear-gradient(135deg, #c41e1e 0%, #b71c1c 100%) !important;
-    color: #ffffff !important;
+    flex: 1 1 50% !important;
+    width: 50% !important;
+    max-width: none !important;
+    height: 100% !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    border: none !important;
     display: flex !important;
+    flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
-    font-family: 'Outfit', 'Inter', sans-serif !important;
-    font-size: 0.95rem !important;
-    font-weight: 700 !important;
-    letter-spacing: 0.5px !important;
-    text-transform: uppercase !important;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3) !important;
-    text-decoration: none !important;
-    border: none !important;
-    cursor: pointer !important;
+    gap: 3px !important;
+    box-shadow: none !important;
     margin: 0 !important;
-    transition: transform 0.2s ease !important;
+    padding: 6px 0 !important;
+    text-decoration: none !important;
+    font-family: 'Outfit', 'Inter', sans-serif !important;
+    font-size: 0.72rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.8px !important;
+    text-transform: uppercase !important;
+    color: #f1f5f9 !important;
+    line-height: 1 !important;
+    box-sizing: border-box !important;
+    transition: background 0.2s ease !important;
+    transform: none !important;
   }
   .floating-actions .quote-pill:active {
-    transform: scale(0.95) !important;
+    background: rgba(196, 154, 108, 0.15) !important;
+    transform: none !important;
+  }
+  .floating-actions .quote-pill::before {
+    content: "\f0e0" !important;
+    font-family: "Font Awesome 6 Free" !important;
+    font-weight: 900 !important;
+    font-size: 1.15rem !important;
+    color: #c49a6c !important;
+    margin: 0 !important;
+    line-height: 1 !important;
   }
 
+  /* Back to Top button sits right above the docked bar */
   .floating-actions .back-to-top {
     position: fixed !important;
-    bottom: 76px !important;
-    right: 18px !important;
-    width: 40px !important;
-    height: 40px !important;
-    font-size: 1rem !important;
+    bottom: calc(66px + env(safe-area-inset-bottom, 0px)) !important;
+    right: 14px !important;
+    width: 38px !important;
+    height: 38px !important;
+    font-size: 0.95rem !important;
     z-index: 9998 !important;
     border-radius: 50% !important;
-    background: rgba(30, 32, 40, 0.9) !important;
-    color: #fff !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+    background: rgba(11, 15, 25, 0.92) !important;
+    border: 1px solid rgba(196, 154, 108, 0.35) !important;
+    color: #c49a6c !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4) !important;
     margin: 0 !important;
   }
   .floating-actions .back-to-top:not(.visible) {
     display: none !important;
+  }
+
+  /* Prevent page content from being hidden behind docked bar */
+  .footer {
+    padding-bottom: calc(70px + env(safe-area-inset-bottom, 0px)) !important;
   }
 }
 
