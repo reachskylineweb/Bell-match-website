@@ -44,6 +44,16 @@ All modifications made in this portal are reflected instantly across the global 
 
 Scroll to the **"Add New Product"** section on the dashboard:
 
+### Prerequisite: Prepare Clean Product Images (Background Removal via PhotoRoom)
+> **Recommended for Best Results:** To ensure your matchboxes display with crystal clarity and a seamless, professional floating appearance on the live website catalog, always remove the image background before uploading. Follow these quick steps using PhotoRoom Free Background Remover:
+
+1. **Open PhotoRoom Tool:** Navigate to [https://www.photoroom.com/tools/background-remover](https://www.photoroom.com/tools/background-remover) in your browser.
+2. **Upload Your Photo:** Click the blue **"+ Start from Photo"** button (or drag and drop your matchbox photo).
+3. **Automatic AI Background Removal:** PhotoRoom's AI will automatically isolate the matchbox from the background in 2 to 3 seconds.
+4. **Select Transparent Background:** Choose the **Transparent** background option (marked by the gray checkerboard pattern) so there is no white or colored box around the product.
+5. **Download Clean PNG:** Click the **"Download"** button to save the high-resolution transparent `.png` file to your computer or mobile device.
+6. **Ready for Upload:** Keep this clean transparent PNG ready to upload in Step 3.4 below.
+
 ### Step 3.1: Enter Basic Identification
 1. **Product Code:** Enter the unique factory SKU or item code (e.g., `BM-101`, `BX-40`, `DIVA-604`).
 2. **Main Category:** Select the appropriate parent category from the dropdown (e.g., `ADVERTISING MATCHES`, `PAPER PRODUCTS`, `RESALE`).
