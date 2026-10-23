@@ -194,33 +194,98 @@
     
 
     <!-- Redesigned Company Profile Section -->
-    <section class="section" style="padding: 2.5rem 0; background-color: #ffffff;">
+    <section class="section company-profile-section" style="padding: 2.5rem 0; background-color: #ffffff;">
         <style>
             @media (max-width: 768px) {
-                .company-profile-title,
-                .company-profile-subtitle {
+                .company-profile-section {
+                    padding: 2rem 0 !important;
+                }
+                .company-profile-grid {
+                    display: flex !important;
+                    flex-direction: column !important;
+                    gap: 1.25rem !important;
+                }
+                .company-profile-content {
+                    display: contents !important;
+                }
+                .company-profile-header {
+                    order: 1 !important;
+                    width: 100% !important;
                     text-align: center !important;
+                }
+                .company-profile-title {
+                    font-size: clamp(1.55rem, 5.5vw, 1.85rem) !important;
+                    line-height: 1.25 !important;
+                    letter-spacing: 0.5px !important;
+                    margin-bottom: 0.45rem !important;
+                    text-align: center !important;
+                }
+                .company-profile-subtitle {
+                    font-size: 0.95rem !important;
+                    line-height: 1.45 !important;
+                    letter-spacing: 0.2px !important;
+                    margin-bottom: 0.5rem !important;
+                    padding: 0 0.5rem !important;
+                    text-align: center !important;
+                }
+                .company-profile-media {
+                    order: 2 !important;
+                    width: 100% !important;
+                    margin: 0.5rem 0 1rem 0 !important;
+                    height: auto !important;
+                }
+                .company-profile-media video {
+                    width: 100% !important;
+                    height: 220px !important;
+                    max-height: 240px !important;
+                    object-fit: cover !important;
+                    border-radius: 12px !important;
+                }
+                .company-profile-desc {
+                    order: 3 !important;
+                    width: 100% !important;
+                }
+                .company-profile-desc p {
+                    font-size: 0.95rem !important;
+                    line-height: 1.65 !important;
+                    margin-bottom: 0.85rem !important;
+                    text-align: left !important;
+                }
+            }
+            @media (max-width: 480px) {
+                .company-profile-title {
+                    font-size: 1.55rem !important;
+                }
+                .company-profile-subtitle {
+                    font-size: 0.88rem !important;
+                }
+                .company-profile-media video {
+                    height: 200px !important;
                 }
             }
         </style>
         <div class="container">
-            <div class="grid grid-cols-2" style="align-items: stretch; gap: 4rem;">
-                <div>
-                    <h2 class="company-profile-title" style="color: var(--primary-red); font-size: 2.5rem; margin-bottom: 0.5rem; font-family: 'Poppins', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Our Company Profile</h2>
-                    <h4 class="company-profile-subtitle" style="color: var(--gold-accent); font-size: 1.2rem; margin-bottom: 1.5rem; font-style: italic; font-weight: 400; letter-spacing: 0.5px; font-family: 'Lora', serif;">Trusted Manufacturer &amp; Global Exporter of Premium Wooden Safety Matches</h4>
+            <div class="grid grid-cols-2 company-profile-grid" style="align-items: stretch; gap: 4rem;">
+                <div class="company-profile-content">
+                    <div class="company-profile-header">
+                        <h2 class="company-profile-title" style="color: var(--primary-red); font-size: 2.5rem; margin-bottom: 0.5rem; font-family: 'Poppins', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Our Company Profile</h2>
+                        <h4 class="company-profile-subtitle" style="color: var(--gold-accent); font-size: 1.2rem; margin-bottom: 1.5rem; font-style: italic; font-weight: 400; letter-spacing: 0.5px; font-family: 'Lora', serif;">Trusted Manufacturer &amp; Global Exporter of Premium Wooden Safety Matches</h4>
+                    </div>
                     
-                    <p style="font-size: 1.05rem; line-height: 1.8; margin-bottom: 1rem; text-align: justify; font-family: 'Lora', serif; font-weight: 400; color: #374151;">Bell Matches is an established match manufacturer and a trusted safety match manufacturer, built on quality, safety and customer commitment. As part of the Bell Group of Companies, we bring responsible business practices and decades of experience to every order.</p>
+                    <div class="company-profile-desc">
+                        <p style="font-size: 1.05rem; line-height: 1.8; margin-bottom: 1rem; text-align: justify; font-family: 'Lora', serif; font-weight: 400; color: #374151;">Bell Matches is an established match manufacturer and a trusted safety match manufacturer, built on quality, safety and customer commitment. As part of the Bell Group of Companies, we bring responsible business practices and decades of experience to every order.</p>
 
-                    <p style="font-size: 1.05rem; line-height: 1.8; margin-bottom: 1rem; text-align: justify; font-family: 'Lora', serif; font-weight: 400; color: #374151;">Our 5 acre facility, modern machinery and skilled team handle every stage in house, from splint to finished box. This lets us offer flexible, customised solutions as a matchbox manufacturer and exporter serving importers, wholesalers and private label brands worldwide.</p>
+                        <p style="font-size: 1.05rem; line-height: 1.8; margin-bottom: 1rem; text-align: justify; font-family: 'Lora', serif; font-weight: 400; color: #374151;">Our 5 acre facility, modern machinery and skilled team handle every stage in house, from splint to finished box. This lets us offer flexible, customised solutions as a matchbox manufacturer and exporter serving importers, wholesalers and private label brands worldwide.</p>
 
-                    <p style="font-size: 1.05rem; line-height: 1.8; margin-bottom: 1.75rem; font-style: italic; font-weight: 600; color: var(--primary-red); font-family: 'Lora', serif;">Service meets commitment. Safety meets innovation. Partnerships built to last.</p>
+                        <p style="font-size: 1.05rem; line-height: 1.8; margin-bottom: 1.75rem; font-style: italic; font-weight: 600; color: var(--primary-red); font-family: 'Lora', serif;">Service meets commitment. Safety meets innovation. Partnerships built to last.</p>
 
-                    <div style="border-top: 1px solid #e5e7eb; padding-top: 1.25rem;">
-                        <h3 style="color: #111827; font-size: 1.4rem; margin-bottom: 0.5rem; font-family: 'Poppins', sans-serif; font-weight: 700;">Our Manufacturing Journey</h3>
-                        <p style="font-size: 1.05rem; line-height: 1.8; margin-bottom: 0; text-align: justify; font-family: 'Lora', serif; font-weight: 400; color: #374151;">Since 1998, Bell Matches has focused on safety matches with consistent quality and timely delivery. Today, as an Indian matchbox exporter, we support international markets with reliable manufacturing and export capability.</p>
+                        <div style="border-top: 1px solid #e5e7eb; padding-top: 1.25rem;">
+                            <h3 style="color: #111827; font-size: 1.4rem; margin-bottom: 0.5rem; font-family: 'Poppins', sans-serif; font-weight: 700;">Our Manufacturing Journey</h3>
+                            <p style="font-size: 1.05rem; line-height: 1.8; margin-bottom: 0; text-align: justify; font-family: 'Lora', serif; font-weight: 400; color: #374151;">Since 1998, Bell Matches has focused on safety matches with consistent quality and timely delivery. Today, as an Indian matchbox exporter, we support international markets with reliable manufacturing and export capability.</p>
+                        </div>
                     </div>
                 </div>
-                <div style="position: relative; height: 100%; display: flex; align-items: stretch; justify-content: center;">
+                <div class="company-profile-media" style="position: relative; height: 100%; display: flex; align-items: stretch; justify-content: center;">
                     <video id="aboutVideoHero" src="videos/matchbox-filling-machine.mp4" poster="videos/matchbox-filling-machine-poster.jpg" autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-lg); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);"></video>
                     <script>
                         document.addEventListener("DOMContentLoaded", function() {
