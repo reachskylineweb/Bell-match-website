@@ -197,8 +197,46 @@
         @media(max-width: 768px) {
             .process-grid { grid-template-columns: 1fr; }
             .country-grid { grid-template-columns: repeat(2, 1fr); }
-            .export-hero { padding: 45px 0 40px; }
+            .export-hero { padding: 35px 0 32px !important; }
+            .export-hero-title {
+                font-size: clamp(1.75rem, 6.2vw, 2.35rem) !important;
+                line-height: 1.15 !important;
+                margin-bottom: 0.75rem !important;
+            }
+            .export-hero-bar {
+                width: 45px !important;
+                height: 3px !important;
+                margin-bottom: 0.85rem !important;
+            }
+            .export-hero-desc {
+                font-size: 0.92rem !important;
+                line-height: 1.6 !important;
+                margin-bottom: 0.55rem !important;
+            }
+            .export-hero-desc:last-of-type {
+                margin-bottom: 1.15rem !important;
+            }
+            .export-hero-btn {
+                padding: 11px 22px !important;
+                font-size: 0.92rem !important;
+            }
             .export-form-row { grid-template-columns: 1fr !important; }
+        }
+        @media(max-width: 480px) {
+            .export-hero { padding: 30px 0 28px !important; }
+            .export-hero-title {
+                font-size: 1.75rem !important;
+                margin-bottom: 0.65rem !important;
+            }
+            .export-hero-desc {
+                font-size: 0.88rem !important;
+                line-height: 1.55 !important;
+                margin-bottom: 0.5rem !important;
+            }
+            .export-hero-btn {
+                padding: 10px 18px !important;
+                font-size: 0.88rem !important;
+            }
         }
     </style>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -248,25 +286,25 @@
         
         <div class="container" style="position: relative; z-index: 2;">
             <div style="max-width: 900px;">
-                <h1 class="hero-title-gradient" style="font-size: clamp(2.8rem, 5vw, 5rem); font-weight: 800; color: white; line-height: 1.1; margin-bottom: 1rem; font-family: 'Playfair Display', serif;">
+                <h1 class="hero-title-gradient export-hero-title" style="font-size: clamp(2.8rem, 5vw, 5rem); font-weight: 800; color: white; line-height: 1.1; margin-bottom: 1rem; font-family: 'Playfair Display', serif;">
                     Trusted Worldwide. <br>
                     <span style="color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.7);">Delivered Reliably.</span>
                 </h1>
                 
-                <div style="width: 60px; height: 4px; background: #b71c1c; margin-bottom: 1.15rem; border-radius: 2px;"></div>
+                <div class="export-hero-bar" style="width: 60px; height: 4px; background: #b71c1c; margin-bottom: 1.15rem; border-radius: 2px;"></div>
                 
-                <p style="font-size: 1.15rem; color: rgba(255,255,255,0.85); line-height: 1.7; max-width: 750px; font-weight: 300; margin-bottom: 0.75rem;">
+                <p class="export-hero-desc" style="font-size: 1.15rem; color: rgba(255,255,255,0.85); line-height: 1.7; max-width: 750px; font-weight: 300; margin-bottom: 0.75rem;">
                     Bell Matches is a preferred safety matches exporter for importers, wholesalers and private label brands worldwide.
                 </p>
-                <p style="font-size: 1.15rem; color: rgba(255,255,255,0.85); line-height: 1.7; max-width: 750px; font-weight: 300; margin-bottom: 0.75rem;">
+                <p class="export-hero-desc" style="font-size: 1.15rem; color: rgba(255,255,255,0.85); line-height: 1.7; max-width: 750px; font-weight: 300; margin-bottom: 0.75rem;">
                     As a trusted matchbox exporter from India, we pair decades of manufacturing expertise with export ready packaging and dependable supply.
                 </p>
-                <p style="font-size: 1.15rem; color: rgba(255,255,255,0.85); line-height: 1.7; max-width: 750px; font-weight: 300; margin-bottom: 1.5rem;">
+                <p class="export-hero-desc" style="font-size: 1.15rem; color: rgba(255,255,255,0.85); line-height: 1.7; max-width: 750px; font-weight: 300; margin-bottom: 1.5rem;">
                     Share your destination and requirement, and our export desk takes it from there.
                 </p>
 
                 <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                    <a href="#quote" style="padding: 14px 28px; background: var(--primary-red); color: white; border-radius: 4px; text-decoration: none; font-weight: 600; transition: background 0.3s; font-size: 1rem;">Request an Export Quote</a>
+                    <a href="#quote" class="export-hero-btn" style="padding: 14px 28px; background: var(--primary-red); color: white; border-radius: 4px; text-decoration: none; font-weight: 600; transition: background 0.3s; font-size: 1rem;">Request an Export Quote</a>
                 </div>
 
 
@@ -1108,11 +1146,68 @@
     </section>
 
     <!-- Our Export Process -->
-    <section class="section" style="padding: 2.75rem 0 2.5rem 0; background-color: #f9fafb;">
+    <section class="section export-process-section" style="padding: 2.75rem 0 2.5rem 0; background-color: #f9fafb;">
+        <style>
+            @media (max-width: 768px) {
+                .export-process-section {
+                    padding: 2rem 0 !important;
+                }
+                .export-process-title {
+                    font-size: clamp(1.4rem, 5.2vw, 1.75rem) !important;
+                    line-height: 1.25 !important;
+                    letter-spacing: 0.3px !important;
+                    margin-bottom: 0.5rem !important;
+                }
+                .export-process-divider {
+                    margin-bottom: 0.75rem !important;
+                }
+                .export-process-subtitle {
+                    font-size: 0.92rem !important;
+                    line-height: 1.6 !important;
+                    margin-bottom: 1.5rem !important;
+                    padding: 0 0.5rem;
+                }
+                .process-grid {
+                    gap: 24px !important;
+                    margin-top: 1.75rem !important;
+                }
+                .process-card {
+                    padding: 2rem 1.25rem 1.25rem !important;
+                }
+                .process-card h4 {
+                    font-size: 1.1rem !important;
+                    margin-bottom: 6px !important;
+                }
+                .process-card p {
+                    font-size: 0.88rem !important;
+                    line-height: 1.55 !important;
+                }
+            }
+            @media (max-width: 480px) {
+                .export-process-section {
+                    padding: 1.75rem 0 !important;
+                }
+                .export-process-title {
+                    font-size: 1.42rem !important;
+                    margin-bottom: 0.45rem !important;
+                }
+                .export-process-subtitle {
+                    font-size: 0.88rem !important;
+                    line-height: 1.55 !important;
+                    margin-bottom: 1.25rem !important;
+                }
+                .process-card {
+                    padding: 1.85rem 1rem 1.15rem !important;
+                }
+                .process-card h4 {
+                    font-size: 1.05rem !important;
+                }
+            }
+        </style>
         <div class="container">
-            <h2 style="color: var(--primary-red); font-size: 2.35rem; margin-bottom: 0.6rem; text-align: center; font-weight: 700; font-family: 'Poppins', sans-serif;">Our Seamless Export Process</h2>
-            <div style="width: 55px; height: 3px; background: var(--gold-accent); margin: 0 auto 0.95rem auto; border-radius: 2px;"></div>
-            <p style="font-size: 1.05rem; line-height: 1.6; color: #4b5563; text-align: center; max-width: 820px; margin: 0 auto 2.25rem auto;">
+            <h2 class="export-process-title" style="color: var(--primary-red); font-size: 2.35rem; margin-bottom: 0.6rem; text-align: center; font-weight: 700; font-family: 'Poppins', sans-serif;">Our Seamless Export Process</h2>
+            <div class="export-process-divider" style="width: 55px; height: 3px; background: var(--gold-accent); margin: 0 auto 0.95rem auto; border-radius: 2px;"></div>
+            <p class="export-process-subtitle" style="font-size: 1.05rem; line-height: 1.6; color: #4b5563; text-align: center; max-width: 820px; margin: 0 auto 2.25rem auto;">
                 A matchbox manufacturer and exporter in India that manages production, packing, documentation and shipping in one clear process.
             </p>
 
@@ -1270,6 +1365,21 @@
                 .export-quote-grid {
                     gap: 2rem;
                 }
+                .export-quote-title {
+                    font-size: clamp(1.45rem, 5.5vw, 1.85rem) !important;
+                    line-height: 1.2 !important;
+                    margin-bottom: 0.85rem !important;
+                }
+                .export-quote-desc {
+                    font-size: 0.92rem !important;
+                    line-height: 1.6 !important;
+                    margin-bottom: 0.85rem !important;
+                }
+                .export-contact-details {
+                    font-size: 0.88rem !important;
+                    line-height: 1.5 !important;
+                    gap: 0.75rem !important;
+                }
                 .export-form-row {
                     grid-template-columns: 1fr !important;
                     gap: 1rem !important;
@@ -1286,6 +1396,15 @@
             @media (max-width: 480px) {
                 #quote {
                     padding: 2rem 0 !important;
+                }
+                .export-quote-title {
+                    font-size: 1.45rem !important;
+                    margin-bottom: 0.75rem !important;
+                }
+                .export-quote-desc {
+                    font-size: 0.88rem !important;
+                    line-height: 1.55 !important;
+                    margin-bottom: 0.75rem !important;
                 }
                 .export-form-card {
                     padding: 1.35rem 1rem !important;
@@ -1316,15 +1435,15 @@
             <div class="export-quote-grid">
                 <!-- Left: Clean Informational Text -->
                 <div class="export-quote-info" style="display: flex; flex-direction: column; justify-content: center; padding-right: 1.5rem;">
-                    <h2 style="font-size: clamp(2.2rem, 3.5vw, 3rem); font-family: 'Playfair Display', serif; font-weight: 800; color: #0f172a; line-height: 1.2; margin-bottom: 1.5rem;">
+                    <h2 class="export-quote-title" style="font-size: clamp(2.2rem, 3.5vw, 3rem); font-family: 'Playfair Display', serif; font-weight: 800; color: #0f172a; line-height: 1.2; margin-bottom: 1.5rem;">
                         Get in Touch With Our Export Team
                     </h2>
 
-                    <p style="color: #475569; font-size: 1.1rem; line-height: 1.8; margin-bottom: 1.25rem;">
+                    <p class="export-quote-desc" style="color: #475569; font-size: 1.1rem; line-height: 1.8; margin-bottom: 1.25rem;">
                         Whether you are an international importer, distributor, or private label buyer, our dedicated export desk is ready to support your safety matches sourcing requirements worldwide.
                     </p>
 
-                    <p style="color: #475569; font-size: 1.02rem; line-height: 1.8; margin-bottom: 1.75rem;">
+                    <p class="export-quote-desc" style="color: #475569; font-size: 1.02rem; line-height: 1.8; margin-bottom: 1.75rem;">
                         Bell Match provides turnkey Indian manufacturing and export solutions spanning custom splint dimensions, bespoke matchbox branding, moisture-resistant packaging, and full container order fulfillment.
                     </p>
 
