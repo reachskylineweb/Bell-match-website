@@ -39,7 +39,7 @@
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <link rel="stylesheet" href="index.css?v=102">
+    <link rel="stylesheet" href="index.css?v=108">
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="icon" type="image/png" sizes="192x192" href="favicon-full.png">
@@ -100,7 +100,15 @@
                     line-height: 1.45 !important;
                 }
                 .smoke-container {
-                    bottom: 42% !important;
+                    top: 205px !important;
+                    bottom: auto !important;
+                    left: calc(50% + 10px) !important;
+                    transform: translateX(-50%) !important;
+                }
+                @keyframes matchDropCss {
+                    0% { top: -250px; transform: translateX(-50%) rotate(10deg) scale(0.65); }
+                    60% { top: 25px; transform: translateX(-50%) rotate(10deg) scale(0.65); }
+                    100% { top: 25px; transform: translateX(-50%) rotate(-90deg) scale(0.65); }
                 }
             }
             @media (max-width: 480px) {
@@ -117,6 +125,17 @@
                     font-size: 0.82rem !important;
                     letter-spacing: 1px !important;
                     max-width: 92% !important;
+                }
+                .smoke-container {
+                    top: 195px !important;
+                    bottom: auto !important;
+                    left: calc(50% + 10px) !important;
+                    transform: translateX(-50%) !important;
+                }
+                @keyframes matchDropCss {
+                    0% { top: -250px; transform: translateX(-50%) rotate(10deg) scale(0.65); }
+                    60% { top: 15px; transform: translateX(-50%) rotate(10deg) scale(0.65); }
+                    100% { top: 15px; transform: translateX(-50%) rotate(-90deg) scale(0.65); }
                 }
             }
         </style>
