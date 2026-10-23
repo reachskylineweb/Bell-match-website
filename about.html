@@ -198,7 +198,7 @@
         <style>
             @media (max-width: 768px) {
                 .company-profile-section {
-                    padding: 2rem 0 !important;
+                    padding: 2rem 0 0.85rem 0 !important;
                 }
                 .company-profile-grid {
                     display: flex !important;
@@ -253,6 +253,9 @@
                 }
             }
             @media (max-width: 480px) {
+                .company-profile-section {
+                    padding: 1.75rem 0 0.75rem 0 !important;
+                }
                 .company-profile-title {
                     font-size: 1.55rem !important;
                 }
@@ -442,7 +445,7 @@
             }
             @media (max-width: 768px) {
                 #sets-apart {
-                    padding: 2.5rem 0 2rem 0 !important;
+                    padding: 1.25rem 0 2rem 0 !important;
                 }
                 .sets-apart-title {
                     font-size: clamp(1.45rem, 5.2vw, 1.8rem) !important;
@@ -525,7 +528,7 @@
             }
             @media (max-width: 480px) {
                 #sets-apart {
-                    padding: 2rem 0 1.75rem 0 !important;
+                    padding: 1rem 0 1.75rem 0 !important;
                 }
                 .sets-apart-title {
                     font-size: 1.48rem !important;
@@ -605,7 +608,7 @@
     </section>
 
     <!-- Manufacturing Solutions Section -->
-    <section class="section" style="padding-top: 30px; padding-bottom: 2.5rem; background: #f9fafb; border-bottom: 1px solid #E5E7EB;">
+    <section class="section mfg-solutions-section" style="padding-top: 30px; padding-bottom: 2.5rem; background: #f9fafb; border-bottom: 1px solid #E5E7EB;">
         <style>
             .mfg-solutions-grid {
                 display: grid;
@@ -646,13 +649,53 @@
                 display: none;
             }
             @media (max-width: 768px) {
+                .mfg-solutions-section {
+                    padding-top: 1.5rem !important;
+                    padding-bottom: 2rem !important;
+                }
+                .mfg-solutions-grid {
+                    gap: 1.35rem !important;
+                }
                 .mfg-solutions-title {
                     text-align: center !important;
-                    font-size: clamp(1.7rem, 6.2vw, 2rem) !important;
+                    font-size: clamp(1.4rem, 5.2vw, 1.7rem) !important;
                     line-height: 1.25 !important;
+                    letter-spacing: 0.3px !important;
+                    margin-bottom: 1rem !important;
                 }
                 .mfg-mobile-br {
-                    display: block !important;
+                    display: none !important;
+                }
+                .mfg-solutions-content p {
+                    font-size: 0.92rem !important;
+                    line-height: 1.65 !important;
+                    margin-bottom: 0.85rem !important;
+                    text-align: left !important;
+                }
+                .mfg-solutions-content p:last-child {
+                    margin-bottom: 0 !important;
+                }
+                .mfg-solutions-img-card {
+                    height: 220px !important;
+                    border-radius: 12px !important;
+                }
+            }
+            @media (max-width: 480px) {
+                .mfg-solutions-section {
+                    padding-top: 1.25rem !important;
+                    padding-bottom: 1.75rem !important;
+                }
+                .mfg-solutions-title {
+                    font-size: 1.4rem !important;
+                    margin-bottom: 0.75rem !important;
+                }
+                .mfg-solutions-content p {
+                    font-size: 0.88rem !important;
+                    line-height: 1.6 !important;
+                    margin-bottom: 0.75rem !important;
+                }
+                .mfg-solutions-img-card {
+                    height: 195px !important;
                 }
             }
         </style>
