@@ -79,6 +79,47 @@
 
     <main id="main-content">
     <section class="realistic-falling-match-header">
+        <style>
+            @media (max-width: 768px) {
+                .realistic-falling-match-header {
+                    height: 44vh !important;
+                    min-height: 280px !important;
+                    max-height: 350px !important;
+                }
+                .ignite-title {
+                    font-size: clamp(2.2rem, 7.5vw, 2.75rem) !important;
+                    letter-spacing: 2px !important;
+                    margin-bottom: 0.4rem !important;
+                    white-space: nowrap !important;
+                }
+                .ignite-subtitle {
+                    font-size: 0.88rem !important;
+                    letter-spacing: 1.5px !important;
+                    max-width: 90% !important;
+                    margin: 0 auto !important;
+                    line-height: 1.45 !important;
+                }
+                .smoke-container {
+                    bottom: 42% !important;
+                }
+            }
+            @media (max-width: 480px) {
+                .realistic-falling-match-header {
+                    height: 40vh !important;
+                    min-height: 260px !important;
+                    max-height: 320px !important;
+                }
+                .ignite-title {
+                    font-size: 2.3rem !important;
+                    letter-spacing: 1.5px !important;
+                }
+                .ignite-subtitle {
+                    font-size: 0.82rem !important;
+                    letter-spacing: 1px !important;
+                    max-width: 92% !important;
+                }
+            }
+        </style>
     <div class="falling-css-match">
         <div class="css-match-wood"></div>
         <div class="css-match-head"></div>
