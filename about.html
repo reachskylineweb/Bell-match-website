@@ -441,8 +441,23 @@
                 }
             }
             @media (max-width: 768px) {
+                #sets-apart {
+                    padding: 2.5rem 0 2rem 0 !important;
+                }
+                .sets-apart-title {
+                    font-size: clamp(1.45rem, 5.2vw, 1.8rem) !important;
+                    line-height: 1.25 !important;
+                    letter-spacing: 0.3px !important;
+                    margin-bottom: 0.4rem !important;
+                }
+                .sets-apart-subtitle {
+                    font-size: 0.92rem !important;
+                    line-height: 1.45 !important;
+                    letter-spacing: 0.2px !important;
+                    padding: 0 0.5rem !important;
+                }
                 .apart-pipeline-container {
-                    margin-top: 2.25rem;
+                    margin-top: 1.75rem !important;
                 }
                 .apart-pipeline {
                     display: flex;
@@ -508,11 +523,22 @@
                     max-width: 100%;
                 }
             }
+            @media (max-width: 480px) {
+                #sets-apart {
+                    padding: 2rem 0 1.75rem 0 !important;
+                }
+                .sets-apart-title {
+                    font-size: 1.48rem !important;
+                }
+                .sets-apart-subtitle {
+                    font-size: 0.86rem !important;
+                }
+            }
         </style>
         <div class="container">
-            <div class="text-center" style="max-width: 800px; margin: 0 auto;">
-                <h2 style="color: #111827; font-size: 2.35rem; margin-bottom: 0.5rem; font-family: 'Poppins', sans-serif; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">What Sets <span style="color: var(--primary-red);">Bell Matches</span> Apart</h2>
-                <h4 style="color: var(--gold-accent); font-size: 1.15rem; margin: 0; font-style: italic; font-weight: 400; letter-spacing: 0.5px; font-family: 'Lora', serif;">Experience, capacity and care behind every order.</h4>
+            <div class="text-center sets-apart-header" style="max-width: 800px; margin: 0 auto;">
+                <h2 class="sets-apart-title" style="color: #111827; font-size: 2.35rem; margin-bottom: 0.5rem; font-family: 'Poppins', sans-serif; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">What Sets <span style="color: var(--primary-red);">Bell Matches</span> Apart</h2>
+                <h4 class="sets-apart-subtitle" style="color: var(--gold-accent); font-size: 1.15rem; margin: 0; font-style: italic; font-weight: 400; letter-spacing: 0.5px; font-family: 'Lora', serif;">Experience, capacity and care behind every order.</h4>
             </div>
 
             <div class="apart-pipeline-container">
