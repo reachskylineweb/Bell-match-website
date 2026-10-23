@@ -126,7 +126,7 @@
 
 
     <!-- Social Compliance & Ethical Sourcing Section -->
-    <section class="section" style="padding: 3.5rem 0 3rem 0; background-color: #f9fafb;">
+    <section class="section cert-compliance-section" style="padding: 3.5rem 0 3rem 0; background-color: #f9fafb;">
         <style>
             .cert-desc {
                 color: #4b5563;
@@ -185,11 +185,48 @@
                     height: calc(1.55em * 3);
                 }
             }
+            @media (max-width: 768px) {
+                .cert-compliance-section {
+                    padding: 2.25rem 0 2rem 0 !important;
+                }
+                .cert-compliance-header {
+                    margin-bottom: 1.5rem !important;
+                    padding: 0 0.5rem;
+                }
+                .cert-compliance-title {
+                    font-size: clamp(1.45rem, 5.2vw, 1.8rem) !important;
+                    line-height: 1.25 !important;
+                    letter-spacing: 0.3px !important;
+                    margin-bottom: 0.65rem !important;
+                }
+                .cert-compliance-subtitle {
+                    font-size: 0.92rem !important;
+                    line-height: 1.6 !important;
+                    color: #4b5563 !important;
+                }
+            }
+            @media (max-width: 480px) {
+                .cert-compliance-section {
+                    padding: 1.85rem 0 1.75rem 0 !important;
+                }
+                .cert-compliance-header {
+                    margin-bottom: 1.25rem !important;
+                }
+                .cert-compliance-title {
+                    font-size: 1.45rem !important;
+                    line-height: 1.25 !important;
+                    margin-bottom: 0.5rem !important;
+                }
+                .cert-compliance-subtitle {
+                    font-size: 0.88rem !important;
+                    line-height: 1.55 !important;
+                }
+            }
         </style>
         <div class="container">
-            <div style="max-width: 800px; margin: 0 auto; text-align: center; margin-bottom: 2.25rem;">
-                <h2 style="color: #111827; font-size: 2.25rem; margin-bottom: 1rem; font-weight: 700;">Social Compliance & Ethical Sourcing</h2>
-                <p style="font-size: 1.05rem; line-height: 1.7; color: #4b5563;">
+            <div class="cert-compliance-header" style="max-width: 800px; margin: 0 auto; text-align: center; margin-bottom: 2.25rem;">
+                <h2 class="cert-compliance-title" style="color: #111827; font-size: 2.25rem; margin-bottom: 1rem; font-weight: 700;">Social Compliance & Ethical Sourcing</h2>
+                <p class="cert-compliance-subtitle" style="font-size: 1.05rem; line-height: 1.7; color: #4b5563;">
                     Our manufacturing is supported by recognised third party certifications, giving export partners, wholesalers and distributors confidence in how we make our matches.
                 </p>
             </div>
