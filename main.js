@@ -20,13 +20,45 @@ async function loadComponents() {
     }));
 
     // Set active link based on current page
-    const currentPath = window.location.pathname.split('/').pop() || 'index.html';
-    document.querySelectorAll('.nav-link, .mobile-link').forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === currentPath) {
-            link.classList.add('active');
+    function syncActiveNavLinks() {
+        let rawPath = window.location.pathname.split('/').filter(Boolean).pop() || 'index.html';
+        rawPath = rawPath.split('?')[0].split('#')[0];
+        const cleanPath = rawPath.replace(/\.html$/, '').toLowerCase();
+        const isHome = cleanPath === '' || cleanPath === 'index';
+
+        // Update main links (desktop & mobile)
+        document.querySelectorAll('.nav-link, .mobile-link').forEach(link => {
+            link.classList.remove('active');
+            const href = (link.getAttribute('href') || '').split('?')[0].split('#')[0];
+            const cleanHref = href.replace(/\.html$/, '').replace(/^\//, '').toLowerCase();
+
+            if (isHome && (cleanHref === '' || cleanHref === 'index')) {
+                link.classList.add('active');
+            } else if (!isHome && cleanHref && cleanHref === cleanPath) {
+                link.classList.add('active');
+            }
+        });
+
+        // Dropdown toggle handling: if on About Us or Certifications, highlight dropdown toggle
+        const isAboutSection = cleanPath === 'about' || cleanPath === 'certifications';
+        if (isAboutSection) {
+            document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
+                toggle.classList.add('active');
+            });
         }
-    });
+
+        // Dropdown sub-items handling
+        document.querySelectorAll('.dropdown-item, .mobile-dropdown-item').forEach(item => {
+            item.classList.remove('active');
+            const href = (item.getAttribute('href') || '').split('?')[0].split('#')[0];
+            const cleanHref = href.replace(/\.html$/, '').replace(/^\//, '').toLowerCase();
+            if (cleanHref && cleanHref === cleanPath) {
+                item.classList.add('active');
+            }
+        });
+    }
+
+    syncActiveNavLinks();
 
     // Dispatch event to initialize scripts
     document.dispatchEvent(new Event('ComponentsLoaded'));

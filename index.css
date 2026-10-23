@@ -513,7 +513,7 @@ p { margin-bottom: 1rem; color: var(--text-muted); }
 .mobile-link {
   font-family: 'Outfit', 'Inter', sans-serif;
   font-size: 1.2rem;
-  font-weight: 600;
+  font-weight: 700;
   color: #f8fafc !important;
   text-decoration: none;
   letter-spacing: 0.3px;
@@ -540,7 +540,8 @@ p { margin-bottom: 1rem; color: var(--text-muted); }
 
 .mobile-dropdown-item:hover,
 .mobile-dropdown-item.active {
-  color: #c49a6c !important;
+  color: #ff4747 !important;
+  font-weight: 700 !important;
 }
 
 /* Premium Hero Section */
