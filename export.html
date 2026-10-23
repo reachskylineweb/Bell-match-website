@@ -758,7 +758,7 @@
                 }
                 @media (max-width: 768px) {
                     .wgb-section {
-                        padding: 1.25rem 0 2rem 0 !important;
+                        padding: 1.25rem 0 0.85rem 0 !important;
                     }
                     .wgb-header {
                         margin-bottom: 1.5rem !important;
@@ -780,7 +780,7 @@
                 }
                 @media (max-width: 480px) {
                     .wgb-section {
-                        padding: 1rem 0 1.75rem 0 !important;
+                        padding: 1rem 0 0.75rem 0 !important;
                     }
                     .wgb-header {
                         margin-bottom: 1.25rem !important;
@@ -997,6 +997,41 @@
                     justify-content: center !important;
                     flex-direction: column !important;
                     align-items: center !important;
+                }
+            }
+            @media (max-width: 768px) {
+                #dangerous-goods {
+                    padding: 1.25rem 0 2rem 0 !important;
+                }
+                .dg-content-col h2 {
+                    font-size: clamp(1.4rem, 5.2vw, 1.75rem) !important;
+                    line-height: 1.25 !important;
+                    letter-spacing: 0.3px !important;
+                    margin-bottom: 0.5rem !important;
+                }
+                .dg-gold-divider {
+                    margin-bottom: 0.85rem !important;
+                }
+                .dg-content-col p {
+                    font-size: 0.92rem !important;
+                    line-height: 1.6 !important;
+                    margin-bottom: 1rem !important;
+                }
+            }
+            @media (max-width: 480px) {
+                #dangerous-goods {
+                    padding: 1rem 0 1.75rem 0 !important;
+                }
+                .dg-content-col h2 {
+                    font-size: 1.42rem !important;
+                    margin-bottom: 0.45rem !important;
+                }
+                .dg-gold-divider {
+                    margin-bottom: 0.75rem !important;
+                }
+                .dg-content-col p {
+                    font-size: 0.88rem !important;
+                    line-height: 1.55 !important;
                 }
             }
         </style>
