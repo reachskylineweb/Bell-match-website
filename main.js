@@ -25,32 +25,40 @@ async function loadComponents() {
         rawPath = rawPath.split('?')[0].split('#')[0];
         const cleanPath = rawPath.replace(/\.html$/, '').toLowerCase();
         const isHome = cleanPath === '' || cleanPath === 'index';
+        const isAboutSection = cleanPath === 'about' || cleanPath === 'certifications';
 
-        // Update main links (desktop & mobile)
+        // 1. Reset all links and dropdown toggles first
+        document.querySelectorAll('.nav-link, .mobile-link, .dropdown-toggle, .dropdown-item, .mobile-dropdown-item').forEach(el => {
+            el.classList.remove('active');
+        });
+
+        // 2. Main links (ignoring buttons without href so About Us toggle is not triggered on Home)
         document.querySelectorAll('.nav-link, .mobile-link').forEach(link => {
-            link.classList.remove('active');
-            const href = (link.getAttribute('href') || '').split('?')[0].split('#')[0];
+            if (!link.hasAttribute('href')) return;
+            const hrefAttr = (link.getAttribute('href') || '').trim();
+            if (hrefAttr === '#' || hrefAttr === '') return;
+
+            const href = hrefAttr.split('?')[0].split('#')[0];
             const cleanHref = href.replace(/\.html$/, '').replace(/^\//, '').toLowerCase();
 
-            if (isHome && (cleanHref === '' || cleanHref === 'index')) {
+            if (isHome && (cleanHref === 'index' || cleanHref === 'index.html' || hrefAttr === '/')) {
                 link.classList.add('active');
-            } else if (!isHome && cleanHref && cleanHref === cleanPath) {
+            } else if (!isHome && cleanHref === cleanPath) {
                 link.classList.add('active');
             }
         });
 
-        // Dropdown toggle handling: if on About Us or Certifications, highlight dropdown toggle
-        const isAboutSection = cleanPath === 'about' || cleanPath === 'certifications';
+        // 3. Dropdown parent toggle: ONLY activate on About Us subpages
         if (isAboutSection) {
             document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
                 toggle.classList.add('active');
             });
         }
 
-        // Dropdown sub-items handling
+        // 4. Dropdown sub-items
         document.querySelectorAll('.dropdown-item, .mobile-dropdown-item').forEach(item => {
-            item.classList.remove('active');
-            const href = (item.getAttribute('href') || '').split('?')[0].split('#')[0];
+            const hrefAttr = (item.getAttribute('href') || '').trim();
+            const href = hrefAttr.split('?')[0].split('#')[0];
             const cleanHref = href.replace(/\.html$/, '').replace(/^\//, '').toLowerCase();
             if (cleanHref && cleanHref === cleanPath) {
                 item.classList.add('active');

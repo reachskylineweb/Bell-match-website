@@ -504,7 +504,7 @@ p { margin-bottom: 1rem; color: var(--text-muted); }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.15rem;
+  gap: 1.25rem;
   width: 100%;
   padding: 3.5rem 1.5rem 2rem 1.5rem;
   box-sizing: border-box;
@@ -512,7 +512,7 @@ p { margin-bottom: 1rem; color: var(--text-muted); }
 
 .mobile-link {
   font-family: 'Outfit', 'Inter', sans-serif;
-  font-size: 1.2rem;
+  font-size: 1.38rem;
   font-weight: 700;
   color: #f8fafc !important;
   text-decoration: none;
@@ -531,7 +531,7 @@ p { margin-bottom: 1rem; color: var(--text-muted); }
 
 .mobile-dropdown-item {
   font-family: 'Inter', sans-serif;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   font-weight: 500;
   color: #cbd5e1 !important;
   text-decoration: none;
