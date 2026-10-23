@@ -786,7 +786,7 @@
                         display: flex !important;
                         overflow-x: auto !important;
                         flex-wrap: nowrap !important;
-                        scroll-snap-type: x mandatory;
+                        scroll-snap-type: none;
                         -webkit-overflow-scrolling: touch;
                         padding-bottom: 1.5rem;
                         gap: 1.5rem !important;
@@ -1013,6 +1013,77 @@
                 </div>
             </div>
         </div>
+        <script>
+            (function() {
+                function initInfraScroll() {
+                    var container = document.querySelector('.infra-mobile-scroll');
+                    if (!container) return;
+
+                    var isPaused = false;
+                    var resumeTimer = null;
+                    var speed = 0.65; // Slow, elegant auto-scroll speed
+                    var animId = null;
+
+                    function step() {
+                        if (window.innerWidth <= 768) {
+                            if (!isPaused) {
+                                container.scrollLeft += speed;
+                                // Loop back seamlessly if reached the end
+                                if (container.scrollLeft >= container.scrollWidth - container.clientWidth - 2) {
+                                    container.scrollLeft = 0;
+                                }
+                            }
+                        }
+                        animId = requestAnimationFrame(step);
+                    }
+
+                    // Hover to pause on desktop/stylus
+                    container.addEventListener('mouseenter', function() {
+                        isPaused = true;
+                    });
+                    container.addEventListener('mouseleave', function() {
+                        isPaused = false;
+                    });
+
+                    // Touch / Swipe handling: pause immediately, enable snap during swipe
+                    container.addEventListener('touchstart', function() {
+                        isPaused = true;
+                        container.style.scrollSnapType = 'x mandatory';
+                        if (resumeTimer) clearTimeout(resumeTimer);
+                    }, { passive: true });
+
+                    container.addEventListener('touchmove', function() {
+                        isPaused = true;
+                        if (resumeTimer) clearTimeout(resumeTimer);
+                    }, { passive: true });
+
+                    container.addEventListener('touchend', function() {
+                        if (resumeTimer) clearTimeout(resumeTimer);
+                        // Give user 2.5s to view swiped card before resuming slow scroll
+                        resumeTimer = setTimeout(function() {
+                            container.style.scrollSnapType = 'none';
+                            isPaused = false;
+                        }, 2500);
+                    }, { passive: true });
+
+                    document.addEventListener('visibilitychange', function() {
+                        if (document.hidden) {
+                            isPaused = true;
+                        } else {
+                            isPaused = false;
+                        }
+                    });
+
+                    animId = requestAnimationFrame(step);
+                }
+
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', initInfraScroll);
+                } else {
+                    initInfraScroll();
+                }
+            })();
+        </script>
     </section>
 
     <!-- International Manufacturing & Export Capabilities Section -->
