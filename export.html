@@ -620,12 +620,12 @@
     </section>
 
     <!-- Why Global Buyers Choose Us -->
-    <section class="section" style="padding: 3.25rem 0 3rem 0; background-color: #fcfdfe;">
+    <section class="section wgb-section" style="padding: 3.25rem 0 3rem 0; background-color: #fcfdfe;">
         <div class="container">
-            <div style="max-width: 820px; margin: 0 auto; text-align: center; margin-bottom: 2.25rem;">
-                <h2 style="color: var(--primary-red); font-size: 2.35rem; margin-bottom: 0.55rem; font-weight: 700; font-family: 'Poppins', sans-serif;">Why Global Buyers Choose Bell Matches</h2>
-                <div style="width: 55px; height: 3px; background: var(--gold-accent); margin: 0 auto 0.85rem auto; border-radius: 2px;"></div>
-                <p style="font-size: 1.05rem; line-height: 1.6; color: #4b5563; margin: 0;">
+            <div class="wgb-header" style="max-width: 820px; margin: 0 auto; text-align: center; margin-bottom: 2.25rem;">
+                <h2 class="wgb-title" style="color: var(--primary-red); font-size: 2.35rem; margin-bottom: 0.55rem; font-weight: 700; font-family: 'Poppins', sans-serif;">Why Global Buyers Choose Bell Matches</h2>
+                <div class="wgb-divider" style="width: 55px; height: 3px; background: var(--gold-accent); margin: 0 auto 0.85rem auto; border-radius: 2px;"></div>
+                <p class="wgb-subtitle" style="font-size: 1.05rem; line-height: 1.6; color: #4b5563; margin: 0;">
                     Certified quality, export ready packing and dependable supply.
                 </p>
             </div>
@@ -748,6 +748,48 @@
                     .wgb-item-desc {
                         font-size: 0.88rem !important;
                         line-height: 1.55 !important;
+                    }
+                }
+                @media (max-width: 768px) {
+                    .wgb-section {
+                        padding: 2.25rem 0 2rem 0 !important;
+                    }
+                    .wgb-header {
+                        margin-bottom: 1.5rem !important;
+                        padding: 0 0.5rem;
+                    }
+                    .wgb-title {
+                        font-size: clamp(1.4rem, 5.2vw, 1.75rem) !important;
+                        line-height: 1.25 !important;
+                        letter-spacing: 0.3px !important;
+                        margin-bottom: 0.5rem !important;
+                    }
+                    .wgb-divider {
+                        margin: 0 auto 0.65rem auto !important;
+                    }
+                    .wgb-subtitle {
+                        font-size: 0.92rem !important;
+                        line-height: 1.55 !important;
+                    }
+                }
+                @media (max-width: 480px) {
+                    .wgb-section {
+                        padding: 1.85rem 0 1.75rem 0 !important;
+                    }
+                    .wgb-header {
+                        margin-bottom: 1.25rem !important;
+                    }
+                    .wgb-title {
+                        font-size: 1.42rem !important;
+                        line-height: 1.25 !important;
+                        margin-bottom: 0.45rem !important;
+                    }
+                    .wgb-subtitle {
+                        font-size: 0.88rem !important;
+                        line-height: 1.5 !important;
+                    }
+                    .wgb-machinery-img {
+                        height: 210px !important;
                     }
                 }
             </style>
