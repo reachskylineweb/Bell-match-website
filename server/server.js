@@ -43,6 +43,10 @@ const storage = multer.diskStorage({
     }
 });
 const upload = multer({ storage: storage });
+const galleryUpload = multer({
+    storage: storage,
+    limits: { fileSize: 6 * 1024 * 1024 }
+});
 
 // Authentication Middleware
 const authenticateToken = (req, res, next) => {
@@ -310,6 +314,194 @@ app.delete('/api/products/:id', authenticateToken, (req, res) => {
             }
             
             res.json({ message: 'Product deleted successfully' });
+        });
+    });
+});
+
+// --- GALLERY API ---
+
+// Helper function to extract YouTube ID
+function getYoutubeId(url) {
+    if (!url) return null;
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
+}
+
+// --- GALLERY CATEGORIES API (Single-level, no sub-categories) ---
+
+// Get all gallery categories
+app.get('/api/gallery-categories', (req, res) => {
+    db.all(`SELECT * FROM gallery_categories ORDER BY id ASC`, [], (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(rows || []);
+    });
+});
+
+// Add new gallery category
+app.post('/api/gallery-categories', authenticateToken, (req, res) => {
+    const { name } = req.body;
+    if (!name || !name.trim()) return res.status(400).json({ error: 'Category name is required' });
+
+    const trimmedName = name.trim();
+    const slug = trimmedName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || `cat-${Date.now()}`;
+
+    db.get(`SELECT id FROM gallery_categories WHERE LOWER(name) = LOWER(?) OR slug = ?`, [trimmedName, slug], (checkErr, existing) => {
+        if (checkErr) return res.status(500).json({ error: checkErr.message });
+        if (existing) return res.status(400).json({ error: 'A category with this name already exists' });
+
+        db.run(
+            `INSERT INTO gallery_categories (name, slug) VALUES (?, ?)`,
+            [trimmedName, slug],
+            function (insertErr) {
+                if (insertErr) return res.status(500).json({ error: insertErr.message });
+                res.json({ id: this.lastID, name: trimmedName, slug, message: 'Gallery category added successfully' });
+            }
+        );
+    });
+});
+
+// Delete gallery category
+app.delete('/api/gallery-categories/:id', authenticateToken, (req, res) => {
+    const id = req.params.id;
+    db.run(`DELETE FROM gallery_categories WHERE id = ?`, [id], function (err) {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ message: 'Gallery category deleted successfully' });
+    });
+});
+
+// --- GALLERY API ---
+
+// Get all gallery items
+app.get('/api/gallery', (req, res) => {
+    db.all(`SELECT * FROM gallery_items ORDER BY order_index ASC, id DESC`, [], (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(rows || []);
+    });
+});
+
+// Add gallery item (Image or Video) - Max 6MB
+app.post('/api/gallery', authenticateToken, (req, res) => {
+    galleryUpload.single('image')(req, res, function (err) {
+        if (err instanceof multer.MulterError && err.code === 'LIMIT_FILE_SIZE') {
+            return res.status(400).json({ error: 'Image size exceeds 6 MB limit.' });
+        } else if (err) {
+            return res.status(400).json({ error: err.message });
+        }
+
+        const { title, category, media_type, video_url } = req.body;
+        const type = media_type || 'image';
+        const cat = category || 'production';
+        let mediaUrl = '';
+
+        if (req.file) {
+            if (req.file.size > 6 * 1024 * 1024) {
+                fs.unlink(req.file.path, () => {});
+                return res.status(400).json({ error: 'Image must be under 6 MB.' });
+            }
+            mediaUrl = '/uploads/' + req.file.filename;
+        } else if (type === 'video' && video_url) {
+            const ytId = getYoutubeId(video_url);
+            if (ytId) {
+                mediaUrl = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
+            } else {
+                return res.status(400).json({ error: 'Please upload a thumbnail/poster image for this video.' });
+            }
+        } else {
+            return res.status(400).json({ error: 'Image file is required.' });
+        }
+
+        db.run(
+            `INSERT INTO gallery_items (title, category, media_type, media_url, video_url) VALUES (?, ?, ?, ?, ?)`,
+            [title || '', cat, type, mediaUrl, video_url || null],
+            function (insertErr) {
+                if (insertErr) return res.status(500).json({ error: insertErr.message });
+                res.json({ id: this.lastID, message: 'Gallery item added successfully', media_url: mediaUrl });
+            }
+        );
+    });
+});
+
+// Edit gallery item
+app.put('/api/gallery/:id', authenticateToken, (req, res) => {
+    galleryUpload.single('image')(req, res, function (err) {
+        if (err instanceof multer.MulterError && err.code === 'LIMIT_FILE_SIZE') {
+            return res.status(400).json({ error: 'Image size exceeds 6 MB limit.' });
+        } else if (err) {
+            return res.status(400).json({ error: err.message });
+        }
+
+        const id = req.params.id;
+        const { title, category, media_type, video_url } = req.body;
+        const type = media_type || 'image';
+        const cat = category || 'production';
+
+        if (req.file) {
+            if (req.file.size > 6 * 1024 * 1024) {
+                fs.unlink(req.file.path, () => {});
+                return res.status(400).json({ error: 'Image must be under 6 MB.' });
+            }
+            const mediaUrl = '/uploads/' + req.file.filename;
+
+            db.get(`SELECT media_url FROM gallery_items WHERE id = ?`, [id], (err, row) => {
+                if (row && row.media_url && row.media_url.startsWith('/uploads/')) {
+                    const filename = path.basename(row.media_url);
+                    const filepath = path.join(uploadDir, filename);
+                    fs.unlink(filepath, () => {});
+                }
+
+                db.run(
+                    `UPDATE gallery_items SET title=?, category=?, media_type=?, media_url=?, video_url=? WHERE id=?`,
+                    [title || '', cat, type, mediaUrl, video_url || null, id],
+                    function (updateErr) {
+                        if (updateErr) return res.status(500).json({ error: updateErr.message });
+                        res.json({ message: 'Gallery item updated successfully' });
+                    }
+                );
+            });
+        } else {
+            const ytId = (type === 'video' && video_url) ? getYoutubeId(video_url) : null;
+            if (ytId) {
+                db.run(
+                    `UPDATE gallery_items SET title=?, category=?, media_type=?, media_url=?, video_url=? WHERE id=?`,
+                    [title || '', cat, type, `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`, video_url, id],
+                    function (updateErr) {
+                        if (updateErr) return res.status(500).json({ error: updateErr.message });
+                        res.json({ message: 'Gallery item updated successfully' });
+                    }
+                );
+            } else {
+                db.run(
+                    `UPDATE gallery_items SET title=?, category=?, media_type=?, video_url=? WHERE id=?`,
+                    [title || '', cat, type, video_url || null, id],
+                    function (updateErr) {
+                        if (updateErr) return res.status(500).json({ error: updateErr.message });
+                        res.json({ message: 'Gallery item updated successfully' });
+                    }
+                );
+            }
+        }
+    });
+});
+
+// Delete gallery item
+app.delete('/api/gallery/:id', authenticateToken, (req, res) => {
+    const id = req.params.id;
+
+    db.get(`SELECT media_url FROM gallery_items WHERE id = ?`, [id], (err, row) => {
+        if (err) return res.status(500).json({ error: err.message });
+        if (!row) return res.status(404).json({ error: 'Gallery item not found' });
+
+        db.run(`DELETE FROM gallery_items WHERE id = ?`, [id], function (delErr) {
+            if (delErr) return res.status(500).json({ error: delErr.message });
+
+            if (row.media_url && row.media_url.startsWith('/uploads/')) {
+                const filename = path.basename(row.media_url);
+                const filepath = path.join(uploadDir, filename);
+                fs.unlink(filepath, () => {});
+            }
+
+            res.json({ message: 'Gallery item deleted successfully' });
         });
     });
 });

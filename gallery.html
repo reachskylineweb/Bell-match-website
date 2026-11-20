@@ -528,12 +528,85 @@
 <script src="main.js?v=5"></script>
 <script>
         document.addEventListener('DOMContentLoaded', () => {
+            initGalleryListeners();
+            loadDynamicGallery();
+        });
+
+        async function loadDynamicGallery() {
+            try {
+                const isLocal = ['localhost', '127.0.0.1'].includes(window.location.hostname) || 
+                                window.location.hostname.startsWith('192.168.') || 
+                                window.location.hostname.startsWith('10.') || 
+                                window.location.hostname.endsWith('.local');
+                const API_BASE = window.location.port === '5000' 
+                    ? '' 
+                    : (isLocal ? `http://${window.location.hostname}:5000` : '');
+
+                const res = await fetch(`${API_BASE}/api/gallery`);
+                if (!res.ok) return;
+                const items = await res.json();
+                
+                if (Array.isArray(items) && items.length > 0) {
+                    // Dynamically update category filters if categories are returned from API
+                    try {
+                        const catRes = await fetch(`${API_BASE}/api/gallery-categories`);
+                        if (catRes.ok) {
+                            const cats = await catRes.json();
+                            if (Array.isArray(cats) && cats.length > 0) {
+                                const filterWrap = document.querySelector('.gallery-filters');
+                                if (filterWrap) {
+                                    let fHtml = '<button class="filter-btn active" data-filter="all">All</button>';
+                                    cats.forEach(c => {
+                                        let icon = 'fa-tag';
+                                        const lower = (c.name || '').toLowerCase();
+                                        if (c.slug === 'production' || lower.includes('prod')) icon = 'fa-cogs';
+                                        else if (c.slug === 'packaging' || lower.includes('pack')) icon = 'fa-box-open';
+                                        else if (c.slug === 'factory' || lower.includes('fact') || lower.includes('campus')) icon = 'fa-industry';
+                                        fHtml += `<button class="filter-btn" data-filter="${c.slug || c.name}"><i class="fas ${icon}"></i> ${c.name}</button>`;
+                                    });
+                                    filterWrap.innerHTML = fHtml;
+                                }
+                            }
+                        }
+                    } catch (catErr) {
+                        console.log('Using static filter buttons:', catErr);
+                    }
+
+                    const grid = document.getElementById('galleryGrid');
+                    if (!grid) return;
+                    
+                    grid.innerHTML = items.map(item => {
+                        const isVideo = item.media_type === 'video' || !!item.video_url;
+                        const videoAttr = isVideo && item.video_url ? `data-video="${item.video_url}"` : '';
+                        const overlayIcon = isVideo ? '<i class="fas fa-play"></i>' : '<i class="fas fa-search-plus"></i>';
+                        let imgSrc = item.media_url || '';
+                        if (imgSrc && !imgSrc.startsWith('http') && !imgSrc.startsWith('//')) {
+                            imgSrc = imgSrc.startsWith('/') ? `${API_BASE}${imgSrc}` : `${API_BASE}/${imgSrc}`;
+                        }
+
+                        return `
+                            <div class="gallery-item" data-category="${item.category || 'production'}" ${videoAttr}>
+                                <img alt="${item.title || 'Bell Match Manufacturing'}" loading="lazy" src="${imgSrc}"/>
+                                <div class="gallery-overlay">${overlayIcon}</div>
+                            </div>
+                        `;
+                    }).join('');
+
+                    // Re-bind click and filter listeners with new dynamic elements
+                    initGalleryListeners();
+                }
+            } catch (err) {
+                console.log('Using static gallery fallback:', err);
+            }
+        }
+
+        function initGalleryListeners() {
             // Gallery Filtering Logic
             const filterBtns = document.querySelectorAll('.filter-btn');
             const galleryItems = document.querySelectorAll('.gallery-item');
 
             filterBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
+                btn.onclick = () => {
                     // Update active state
                     filterBtns.forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
@@ -554,7 +627,7 @@
                             item.style.display = 'none';
                         }
                     });
-                });
+                };
             });
 
             // Lightbox Logic
@@ -565,48 +638,28 @@
             const lightboxClose = document.getElementById('lightboxClose');
 
             galleryItems.forEach(item => {
-                item.addEventListener('click', () => {
+                item.onclick = () => {
                     const videoSrc = item.getAttribute('data-video');
                     if (videoSrc) {
                         lightboxImg.style.display = 'none';
-                        if (videoSrc.includes('youtube.com') || videoSrc.includes('youtu.be')) {
+                        // Extract YouTube Video ID from any URL format (youtu.be, watch?v=, embed/, shorts/, etc.)
+                        const ytMatch = videoSrc.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/))([\w-]{11})/);
+                        if (ytMatch) {
+                            const id = ytMatch[1];
                             lightboxVideo.style.display = 'none';
                             lightboxVideo.pause();
                             lightboxVideo.src = '';
                             lightboxIframe.style.display = 'block';
-                            let embedSrc = videoSrc;
-                            const isIntroVideo = videoSrc.includes('EGKJSDhPCHs');
+                            const isIntroVideo = id === 'EGKJSDhPCHs';
                             const originParam = window.location.origin ? `&origin=${encodeURIComponent(window.location.origin)}` : '';
-                            if (videoSrc.includes('watch?v=')) {
-                                const id = videoSrc.split('watch?v=')[1].split('&')[0];
-                                if (isIntroVideo) {
-                                    embedSrc = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&enablejsapi=1&rel=0${originParam}`;
-                                } else {
-                                    embedSrc = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=1&controls=0&disablekb=1&enablejsapi=1&rel=0${originParam}`;
-                                }
-                            } else {
-                                if (isIntroVideo) {
-                                    embedSrc += (embedSrc.includes('?') ? '&' : '?') + `autoplay=1&enablejsapi=1&rel=0${originParam}`;
-                                } else {
-                                    embedSrc += (embedSrc.includes('?') ? '&' : '?') + `autoplay=1&mute=1&controls=0&disablekb=1&enablejsapi=1&rel=0${originParam}`;
-                                }
-                            }
+                            const embedSrc = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&enablejsapi=1&rel=0${originParam}`;
                             lightboxIframe.src = embedSrc;
-
-                            if (!isIntroVideo) {
-                                const enforceMute = () => {
-                                    try {
-                                        if (lightboxIframe && lightboxIframe.contentWindow) {
-                                            lightboxIframe.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*');
-                                            lightboxIframe.contentWindow.postMessage('{"event":"command","func":"setVolume","args":[0]}', '*');
-                                        }
-                                    } catch (err) {}
-                                };
-                                lightboxIframe.onload = enforceMute;
-                                setTimeout(enforceMute, 250);
-                                setTimeout(enforceMute, 700);
-                                setTimeout(enforceMute, 1400);
-                            }
+                        } else if (videoSrc.includes('youtube.com') || videoSrc.includes('youtu.be')) {
+                            lightboxVideo.style.display = 'none';
+                            lightboxVideo.pause();
+                            lightboxVideo.src = '';
+                            lightboxIframe.style.display = 'block';
+                            lightboxIframe.src = videoSrc;
                         } else {
                             if (lightboxIframe) {
                                 lightboxIframe.style.display = 'none';
@@ -614,7 +667,7 @@
                             }
                             lightboxVideo.style.display = 'block';
                             lightboxVideo.src = videoSrc;
-                            lightboxVideo.muted = true; // Prevents background ambient voice/noise from playing
+                            lightboxVideo.muted = true;
                             lightboxVideo.currentTime = 0;
                             const playPromise = lightboxVideo.play();
                             if (playPromise !== undefined) {
@@ -636,8 +689,8 @@
                         lightboxImg.setAttribute('src', imgSrc);
                     }
                     lightbox.classList.add('active');
-                    document.body.style.overflow = 'hidden'; // Prevent scrolling
-                });
+                    document.body.style.overflow = 'hidden';
+                };
             });
 
             const closeLightbox = () => {
@@ -660,18 +713,18 @@
                 }
             };
 
-            lightboxClose.addEventListener('click', closeLightbox);
-            lightbox.addEventListener('click', (e) => {
+            lightboxClose.onclick = closeLightbox;
+            lightbox.onclick = (e) => {
                 if (e.target === lightbox) {
                     closeLightbox();
                 }
-            });
-            document.addEventListener('keydown', (e) => {
+            };
+            document.onkeydown = (e) => {
                 if (e.key === 'Escape' && lightbox.classList.contains('active')) {
                     closeLightbox();
                 }
-            });
-        });
+            };
+        }
     </script>
 </body>
 </html>

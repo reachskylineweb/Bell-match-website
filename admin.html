@@ -11,7 +11,7 @@
     <style>
         :root { --primary-red: #d32f2f; --dark-text: #111827; --light-bg: #f3f4f6; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--light-bg); color: var(--dark-text); }
-        .admin-container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
+        .admin-container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
         .card { border: none; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); margin-bottom: 2rem; }
         .card-header { background-color: white; border-bottom: 1px solid #e5e7eb; padding: 1.5rem; border-top-left-radius: 12px !important; border-top-right-radius: 12px !important; }
         .card-body { padding: 1.5rem; background-color: white; border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; }
@@ -50,6 +50,24 @@
             <h2 class="brand">Admin Dashboard</h2>
             <button class="btn btn-outline-danger" id="logoutBtn">Logout</button>
         </div>
+
+        <!-- Section Switcher Tabs -->
+        <ul class="nav nav-pills mb-4 gap-2" id="adminTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active fw-bold px-4 py-2" id="products-tab" data-bs-toggle="pill" data-bs-target="#productsPane" type="button" role="tab" style="border-radius: 8px;">
+                    <i class="fas fa-boxes me-2"></i> Products &amp; Categories
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link fw-bold px-4 py-2" id="gallery-tab" data-bs-toggle="pill" data-bs-target="#galleryPane" type="button" role="tab" style="border-radius: 8px;" onclick="loadGallery()">
+                    <i class="fas fa-images me-2"></i> Factory Gallery &amp; Videos
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="adminTabContent">
+            <!-- PRODUCTS TAB PANE -->
+            <div class="tab-pane fade show active" id="productsPane" role="tabpanel">
 
         <div class="row">
             <!-- Main Category Manager -->
@@ -265,6 +283,156 @@
                 </div>
             </div>
         </div>
+            </div><!-- /#productsPane -->
+
+            <!-- GALLERY TAB PANE -->
+            <div class="tab-pane fade" id="galleryPane" role="tabpanel">
+                <div class="row">
+                    <!-- Gallery Categories Manager (Col 4) -->
+                    <div class="col-lg-4 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0 fw-bold"><i class="fas fa-tags text-primary me-2"></i>Gallery Categories</h5>
+                                <span class="badge bg-secondary" id="galleryCatCountBadge">0</span>
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <form id="addGalleryCatForm" class="d-flex mb-3">
+                                    <input type="text" id="newGalleryCat" class="form-control me-2" placeholder="New Category Name" required>
+                                    <button type="submit" class="btn btn-primary fw-bold px-3">Add</button>
+                                </form>
+                                <div id="galleryCategoryList" style="flex-grow: 1; overflow-y: auto; max-height: 380px; padding-right: 4px;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gallery Add/Edit Form (Col 8) -->
+                    <div class="col-lg-8 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0 fw-bold" id="galleryFormTitle"><i class="fas fa-plus-circle text-primary me-2"></i>Add Gallery Item</h5>
+                                <span class="badge bg-secondary" id="galleryModeBadge">New</span>
+                            </div>
+                            <div class="card-body">
+                                <form id="galleryForm">
+                                    <input type="hidden" id="galleryEditId" value="">
+
+                                    <div class="row">
+                                        <!-- Media Type Toggle -->
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label fw-bold">Media Type</label>
+                                            <div class="d-flex gap-2">
+                                                <input type="radio" class="btn-check" name="mediaTypeRadio" id="mediaTypeImage" value="image" checked onchange="toggleGalleryMediaType()">
+                                                <label class="btn btn-outline-primary flex-fill fw-bold" for="mediaTypeImage">
+                                                    <i class="fas fa-camera me-1"></i> Photo / Image
+                                                </label>
+
+                                                <input type="radio" class="btn-check" name="mediaTypeRadio" id="mediaTypeVideo" value="video" onchange="toggleGalleryMediaType()">
+                                                <label class="btn btn-outline-danger flex-fill fw-bold" for="mediaTypeVideo">
+                                                    <i class="fas fa-video me-1"></i> Video Link
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <!-- Category Selector -->
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label fw-bold">Category</label>
+                                            <select id="galleryCategory" class="form-select" required>
+                                                <!-- Dynamically populated from gallery_categories -->
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- Item Title -->
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Title / Caption</label>
+                                        <input type="text" id="galleryTitle" class="form-control" placeholder="e.g. Chemical Match Head Dipping Section" required>
+                                    </div>
+
+                                    <!-- Video URL Input (Visible when Video is selected) -->
+                                    <div class="mb-3 d-none" id="galleryVideoGroup">
+                                        <label class="form-label fw-bold">Video URL (YouTube or Direct MP4)</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fab fa-youtube text-danger"></i></span>
+                                            <input type="url" id="galleryVideoUrl" class="form-control" placeholder="https://www.youtube.com/watch?v=...">
+                                        </div>
+                                        <small class="text-muted d-block mt-1">
+                                            Paste a YouTube video link. If you do not upload a custom cover below, YouTube's cover image will be fetched automatically.
+                                        </small>
+                                    </div>
+
+                                    <!-- Cover Image Upload with 6MB STRICT limit -->
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold" id="galleryImageLabel">Upload Image / Poster</label>
+                                        <input type="file" id="galleryImageInput" class="form-control" accept="image/*">
+                                        <div class="d-flex justify-content-between align-items-center mt-1">
+                                            <small class="text-muted">
+                                                <i class="fas fa-shield-alt text-success me-1"></i> Maximum file size: <strong>6 MB</strong>
+                                            </small>
+                                            <span id="galleryFileSizeDisplay" class="badge bg-light text-dark border">No file chosen</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Live Image Preview Box -->
+                                    <div id="galleryPreviewBox" class="mb-3 d-none text-center p-2 bg-light border rounded">
+                                        <img id="galleryPreviewImg" src="" alt="Preview" style="max-height: 180px; max-width: 100%; border-radius: 8px; object-fit: contain;">
+                                    </div>
+
+                                    <!-- Submit / Cancel Buttons -->
+                                    <div class="d-flex gap-2">
+                                        <button type="submit" id="saveGalleryBtn" class="btn btn-primary flex-fill fw-bold">
+                                            <i class="fas fa-save me-1"></i> Save to Gallery
+                                        </button>
+                                        <button type="button" id="cancelGalleryEditBtn" class="btn btn-outline-secondary d-none fw-bold" onclick="resetGalleryForm()">
+                                            Cancel
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.row -->
+
+                <!-- Row 2: Existing Gallery Items List (col-12) -->
+                <div class="row">
+                    <div class="col-12 mb-4">
+                        <div class="card">
+                            <div class="card-header bg-white d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                <h5 class="mb-0 fw-bold">
+                                    <i class="fas fa-photo-video text-danger me-2"></i>Active Gallery Items
+                                    <span class="badge bg-danger ms-2" id="galleryCountBadge">0</span>
+                                </h5>
+                                <div class="d-flex gap-2">
+                                    <select id="galleryCategoryFilter" class="form-select form-select-sm" style="width: 180px;" onchange="filterGalleryItems()">
+                                        <option value="all">All Categories</option>
+                                    </select>
+                                    <input type="text" id="gallerySearchInput" class="form-control form-control-sm" placeholder="Search caption..." style="width: 170px;" oninput="filterGalleryItems()">
+                                </div>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive" style="max-height: 600px; overflow-y: auto;">
+                                    <table class="table table-hover align-middle mb-0">
+                                        <thead class="table-light" style="position: sticky; top: 0; z-index: 1;">
+                                            <tr>
+                                                <th class="px-2" style="width: 70px;">Preview</th>
+                                                <th>Title / Caption &amp; Category</th>
+                                                <th class="text-end px-3" style="width: 95px;">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="galleryTableBody">
+                                            <tr>
+                                                <td colspan="3" class="text-center py-4 text-muted">
+                                                    <div class="spinner-border spinner-border-sm text-danger me-2" role="status"></div> Loading gallery items...
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.row -->
+            </div><!-- /#galleryPane -->
+        </div><!-- /#adminTabContent -->
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>

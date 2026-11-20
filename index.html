@@ -178,8 +178,14 @@
                     margin-top: 0 !important;
                     text-align: left !important;
                 }
-                .hero-description {
+                .hero-trust-badges {
                     order: 2 !important;
+                    width: 100% !important;
+                    margin-top: 0.5rem !important;
+                    margin-bottom: 0.85rem !important;
+                }
+                .hero-description {
+                    order: 3 !important;
                     width: 100% !important;
                     font-size: 0.95rem !important;
                     line-height: 1.65 !important;
@@ -191,7 +197,7 @@
                     box-sizing: border-box !important;
                 }
                 .hero-buttons {
-                    order: 4 !important;
+                    order: 5 !important;
                     display: flex !important;
                     flex-direction: column !important;
                     align-items: flex-start !important;
@@ -257,7 +263,7 @@
                     margin-bottom: 1rem !important;
                 }
                 .hero-visual {
-                    order: 3 !important;
+                    order: 4 !important;
                     width: 100% !important;
                     max-width: 100% !important;
                     display: flex !important;
@@ -300,6 +306,196 @@
                     transform: scale(0.62) !important;
                     height: 440px !important;
                 }
+            }
+
+            /* Hero Accreditations / Certification Badges */
+            .hero-trust-badges {
+                margin-top: 1rem;
+                margin-bottom: 1.25rem;
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+                position: relative;
+                z-index: 5;
+            }
+            .hero-trust-label {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-family: 'Inter', sans-serif;
+                font-size: 0.76rem;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.8px;
+                color: rgba(255, 255, 255, 0.75);
+            }
+            .hero-cert-group {
+                display: flex;
+                align-items: center;
+                gap: 0.65rem;
+                flex-wrap: nowrap;
+                max-width: 100%;
+                overflow: visible;
+                padding: 4px 2px;
+            }
+            .hero-cert-pill {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                background: rgba(15, 23, 42, 0.7);
+                border: 1px solid rgba(255, 255, 255, 0.18);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border-radius: 9999px;
+                padding: 7px 14px 7px 7px;
+                color: #ffffff;
+                cursor: pointer;
+                font-family: 'Inter', sans-serif;
+                transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+                outline: none;
+                box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+            .hero-cert-pill:hover {
+                background: rgba(30, 41, 59, 0.95);
+                border-color: rgba(255, 255, 255, 0.45);
+                box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+            }
+            .cert-pill-badge {
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 0.78rem;
+                flex-shrink: 0;
+            }
+            .cert-badge-iso {
+                background: rgba(239, 68, 68, 0.22);
+                color: #ef4444;
+            }
+            .cert-badge-fsc {
+                background: rgba(16, 185, 129, 0.22);
+                color: #10b981;
+            }
+            .cert-badge-bsci {
+                background: rgba(59, 130, 246, 0.22);
+                color: #3b82f6;
+            }
+            .cert-pill-title {
+                font-size: 0.82rem;
+                font-weight: 700;
+                color: #f8fafc;
+                letter-spacing: 0.3px;
+                white-space: nowrap;
+            }
+
+            /* Responsive rules for hero-trust-badges: ALWAYS ON ONE LINE */
+            @media (max-width: 991px) {
+                .hero-trust-badges {
+                    order: 2 !important;
+                    width: 100% !important;
+                    margin-top: 0.5rem !important;
+                    margin-bottom: 0.85rem !important;
+                    align-items: flex-start !important;
+                }
+                .hero-cert-group {
+                    gap: 0.45rem !important;
+                    flex-wrap: nowrap !important;
+                    width: 100% !important;
+                    overflow-x: auto !important;
+                    scrollbar-width: none !important;
+                    -ms-overflow-style: none !important;
+                    -webkit-overflow-scrolling: touch !important;
+                    padding: 4px 2px 6px 2px !important;
+                }
+                .hero-cert-group::-webkit-scrollbar {
+                    display: none;
+                }
+                .hero-cert-pill {
+                    padding: 6px 11px 6px 6px !important;
+                }
+                .cert-pill-badge {
+                    width: 22px !important;
+                    height: 22px !important;
+                    font-size: 0.72rem !important;
+                }
+                .cert-pill-title {
+                    font-size: 0.76rem !important;
+                }
+            }
+            @media (max-width: 480px) {
+                .hero-trust-badges {
+                    order: 2 !important;
+                    margin-top: 0.5rem !important;
+                    margin-bottom: 0.85rem !important;
+                }
+                .hero-cert-group {
+                    gap: 0.35rem !important;
+                    flex-wrap: nowrap !important;
+                    width: 100% !important;
+                    padding: 4px 2px 6px 2px !important;
+                }
+                .hero-cert-pill {
+                    padding: 5px 9px 5px 5px !important;
+                    gap: 0.35rem !important;
+                }
+                .cert-pill-badge {
+                    width: 20px !important;
+                    height: 20px !important;
+                    font-size: 0.65rem !important;
+                }
+                .cert-pill-title {
+                    font-size: 0.7rem !important;
+                }
+            }
+
+            /* Pure Certificate Lightbox Overlay */
+            .hero-cert-lightbox {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                z-index: 100000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 1.5rem;
+                box-sizing: border-box;
+                cursor: pointer;
+            }
+            .hero-cert-backdrop {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.88);
+                backdrop-filter: blur(8px);
+                -webkit-backdrop-filter: blur(8px);
+            }
+            .hero-cert-pure-wrapper {
+                position: relative;
+                z-index: 2;
+                max-width: 90vw;
+                max-height: 92vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .hero-cert-pure-img {
+                max-width: min(90vw, 850px);
+                max-height: 90vh;
+                width: auto;
+                height: auto;
+                object-fit: contain;
+                border-radius: 6px;
+                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+                display: block;
+                background: #ffffff;
             }
 
             /* Tablet Viewport Fix (992px - 1280px): Prevent 3D matchbox & matchstick cutting off on right side */
@@ -377,10 +573,30 @@
                 <h1 class="hero-title">
                     <span class="hero-line-1">Premium Safety Matches</span><br><span class="text-highlight hero-line-2">for Global Markets</span>
                 </h1>
+
+                <!-- Hero Accreditations / Certificate Quick View -->
+                <div class="hero-trust-badges">
+                    <span class="hero-trust-label"><i class="fas fa-shield-alt" style="color: #c49a6c;"></i> Accreditations:</span>
+                    <div class="hero-cert-group">
+                        <button type="button" class="hero-cert-pill" onclick="openHeroCert('iso')" title="Click to view ISO 9001:2015 Certificate">
+                            <span class="cert-pill-badge cert-badge-iso"><i class="fas fa-certificate"></i></span>
+                            <span class="cert-pill-title">ISO 9001:2015</span>
+                        </button>
+                        <button type="button" class="hero-cert-pill" onclick="openHeroCert('fsc')" title="Click to view FSC® Certificate">
+                            <span class="cert-pill-badge cert-badge-fsc"><i class="fas fa-leaf"></i></span>
+                            <span class="cert-pill-title">FSC® Certified</span>
+                        </button>
+                        <button type="button" class="hero-cert-pill" onclick="openHeroCert('bsci')" title="Click to view amfori BSCI Certificate">
+                            <span class="cert-pill-badge cert-badge-bsci"><i class="fas fa-users"></i></span>
+                            <span class="cert-pill-title">amfori BSCI</span>
+                        </button>
+                    </div>
+                </div>
+
                 <p class="hero-description" style="max-width: 615px; text-wrap: pretty;">
-                    Every great flame starts with a match that strikes first time, and that is exactly how we make ours. From resale packs and advertising matchboxes to fully custom label designs, Bell Matches delivers quality your customers can see and feel. With decades of export experience and strict quality control, we ship to 40+ countries, on time, every time.
+                    Every great flame starts with a match that strikes first time, and that is exactly how we make ours. From resale packs and advertising matchboxes to fully custom label designs, Bell Matches delivers quality your customers can see and feel. With decades of export experience and strict quality control, we ship all over the world, on time, every time.
                 </p>
-                                <div class="hero-buttons">
+                <div class="hero-buttons">
                     <a href="products.html" class="open-matchbox-btn" onclick="this.classList.add('is-closed')">
                         <div class="omb-drawer">
                             <div class="matchstick-group">
@@ -477,8 +693,8 @@
                                 <span class="hud-label">Strike Reliability</span>
                             </div>
                             <div class="hud-item">
-                                <span class="hud-value">40<span class="hud-unit">+</span></span>
-                                <span class="hud-label">Export Nations</span>
+                                <span class="hud-value" style="font-size: 1.35rem; line-height: 1.1; margin-bottom: 2px;">All Over</span>
+                                <span class="hud-label">The World</span>
                             </div>
                             <div class="hud-item">
                                 <span class="hud-value">50M<span class="hud-unit">+</span></span>
@@ -1213,6 +1429,45 @@
             document.querySelectorAll('.open-matchbox-btn.is-closed').forEach(btn => {
                 btn.classList.remove('is-closed');
             });
+        });
+    </script>
+    <!-- Hero Certificate Lightbox Viewer: Pure Certificate Image Only -->
+    <div id="heroCertLightbox" class="hero-cert-lightbox" style="display: none;" role="dialog" aria-modal="true" onclick="closeHeroCert()">
+        <div class="hero-cert-backdrop"></div>
+        <div class="hero-cert-pure-wrapper">
+            <img id="heroCertImg" src="" alt="Certificate" class="hero-cert-pure-img">
+        </div>
+    </div>
+
+    <script>
+        function openHeroCert(type) {
+            var modal = document.getElementById('heroCertLightbox');
+            var certImg = document.getElementById('heroCertImg');
+            if (!modal || !certImg) return;
+
+            if (type === 'iso') {
+                certImg.src = 'uploads/gallery_assets/iso_9001_certificate.jpg';
+                certImg.alt = 'ISO 9001:2015 Certificate';
+            } else if (type === 'fsc') {
+                certImg.src = 'uploads/gallery_assets/fsc_certificate.png';
+                certImg.alt = 'FSC® Certificate';
+            } else if (type === 'bsci') {
+                certImg.src = 'uploads/gallery_assets/amfori_bsci_certificate.webp';
+                certImg.alt = 'amfori BSCI Certificate';
+            }
+
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeHeroCert() {
+            var modal = document.getElementById('heroCertLightbox');
+            if (modal) modal.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeHeroCert();
         });
     </script>
 </body>
